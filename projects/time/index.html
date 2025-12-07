@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Discord Timestamp Converter</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<meta property="og:title" content="Discord Timestamp Converter">
+  <meta property="og:description" content="programmer, gamer, explainer">
+  <meta property="og:image" content="https://raw.githubusercontent.com/flessan/flessan/refs/heads/main/diskor.png">
+  <meta property="og:url" content="https://flessan.pages.dev">
+  <meta property="og:type" content="website">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Flessan">
+  <meta name="twitter:description" content="FlessGD Portfolio">
+  <meta name="twitter:image" content="https://raw.githubusercontent.com/flessan/flessan/refs/heads/main/diskor.png">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/flessan/flessan/refs/heads/main/ikondiscor.png">
+    <!-- External CSS -->
+    <link rel="stylesheet" href="time.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <i class="fab fa-discord"></i>
+                <h1>Discord Timestamp Converter</h1>
+            </div>
+            <p class="subtitle">Convert times to Discord's timestamp format to display in everyone's local timezone</p>
+        </header>
+        
+        <main>
+            <div class="converter-card">
+                <div class="input-group">
+                    <div class="input-box">
+                        <label for="date-input"><i class="fas fa-calendar-alt"></i> Date</label>
+                        <input type="date" id="date-input" value="">
+                    </div>
+                    
+                    <div class="input-box">
+                        <label for="time-input"><i class="fas fa-clock"></i> Time</label>
+                        <input type="time" id="time-input" value="12:00">
+                    </div>
+                    
+                    <div class="input-box">
+                        <label for="timezone-select"><i class="fas fa-globe"></i> Timezone</label>
+                        <select id="timezone-select">
+                            <option value="auto">Auto (Your Timezone)</option>
+                            <option value="UTC">UTC</option>
+                            <option value="GMT">GMT</option>
+                            <option value="EST">EST</option>
+                            <option value="PST">PST</option>
+                            <option value="CET">CET</option>
+                            <option value="AEST">AEST</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="result-box">
+                    <div class="result-header">
+                        <h3>Discord Timestamp</h3>
+                        <button class="copy-btn" id="copy-btn">
+                            <i class="fas fa-copy"></i> Copy to Clipboard
+                        </button>
+                    </div>
+                    <div class="timestamp-preview" id="timestamp-preview">
+                        Select a time to generate timestamp
+                    </div>
+                    
+                    <div class="format-options">
+                        <button class="format-btn active" data-format="f">Default (f)</button>
+                        <button class="format-btn" data-format="F">Long (F)</button>
+                        <button class="format-btn" data-format="t">Short Time (t)</button>
+                        <button class="format-btn" data-format="T">Long Time (T)</button>
+                        <button class="format-btn" data-format="d">Short Date (d)</button>
+                        <button class="format-btn" data-format="D">Long Date (D)</button>
+                        <button class="format-btn" data-format="R">Relative (R)</button>
+                    </div>
+                </div>
+                
+                <div class="preview-section">
+                    <h3 class="preview-title"><i class="fas fa-eye"></i> Discord Preview</h3>
+                    
+                    <div class="discord-message">
+                        <div class="message-header">
+                            <div class="avatar"></div>
+                            <div class="username">Senjata</div>
+                            <div class="message-time">Today at 12:00 PM</div>
+                        </div>
+                        <div class="message-content">
+                            <p>My Dor Dor <span class="timestamp-example" id="preview-timestamp">[timestamp]</span>. Run pls!</p>
+                        </div>
+                    </div>
+                    
+                    <h3 class="preview-title"><i class="fas fa-table"></i> Format Examples</h3>
+                    <div class="table-responsive">
+                        <table class="preview-table">
+                            <thead>
+                                <tr>
+                                    <th>Format</th>
+                                    <th>Output Example</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <div class="format-name">Short Time (t)</div>
+                                        <div class="format-desc">&lt;t:1620000000:t&gt;</div>
+                                    </td>
+                                    <td class="example-result">12:00 PM</td>
+                                    <td>Time only (hours:minutes)</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="format-name">Long Time (T)</div>
+                                        <div class="format-desc">&lt;t:1620000000:T&gt;</div>
+                                    </td>
+                                    <td class="example-result">12:00:00 PM</td>
+                                    <td>Time with seconds</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="format-name">Short Date (d)</div>
+                                        <div class="format-desc">&lt;t:1620000000:d&gt;</div>
+                                    </td>
+                                    <td class="example-result">05/04/2021</td>
+                                    <td>Date only (MM/DD/YYYY)</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="format-name">Long Date (D)</div>
+                                        <div class="format-desc">&lt;t:1620000000:D&gt;</div>
+                                    </td>
+                                    <td class="example-result">May 4, 2021</td>
+                                    <td>Date with month name</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="format-name">Default (f)</div>
+                                        <div class="format-desc">&lt;t:1620000000:f&gt;</div>
+                                    </td>
+                                    <td class="example-result">May 4, 2021 12:00 PM</td>
+                                    <td>Date and time (default)</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="format-name">Long (F)</div>
+                                        <div class="format-desc">&lt;t:1620000000:F&gt;</div>
+                                    </td>
+                                    <td class="example-result">Tuesday, May 4, 2021 12:00 PM</td>
+                                    <td>Full date with day of week</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="format-name">Relative (R)</div>
+                                        <div class="format-desc">&lt;t:1620000000:R&gt;</div>
+                                    </td>
+                                    <td class="example-result">in 3 years</td>
+                                    <td>Relative time from now</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="info-box">
+                <p>
+                    <span class="new-badge">NEW</span> 
+                    Additional Features on Discordutils.com</p>
+                    <sub>- Including advanced timestamp generation, timezone conversions, and more.</sub>
+                    <p>______________________________________________</p>
+                    <iframe src="https://discordutils.com/" width="400" height="500" scrolling="yes" style="border:2px solid #5f5cff; marginwidth="0" marginheight="0" allowfullscreen></iframe>
+            </div>
+        </main>
+        
+        <footer>
+            <div class="footer-links">
+                <a href="mailto:fles@cc.cc">
+                    <i class="fas fa-envelope"></i> Contact
+                </a>
+                <a href="https://github.com/flessan/" target="_blank">
+                    <i class="fab fa-github"></i> GitHub
+                </a>
+            </div>
+            <p>&copy; <span id="current-year"></span> Discord Timestamp Converter Tool</p>
+        </footer>
+    </div>
+    <script src="time.js"></script>
+</body>
+</html>

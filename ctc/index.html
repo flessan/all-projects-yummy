@@ -1,0 +1,3767 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Code Text Cleaner Pro</title>
+  <meta name="description" content="Offline toolbox: text utilities, code cleaner, html decoder, combine/split html-css-js, drag & drop, preview.">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    /* --- Variables & Reset --- */
+    :root {
+      --bg-primary: #0d1117;
+      --bg-secondary: #161b22;
+      --bg-tertiary: #21262d;
+      --bg-hover: #30363d;
+      --text-primary: #c9d1d9;
+      --text-secondary: #8b949e;
+      --text-tertiary: #6e7681;
+      --accent-primary: #58a6ff;
+      --accent-success: #3fb950;
+      --accent-warning: #d29922;
+      --accent-danger: #f85149;
+      --border-primary: #30363d;
+      --border-secondary: #21262d;
+      --shadow: rgba(0, 0, 0, 0.3);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+      background-color: var(--bg-primary);
+      color: var(--text-primary);
+      line-height: 1.5;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    body.light-theme {
+      --bg-primary: #ffffff;
+      --bg-secondary: #f6f8fa;
+      --bg-tertiary: #e1e4e8;
+      --bg-hover: #e1e4e8;
+      --text-primary: #24292f;
+      --text-secondary: #57606a;
+      --text-tertiary: #6e7681;
+      --border-primary: #d0d7de;
+      --border-secondary: #e1e4e8;
+      --shadow: rgba(0, 0, 0, 0.1);
+    }
+
+    /* --- Layout --- */
+    .app-container {
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+    }
+
+    /* --- Header --- */
+    .header {
+      background-color: var(--bg-secondary);
+      border-bottom: 1px solid var(--border-primary);
+      padding: 0.75rem 1rem;
+    }
+
+    .header-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 1.25rem;
+      font-weight: 600;
+    }
+
+    .header-actions {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    /* --- Navigation --- */
+    .nav {
+      background-color: var(--bg-secondary);
+      border-bottom: 1px solid var(--border-primary);
+      padding: 0 1rem;
+      overflow-x: auto;
+    }
+
+    .nav-container {
+      display: flex;
+      gap: 0.5rem;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.25rem;
+      padding: 0.75rem 1rem;
+      background: none;
+      border: none;
+      color: var(--text-secondary);
+      cursor: pointer;
+      border-radius: 0.375rem;
+      transition: all 0.2s ease;
+      white-space: nowrap;
+    }
+
+    .nav-item:hover {
+      background-color: var(--bg-hover);
+      color: var(--text-primary);
+    }
+
+    .nav-item.active {
+      color: var(--accent-primary);
+      border-bottom: 2px solid var(--accent-primary);
+    }
+
+    .nav-item i {
+      font-size: 1.25rem;
+    }
+
+    /* --- Main Content --- */
+    .main {
+      flex: 1;
+      overflow-y: auto;
+      padding: 1rem;
+    }
+
+    .panel {
+      display: none;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .panel.active {
+      display: block;
+    }
+
+    .panel-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+
+    .panel-header h2 {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 1.5rem;
+    }
+
+    .panel-actions {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+    }
+
+    /* --- Editor Section --- */
+    .editor-section {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .editor-container {
+      display: flex;
+      flex-direction: column;
+      border: 1px solid var(--border-primary);
+      border-radius: 0.375rem;
+      overflow: hidden;
+    }
+
+    .editor-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.5rem 0.75rem;
+      background-color: var(--bg-tertiary);
+      border-bottom: 1px solid var(--border-primary);
+    }
+
+    .editor-wrapper {
+      display: flex;
+      position: relative;
+      height: 300px;
+    }
+
+    .line-numbers {
+      padding: 0.75rem 0.5rem;
+      background-color: var(--bg-tertiary);
+      color: var(--text-tertiary);
+      text-align: right;
+      user-select: none;
+      border-right: 1px solid var(--border-primary);
+      font-family: monospace;
+      overflow: hidden;
+    }
+
+    .editor {
+      flex: 1;
+      padding: 0.75rem;
+      background-color: var(--bg-primary);
+      color: var(--text-primary);
+      border: none;
+      resize: none;
+      font-family: monospace;
+      font-size: 0.875rem;
+      line-height: 1.5;
+      outline: none;
+    }
+
+    .editor.word-wrap {
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    /* --- Controls --- */
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      padding: 0.75rem;
+      background-color: var(--bg-secondary);
+      border: 1px solid var(--border-primary);
+      border-radius: 0.375rem;
+    }
+
+    .control-group {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    /* --- Buttons --- */
+    .btn {
+      display: flex;
+      align-items: center;
+      gap: 0.375rem;
+      padding: 0.375rem 0.75rem;
+      background-color: var(--bg-tertiary);
+      color: var(--text-primary);
+      border: 1px solid var(--border-primary);
+      border-radius: 0.375rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-size: 0.875rem;
+    }
+
+    .btn:hover {
+      background-color: var(--bg-hover);
+    }
+
+    .btn-primary {
+      background-color: var(--accent-primary);
+      color: white;
+      border-color: var(--accent-primary);
+    }
+
+    .btn-primary:hover {
+      background-color: #4c94e6;
+    }
+
+    .btn-success {
+      background-color: var(--accent-success);
+      color: white;
+      border-color: var(--accent-success);
+    }
+
+    .btn-success:hover {
+      background-color: #2da44e;
+    }
+
+    .icon-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 2rem;
+      height: 2rem;
+      padding: 0;
+      background-color: var(--bg-tertiary);
+      color: var(--text-primary);
+      border: 1px solid var(--border-primary);
+      border-radius: 0.375rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .icon-btn:hover {
+      background-color: var(--bg-hover);
+    }
+
+    /* --- Stats --- */
+    .stats {
+      display: flex;
+      gap: 1rem;
+      padding: 0.75rem;
+      background-color: var(--bg-secondary);
+      border: 1px solid var(--border-primary);
+      border-radius: 0.375rem;
+    }
+
+    .stat {
+      display: flex;
+      align-items: center;
+      gap: 0.375rem;
+    }
+
+    .stat-label {
+      color: var(--text-secondary);
+    }
+
+    /* --- Selects --- */
+    .encoding-select, .device-select {
+      padding: 0.375rem 0.5rem;
+      background-color: var(--bg-tertiary);
+      color: var(--text-primary);
+      border: 1px solid var(--border-primary);
+      border-radius: 0.375rem;
+      cursor: pointer;
+      font-size: 0.875rem;
+    }
+
+    /* --- Preview --- */
+    .preview-container {
+      margin-top: 1rem;
+      border: 1px solid var(--border-primary);
+      border-radius: 0.375rem;
+      overflow: hidden;
+    }
+
+    .preview-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.5rem 0.75rem;
+      background-color: var(--bg-tertiary);
+      border-bottom: 1px solid var(--border-primary);
+    }
+
+    .preview-controls {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+    }
+
+    .preview-frame {
+      width: 100%;
+      height: 500px;
+      border: none;
+      background-color: white;
+    }
+
+    /* --- Regex Tester --- */
+    .regex-input-group {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .regex-input {
+      flex: 1;
+      padding: 0.5rem 0.75rem;
+      background-color: var(--bg-primary);
+      color: var(--text-primary);
+      border: 1px solid var(--border-primary);
+      border-radius: 0.375rem;
+      font-family: monospace;
+    }
+
+    .regex-flags {
+      display: flex;
+      gap: 0.25rem;
+    }
+
+    .regex-flag {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 2rem;
+      height: 2rem;
+      background-color: var(--bg-tertiary);
+      color: var(--text-secondary);
+      border: 1px solid var(--border-primary);
+      border-radius: 0.375rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-family: monospace;
+      font-weight: bold;
+    }
+
+    .regex-flag:hover {
+      background-color: var(--bg-hover);
+    }
+
+    .regex-flag.active {
+      background-color: var(--accent-primary);
+      color: white;
+      border-color: var(--accent-primary);
+    }
+
+    .regex-result {
+      min-height: 200px;
+      padding: 0.75rem;
+      background-color: var(--bg-primary);
+      border: 1px solid var(--border-primary);
+      border-radius: 0.375rem;
+      white-space: pre-wrap;
+      font-family: monospace;
+    }
+
+    .regex-match {
+      background-color: rgba(255, 230, 0, 0.3);
+    }
+
+    /* --- Text Comparison --- */
+    .compare-result {
+      min-height: 200px;
+      padding: 0.75rem;
+      background-color: var(--bg-primary);
+      border: 1px solid var(--border-primary);
+      border-radius: 0.375rem;
+      white-space: pre-wrap;
+      font-family: monospace;
+    }
+
+    .diff-line {
+      padding: 0.125rem 0;
+    }
+
+    .diff-line.same {
+      color: var(--text-primary);
+    }
+
+    .diff-line.removed {
+      color: var(--accent-danger);
+      background-color: rgba(248, 81, 73, 0.1);
+    }
+
+    .diff-line.added {
+      color: var(--accent-success);
+      background-color: rgba(63, 185, 80, 0.1);
+    }
+
+    /* --- Modals --- */
+    .modal-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+    }
+
+    .modal {
+      background-color: var(--bg-secondary);
+      border: 1px solid var(--border-primary);
+      border-radius: 0.5rem;
+      width: 90%;
+      max-width: 500px;
+      box-shadow: 0 0.5rem 1rem var(--shadow);
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem;
+      border-bottom: 1px solid var(--border-primary);
+    }
+
+    .modal-header h3 {
+      margin: 0;
+    }
+
+    .modal-body {
+      padding: 1rem;
+    }
+
+    .shortcuts-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .shortcuts-table td {
+      padding: 0.5rem;
+      border-bottom: 1px solid var(--border-primary);
+    }
+
+    .shortcuts-table td:first-child {
+      font-weight: 600;
+    }
+
+    kbd {
+      display: inline-block;
+      padding: 0.25rem 0.5rem;
+      background-color: var(--bg-tertiary);
+      border: 1px solid var(--border-primary);
+      border-radius: 0.25rem;
+      font-family: monospace;
+      font-size: 0.875rem;
+    }
+
+    /* --- Settings --- */
+    .setting-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.75rem 0;
+      border-bottom: 1px solid var(--border-primary);
+    }
+
+    .setting-item:last-child {
+      border-bottom: none;
+    }
+
+    .setting-actions {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 1rem;
+    }
+
+    /* --- Find/Replace --- */
+    .find-replace-container {
+      position: fixed;
+      top: 4rem;
+      right: 1rem;
+      width: 300px;
+      background-color: var(--bg-secondary);
+      border: 1px solid var(--border-primary);
+      border-radius: 0.5rem;
+      box-shadow: 0 0.25rem 0.5rem var(--shadow);
+      z-index: 100;
+    }
+
+    .find-replace-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.75rem;
+      border-bottom: 1px solid var(--border-primary);
+    }
+
+    .find-replace-title {
+      font-weight: 600;
+    }
+
+    .find-replace-input {
+      width: 100%;
+      padding: 0.5rem 0.75rem;
+      background-color: var(--bg-primary);
+      color: var(--text-primary);
+      border: 1px solid var(--border-primary);
+      border-radius: 0.375rem;
+      margin: 0.75rem;
+    }
+
+    .find-replace-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      padding: 0 0.75rem;
+    }
+
+    .find-replace-info {
+      padding: 0.5rem 0.75rem;
+      background-color: var(--bg-tertiary);
+      border-top: 1px solid var(--border-primary);
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+    }
+
+    /* --- Toast --- */
+    .toast {
+      position: fixed;
+      bottom: 1rem;
+      left: 50%;
+      transform: translateX(-50%) translateY(2rem);
+      padding: 0.75rem 1.5rem;
+      background-color: var(--bg-tertiary);
+      color: var(--text-primary);
+      border: 1px solid var(--border-primary);
+      border-radius: 0.375rem;
+      box-shadow: 0 0.25rem 0.5rem var(--shadow);
+      opacity: 0;
+      transition: all 0.3s ease;
+      z-index: 1000;
+    }
+
+    .toast.show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+    }
+
+    .toast.success {
+      border-color: var(--accent-success);
+      color: var(--accent-success);
+    }
+
+    .toast.error {
+      border-color: var(--accent-danger);
+      color: var(--accent-danger);
+    }
+
+    .toast.warning {
+      border-color: var(--accent-warning);
+      color: var(--accent-warning);
+    }
+
+    .toast.info {
+      border-color: var(--accent-primary);
+      color: var(--accent-primary);
+    }
+
+    /* --- Utility Classes --- */
+    .hidden {
+      display: none !important;
+    }
+
+    .empty-state {
+      color: var(--text-tertiary);
+      font-style: italic;
+      text-align: center;
+      padding: 2rem 0;
+    }
+
+    .drag-over {
+      border-color: var(--accent-primary) !important;
+      background-color: rgba(88, 166, 255, 0.1) !important;
+    }
+
+    /* --- Syntax Highlighting --- */
+    .syntax-highlight {
+      background-color: var(--bg-primary);
+    }
+
+    .comment {
+      color: var(--text-tertiary);
+      font-style: italic;
+    }
+
+    .keyword {
+      color: #ff79c6;
+    }
+
+    .string {
+      color: #f1fa8c;
+    }
+
+    .number {
+      color: #bd93f9;
+    }
+
+    .operator {
+      color: var(--text-primary);
+    }
+
+    .tag {
+      color: #ff79c6;
+    }
+
+    .attribute {
+      color: #50fa7b;
+    }
+
+    .attribute-name {
+      color: #50fa7b;
+    }
+
+    .attribute-value {
+      color: #f1fa8c;
+    }
+
+    .entity {
+      color: #bd93f9;
+    }
+
+    .at-rule {
+      color: #ff79c6;
+    }
+
+    .property {
+      color: #50fa7b;
+    }
+
+    .value {
+      color: #f1fa8c;
+    }
+
+    .selector {
+      color: #8be9fd;
+    }
+
+    .punctuation {
+      color: var(--text-primary);
+    }
+
+    .builtin {
+      color: #8be9fd;
+    }
+
+    .key {
+      color: #ff79c6;
+    }
+
+    /* --- Recent Files --- */
+    .recent-files {
+      margin-top: 1rem;
+      border: 1px solid var(--border-primary);
+      border-radius: 0.375rem;
+      overflow: hidden;
+    }
+
+    .recent-files-header {
+      padding: 0.5rem 0.75rem;
+      background-color: var(--bg-tertiary);
+      border-bottom: 1px solid var(--border-primary);
+      font-weight: 600;
+    }
+
+    .recent-files-list {
+      max-height: 200px;
+      overflow-y: auto;
+    }
+
+    .recent-file-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.5rem 0.75rem;
+      border-bottom: 1px solid var(--border-secondary);
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+    }
+
+    .recent-file-item:hover {
+      background-color: var(--bg-hover);
+    }
+
+    .recent-file-item:last-child {
+      border-bottom: none;
+    }
+
+    .recent-file-name {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 70%;
+    }
+
+    .recent-file-date {
+      color: var(--text-tertiary);
+      font-size: 0.75rem;
+    }
+
+    /* --- Drop Zone --- */
+    .drop-zone {
+      border: 2px dashed var(--border-primary);
+      border-radius: 0.375rem;
+      padding: 2rem;
+      text-align: center;
+      margin-bottom: 1rem;
+      transition: all 0.3s ease;
+    }
+
+    .drop-zone.drag-over {
+      border-color: var(--accent-primary);
+      background-color: rgba(88, 166, 255, 0.1);
+    }
+
+    .drop-zone-icon {
+      font-size: 3rem;
+      color: var(--text-tertiary);
+      margin-bottom: 0.5rem;
+    }
+
+    .drop-zone-text {
+      color: var(--text-secondary);
+    }
+
+    /* --- Responsive --- */
+    @media (max-width: 768px) {
+      .nav-container {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+      }
+      
+      .editor-wrapper {
+        height: 200px;
+      }
+      
+      .controls {
+        flex-direction: column;
+      }
+      
+      .control-group {
+        width: 100%;
+        justify-content: space-between;
+      }
+      
+      .find-replace-container {
+        width: calc(100% - 2rem);
+        right: 1rem;
+        left: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <!-- Header -->
+    <header class="header">
+      <div class="header-content">
+        <div class="logo">
+          <i class="fas fa-code"></i>
+          <span>Code Text Cleaner Pro</span>
+        </div>
+        <div class="header-actions">
+          <button id="settingsBtn" class="icon-btn" title="Settings">
+            <i class="fas fa-cog"></i>
+          </button>
+          <button id="shortcutsBtn" class="icon-btn" title="Keyboard Shortcuts">
+            <i class="fas fa-keyboard"></i>
+          </button>
+          <button id="themeToggle" class="icon-btn" title="Toggle theme">
+            <i class="fas fa-moon"></i>
+          </button>
+          <button id="findReplaceBtn" class="icon-btn" title="Find/Replace">
+            <i class="fas fa-search"></i>
+          </button>
+          <button id="saveWorkspaceBtn" class="icon-btn" title="Save Workspace">
+            <i class="fas fa-save"></i>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Navigation -->
+    <nav class="nav">
+      <div class="nav-container">
+        <button class="nav-item active" data-tool="text">
+          <i class="fas fa-file-alt"></i>
+          <span>Text Tools</span>
+        </button>
+        <button class="nav-item" data-tool="code">
+          <i class="fas fa-code"></i>
+          <span>Code Cleaner</span>
+        </button>
+        <button class="nav-item" data-tool="decoder">
+          <i class="fas fa-lock"></i>
+          <span>HTML Decoder</span>
+        </button>
+        <button class="nav-item" data-tool="combine">
+          <i class="fas fa-object-group"></i>
+          <span>Combine</span>
+        </button>
+        <button class="nav-item" data-tool="split">
+          <i class="fas fa-code-branch"></i>
+          <span>Split</span>
+        </button>
+        <button class="nav-item" data-tool="regex">
+          <i class="fas fa-search"></i>
+          <span>Regex Tester</span>
+        </button>
+        <button class="nav-item" data-tool="compare">
+          <i class="fas fa-columns"></i>
+          <span>Compare</span>
+        </button>
+        <button class="nav-item" data-tool="analyze">
+          <i class="fas fa-chart-bar"></i>
+          <span>Analyze</span>
+        </button>
+      </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main">
+      <!-- TEXT TOOLS -->
+      <section class="panel active" id="panel-text" data-tool="text">
+        <div class="panel-header">
+          <h2><i class="fas fa-file-alt"></i> Text Tools</h2>
+          <div class="panel-actions">
+            <button id="pasteText" class="btn" title="Paste">
+              <i class="fas fa-paste"></i>
+            </button>
+            <button id="copyOutput" class="btn" title="Copy">
+              <i class="fas fa-copy"></i>
+            </button>
+            <button id="downloadTxt" class="btn" title="Download">
+              <i class="fas fa-download"></i>
+            </button>
+            <select id="textEncoding" class="encoding-select">
+              <option value="utf-8">UTF-8</option>
+              <option value="iso-8859-1">ISO-8859-1</option>
+              <option value="windows-1252">Windows-1252</option>
+            </select>
+          </div>
+        </div>
+        
+        <div class="drop-zone" id="textDropZone">
+          <div class="drop-zone-icon">
+            <i class="fas fa-cloud-upload-alt"></i>
+          </div>
+          <div class="drop-zone-text">
+            Drag & drop files here or click to browse
+          </div>
+          <input type="file" id="textFileInput" class="hidden" accept=".txt,.csv,.json,.xml,.html,.css,.js">
+        </div>
+        
+        <div class="editor-section">
+          <div class="editor-container">
+            <div class="editor-header">
+              <span>Input</span>
+              <button id="toggleWordWrap" class="icon-btn" title="Toggle word wrap">
+                <i class="fas fa-text-width"></i>
+              </button>
+            </div>
+            <div class="editor-wrapper">
+              <div class="line-numbers" id="inputLineNumbers">1</div>
+              <textarea id="inputText" class="editor" placeholder="Paste text or code here..."></textarea>
+            </div>
+          </div>
+
+          <div class="controls">
+            <div class="control-group">
+              <button class="btn" data-action="lower" title="Lowercase">
+                <i class="fas fa-font"></i> lower
+              </button>
+              <button class="btn" data-action="upper" title="Uppercase">
+                <i class="fas fa-font"></i> UPPER
+              </button>
+              <button class="btn" data-action="title" title="Title Case">
+                <i class="fas fa-heading"></i> Title
+              </button>
+              <button class="btn" data-action="trimspaces" title="Trim Spaces">
+                <i class="fas fa-compress-alt"></i> Trim
+              </button>
+              <button class="btn" data-action="reverse" title="Reverse">
+                <i class="fas fa-exchange-alt"></i> Reverse
+              </button>
+              <button class="btn" data-action="sort" title="Sort">
+                <i class="fas fa-sort-alpha-down"></i> Sort
+              </button>
+            </div>
+            <div class="control-group">
+              <button class="btn" data-action="removeEmptyLines" title="Remove Empty Lines">
+                <i class="fas fa-eraser"></i> Empty
+              </button>
+              <button class="btn" data-action="removeDuplicateLines" title="Remove Duplicates">
+                <i class="fas fa-copy"></i> Duplicates
+              </button>
+              <button class="btn" data-action="addLineNumbers" title="Add Line Numbers">
+                <i class="fas fa-list-ol"></i> Number
+              </button>
+            </div>
+            <div class="control-group">
+              <button class="btn" data-action="camelCase" title="camelCase">
+                <i class="fas fa-font"></i> camel
+              </button>
+              <button class="btn" data-action="snake_case" title="snake_case">
+                <i class="fas fa-font"></i> snake
+              </button>
+              <button class="btn" data-action="kebab-case" title="kebab-case">
+                <i class="fas fa-font"></i> kebab
+              </button>
+              <button class="btn" data-action="PascalCase" title="PascalCase">
+                <i class="fas fa-font"></i> Pascal
+              </button>
+            </div>
+            <div class="control-group">
+              <button class="btn" id="prettyJson" title="Prettify JSON">
+                <i class="fas fa-code"></i> JSON
+              </button>
+              <button class="btn" id="base64Encode" title="Base64 Encode">
+                <i class="fas fa-lock"></i> B64
+              </button>
+              <button class="btn" id="base64Decode" title="Base64 Decode">
+                <i class="fas fa-unlock"></i> B64
+              </button>
+              <button class="btn" id="urlEncode" title="URL Encode">
+                <i class="fas fa-link"></i> URL
+              </button>
+              <button class="btn" id="urlDecode" title="URL Decode">
+                <i class="fas fa-unlink"></i> URL
+              </button>
+            </div>
+          </div>
+
+          <div class="editor-container">
+            <div class="editor-header">
+              <span>Output</span>
+            </div>
+            <div class="editor-wrapper">
+              <div class="line-numbers" id="outputLineNumbers">1</div>
+              <textarea id="outputText" class="editor" readonly placeholder="Result will appear here..."></textarea>
+            </div>
+          </div>
+        </div>
+
+        <div class="stats">
+          <div class="stat">
+            <span class="stat-label">Words:</span>
+            <span id="wordCount">0</span>
+          </div>
+          <div class="stat">
+            <span class="stat-label">Chars:</span>
+            <span id="charCount">0</span>
+          </div>
+          <div class="stat">
+            <span class="stat-label">Lines:</span>
+            <span id="lineCount">0</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- CODE CLEANER -->
+      <section class="panel" id="panel-code" data-tool="code">
+        <div class="panel-header">
+          <h2><i class="fas fa-code"></i> Code Cleaner</h2>
+          <div class="panel-actions">
+            <button id="pasteCode" class="btn" title="Paste">
+              <i class="fas fa-paste"></i>
+            </button>
+            <button id="copyCode" class="btn" title="Copy">
+              <i class="fas fa-copy"></i>
+            </button>
+            <button id="downloadCode" class="btn" title="Download">
+              <i class="fas fa-download"></i>
+            </button>
+            <button id="previewCode" class="btn" title="Preview">
+              <i class="fas fa-eye"></i>
+            </button>
+            <select id="codeEncoding" class="encoding-select">
+              <option value="utf-8">UTF-8</option>
+              <option value="iso-8859-1">ISO-8859-1</option>
+              <option value="windows-1252">Windows-1252</option>
+            </select>
+          </div>
+        </div>
+        
+        <div class="drop-zone" id="codeDropZone">
+          <div class="drop-zone-icon">
+            <i class="fas fa-cloud-upload-alt"></i>
+          </div>
+          <div class="drop-zone-text">
+            Drag & drop files here or click to browse
+          </div>
+          <input type="file" id="codeFileInput" class="hidden" accept=".html,.css,.js,.json,.xml">
+        </div>
+        
+        <div class="editor-section">
+          <div class="editor-container">
+            <div class="editor-header">
+              <span>Input (HTML / CSS / JS)</span>
+              <button id="toggleCodeWordWrap" class="icon-btn" title="Toggle word wrap">
+                <i class="fas fa-text-width"></i>
+              </button>
+            </div>
+            <div class="editor-wrapper">
+              <div class="line-numbers" id="codeInputLineNumbers">1</div>
+              <textarea id="codeInput" class="editor" placeholder="Paste HTML/CSS/JS here..."></textarea>
+            </div>
+          </div>
+
+          <div class="controls">
+            <div class="control-group">
+              <button class="btn" data-code-action="minify-html" title="Minify HTML">
+                <i class="fas fa-compress"></i> HTML
+              </button>
+              <button class="btn" data-code-action="minify-css" title="Minify CSS">
+                <i class="fas fa-compress"></i> CSS
+              </button>
+              <button class="btn" data-code-action="minify-js" title="Minify JS">
+                <i class="fas fa-compress"></i> JS
+              </button>
+              <button class="btn" data-code-action="remove-comments" title="Remove Comments">
+                <i class="fas fa-comment-slash"></i> Comments
+              </button>
+            </div>
+            <div class="control-group">
+              <button class="btn" id="formatHtml" title="Format HTML">
+                <i class="fas fa-code"></i> HTML
+              </button>
+              <button class="btn" id="formatCss" title="Format CSS">
+                <i class="fas fa-code"></i> CSS
+              </button>
+              <button class="btn" id="formatJs" title="Format JS">
+                <i class="fas fa-code"></i> JS
+              </button>
+              <button class="btn" id="beautifyJson" title="Beautify JSON">
+                <i class="fas fa-code"></i> JSON
+              </button>
+            </div>
+          </div>
+
+          <div class="editor-container">
+            <div class="editor-header">
+              <span>Output</span>
+            </div>
+            <div class="editor-wrapper">
+              <div class="line-numbers" id="codeOutputLineNumbers">1</div>
+              <textarea id="codeOutput" class="editor" readonly placeholder="Cleaned code will appear here..."></textarea>
+            </div>
+          </div>
+        </div>
+
+        <div class="preview-container hidden" id="previewWrap">
+          <div class="preview-header">
+            <span>Preview</span>
+            <div class="preview-controls">
+              <select id="deviceMode" class="device-select">
+                <option value="desktop">Desktop</option>
+                <option value="tablet">Tablet</option>
+                <option value="mobile">Mobile</option>
+              </select>
+              <button id="closePreview" class="icon-btn" title="Close">
+                <i class="fas fa-times"></i>
+              </button>
+            </div>
+          </div>
+          <iframe id="previewFrame" class="preview-frame" sandbox="allow-scripts"></iframe>
+        </div>
+      </section>
+
+      <!-- DECODER -->
+      <section class="panel" id="panel-decoder" data-tool="decoder">
+        <div class="panel-header">
+          <h2><i class="fas fa-lock"></i> HTML Entity Decoder</h2>
+          <div class="panel-actions">
+            <button id="copyDecoded" class="btn" title="Copy">
+              <i class="fas fa-copy"></i>
+            </button>
+          </div>
+        </div>
+        
+        <div class="editor-section">
+          <div class="editor-container">
+            <div class="editor-header">
+              <span>Encoded</span>
+              <button id="toggleDecoderWordWrap" class="icon-btn" title="Toggle word wrap">
+                <i class="fas fa-text-width"></i>
+              </button>
+            </div>
+            <div class="editor-wrapper">
+              <div class="line-numbers" id="encodedLineNumbers">1</div>
+              <textarea id="encoded" class="editor" placeholder="&amp;lt;div&amp;gt;Hello&amp;lt;/div&amp;gt;"></textarea>
+            </div>
+          </div>
+
+          <div class="controls">
+            <div class="control-group">
+              <button class="btn btn-primary" id="decodeBtn" title="Decode">
+                <i class="fas fa-unlock"></i> Decode
+              </button>
+              <button class="btn" id="encodeBtn" title="Encode">
+                <i class="fas fa-lock"></i> Encode
+              </button>
+            </div>
+          </div>
+
+          <div class="editor-container">
+            <div class="editor-header">
+              <span>Decoded</span>
+            </div>
+            <div class="editor-wrapper">
+              <div class="line-numbers" id="decodedLineNumbers">1</div>
+              <textarea id="decoded" class="editor" readonly placeholder="<div>Hello</div>"></textarea>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- COMBINE -->
+      <section class="panel" id="panel-combine" data-tool="combine">
+        <div class="panel-header">
+          <h2><i class="fas fa-object-group"></i> Combine HTML/CSS/JS</h2>
+          <div class="panel-actions">
+            <button id="copyCombined" class="btn" title="Copy">
+              <i class="fas fa-copy"></i>
+            </button>
+            <button id="downloadCombined" class="btn" title="Download">
+              <i class="fas fa-download"></i>
+            </button>
+            <button id="previewCombined" class="btn" title="Preview">
+              <i class="fas fa-eye"></i>
+            </button>
+            <select id="combinedEncoding" class="encoding-select">
+              <option value="utf-8">UTF-8</option>
+              <option value="iso-8859-1">ISO-8859-1</option>
+              <option value="windows-1252">Windows-1252</option>
+            </select>
+          </div>
+        </div>
+        
+        <div class="editor-section">
+          <div class="editor-container">
+            <div class="editor-header">
+              <span>HTML</span>
+              <button id="toggleCombineHtmlWordWrap" class="icon-btn" title="Toggle word wrap">
+                <i class="fas fa-text-width"></i>
+              </button>
+            </div>
+            <div class="editor-wrapper">
+              <div class="line-numbers" id="combineHtmlLineNumbers">1</div>
+              <textarea id="combineHtml" class="editor" placeholder="Enter HTML (body or full HTML)"></textarea>
+            </div>
+          </div>
+
+          <div class="editor-container">
+            <div class="editor-header">
+              <span>CSS</span>
+              <button id="toggleCombineCssWordWrap" class="icon-btn" title="Toggle word wrap">
+                <i class="fas fa-text-width"></i>
+              </button>
+            </div>
+            <div class="editor-wrapper">
+              <div class="line-numbers" id="combineCssLineNumbers">1</div>
+              <textarea id="combineCss" class="editor" placeholder="Enter CSS"></textarea>
+            </div>
+          </div>
+
+          <div class="editor-container">
+            <div class="editor-header">
+              <span>JavaScript</span>
+              <button id="toggleCombineJsWordWrap" class="icon-btn" title="Toggle word wrap">
+                <i class="fas fa-text-width"></i>
+              </button>
+            </div>
+            <div class="editor-wrapper">
+              <div class="line-numbers" id="combineJsLineNumbers">1</div>
+              <textarea id="combineJs" class="editor" placeholder="Enter JavaScript"></textarea>
+            </div>
+          </div>
+
+          <div class="controls">
+            <div class="control-group">
+              <button class="btn btn-primary" id="combineBtn" title="Combine">
+                <i class="fas fa-object-group"></i> Combine
+              </button>
+            </div>
+          </div>
+
+          <div class="editor-container">
+            <div class="editor-header">
+              <span>Combined Output</span>
+              <button id="toggleCombinedOutputWordWrap" class="icon-btn" title="Toggle word wrap">
+                <i class="fas fa-text-width"></i>
+              </button>
+            </div>
+            <div class="editor-wrapper">
+              <div class="line-numbers" id="combinedOutputLineNumbers">1</div>
+              <textarea id="combinedOutput" class="editor" readonly></textarea>
+            </div>
+          </div>
+        </div>
+
+        <div class="preview-container hidden" id="previewCombinedWrap">
+          <div class="preview-header">
+            <span>Preview</span>
+            <div class="preview-controls">
+              <select id="deviceModeCombined" class="device-select">
+                <option value="desktop">Desktop</option>
+                <option value="tablet">Tablet</option>
+                <option value="mobile">Mobile</option>
+              </select>
+              <button id="closeCombinedPreview" class="icon-btn" title="Close">
+                <i class="fas fa-times"></i>
+              </button>
+            </div>
+          </div>
+          <iframe id="previewCombined" class="preview-frame" sandbox="allow-scripts"></iframe>
+        </div>
+      </section>
+
+      <!-- SPLIT -->
+      <section class="panel" id="panel-split" data-tool="split">
+        <div class="panel-header">
+          <h2><i class="fas fa-code-branch"></i> Split HTML</h2>
+          <div class="panel-actions">
+            <button id="downloadHtml" class="btn" title="Download HTML">
+              <i class="fas fa-download"></i> HTML
+            </button>
+            <button id="downloadCss" class="btn" title="Download CSS">
+              <i class="fas fa-download"></i> CSS
+            </button>
+            <button id="downloadJs" class="btn" title="Download JS">
+              <i class="fas fa-download"></i> JS
+            </button>
+            <select id="splitEncoding" class="encoding-select">
+              <option value="utf-8">UTF-8</option>
+              <option value="iso-8859-1">ISO-8859-1</option>
+              <option value="windows-1252">Windows-1252</option>
+            </select>
+          </div>
+        </div>
+        
+        <div class="drop-zone" id="splitDropZone">
+          <div class="drop-zone-icon">
+            <i class="fas fa-cloud-upload-alt"></i>
+          </div>
+          <div class="drop-zone-text">
+            Drag & drop HTML file here or click to browse
+          </div>
+          <input type="file" id="splitFileInput" class="hidden" accept=".html,.htm">
+        </div>
+        
+        <div class="editor-section">
+          <div class="editor-container">
+            <div class="editor-header">
+              <span>Input HTML</span>
+              <button id="toggleSplitInputWordWrap" class="icon-btn" title="Toggle word wrap">
+                <i class="fas fa-text-width"></i>
+              </button>
+            </div>
+            <div class="editor-wrapper">
+              <div class="line-numbers" id="splitInputLineNumbers">1</div>
+              <textarea id="splitInput" class="editor" placeholder="Paste full HTML here..."></textarea>
+            </div>
+          </div>
+
+          <div class="controls">
+            <div class="control-group">
+              <button class="btn btn-primary" id="splitBtn" title="Split">
+                <i class="fas fa-code-branch"></i> Split
+              </button>
+            </div>
+          </div>
+
+          <div class="editor-container">
+            <div class="editor-header">
+              <span>HTML</span>
+              <button id="toggleSplitHtmlWordWrap" class="icon-btn" title="Toggle word wrap">
+                <i class="fas fa-text-width"></i>
+              </button>
+            </div>
+            <div class="editor-wrapper">
+              <div class="line-numbers" id="splitHtmlLineNumbers">1</div>
+              <textarea id="splitHtml" class="editor" readonly></textarea>
+            </div>
+          </div>
+
+          <div class="editor-container">
+            <div class="editor-header">
+              <span>CSS</span>
+              <button id="toggleSplitCssWordWrap" class="icon-btn" title="Toggle word wrap">
+                <i class="fas fa-text-width"></i>
+              </button>
+            </div>
+            <div class="editor-wrapper">
+              <div class="line-numbers" id="splitCssLineNumbers">1</div>
+              <textarea id="splitCss" class="editor" readonly></textarea>
+            </div>
+          </div>
+
+          <div class="editor-container">
+            <div class="editor-header">
+              <span>JavaScript</span>
+              <button id="toggleSplitJsWordWrap" class="icon-btn" title="Toggle word wrap">
+                <i class="fas fa-text-width"></i>
+              </button>
+            </div>
+            <div class="editor-wrapper">
+              <div class="line-numbers" id="splitJsLineNumbers">1</div>
+              <textarea id="splitJs" class="editor" readonly></textarea>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- REGEX TESTER -->
+      <section class="panel" id="panel-regex" data-tool="regex">
+        <div class="panel-header">
+          <h2><i class="fas fa-search"></i> Regex Tester</h2>
+          <div class="panel-actions">
+            <button id="copyRegexResult" class="btn" title="Copy">
+              <i class="fas fa-copy"></i>
+            </button>
+          </div>
+        </div>
+        
+        <div class="editor-section">
+          <div class="regex-input-group">
+            <input type="text" id="regexPattern" class="regex-input" placeholder="Enter regex pattern (e.g., \d+)" />
+            <div class="regex-flags">
+              <div class="regex-flag" data-flag="g" title="Global">g</div>
+              <div class="regex-flag" data-flag="i" title="Case-insensitive">i</div>
+              <div class="regex-flag" data-flag="m" title="Multiline">m</div>
+              <div class="regex-flag" data-flag="s" title="Dotall">s</div>
+            </div>
+          </div>
+          
+          <div class="editor-container">
+            <div class="editor-header">
+              <span>Test Text</span>
+            </div>
+            <div class="editor-wrapper">
+              <div class="line-numbers" id="regexTestLineNumbers">1</div>
+              <textarea id="regexTestText" class="editor" placeholder="Enter text to test against the regex pattern...">Hello World 123
+Test 456
+Another 789 line</textarea>
+            </div>
+          </div>
+          
+          <div class="controls">
+            <div class="control-group">
+              <button class="btn btn-primary" id="testRegex" title="Test">
+                <i class="fas fa-play"></i> Test
+              </button>
+              <button class="btn" id="clearRegex" title="Clear">
+                <i class="fas fa-eraser"></i> Clear
+              </button>
+            </div>
+          </div>
+          
+          <div class="editor-container">
+            <div class="editor-header">
+              <span>Result</span>
+            </div>
+            <div class="regex-result" id="regexResult">
+              <div class="empty-state">Enter a regex pattern and click "Test" to see matches</div>
+            </div>
+          </div>
+          
+          <div class="stats">
+            <div class="stat">
+              <span class="stat-label">Matches:</span>
+              <span id="regexMatchCount">0</span>
+            </div>
+            <div class="stat">
+              <span class="stat-label">Time:</span>
+              <span id="regexTestTime">0ms</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TEXT COMPARISON -->
+      <section class="panel" id="panel-compare" data-tool="compare">
+        <div class="panel-header">
+          <h2><i class="fas fa-columns"></i> Text Comparison</h2>
+          <div class="panel-actions">
+            <button id="copyCompareResult" class="btn" title="Copy Result">
+              <i class="fas fa-copy"></i>
+            </button>
+          </div>
+        </div>
+        
+        <div class="editor-section">
+          <div class="editor-container">
+            <div class="editor-header">
+              <span>Text 1</span>
+            </div>
+            <div class="editor-wrapper">
+              <div class="line-numbers" id="compareText1LineNumbers">1</div>
+              <textarea id="compareText1" class="editor" placeholder="Enter first text here..."></textarea>
+            </div>
+          </div>
+
+          <div class="editor-container">
+            <div class="editor-header">
+              <span>Text 2</span>
+            </div>
+            <div class="editor-wrapper">
+              <div class="line-numbers" id="compareText2LineNumbers">1</div>
+              <textarea id="compareText2" class="editor" placeholder="Enter second text here..."></textarea>
+            </div>
+          </div>
+
+          <div class="controls">
+            <div class="control-group">
+              <button class="btn btn-primary" id="compareBtn" title="Compare">
+                <i class="fas fa-columns"></i> Compare
+              </button>
+            </div>
+          </div>
+          
+          <div class="editor-container">
+            <div class="editor-header">
+              <span>Comparison Result</span>
+            </div>
+            <div class="compare-result" id="compareResult">
+              <div class="empty-state">Enter text in both fields and click "Compare" to see differences</div>
+            </div>
+          </div>
+          
+          <div class="stats" id="compareStats">
+            <div class="stat">
+              <span class="stat-label">Text 1:</span>
+              <span>0 lines, 0 chars</span>
+            </div>
+            <div class="stat">
+              <span class="stat-label">Text 2:</span>
+              <span>0 lines, 0 chars</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TEXT ANALYSIS -->
+      <section class="panel" id="panel-analyze" data-tool="analyze">
+        <div class="panel-header">
+          <h2><i class="fas fa-chart-bar"></i> Text Analysis</h2>
+          <div class="panel-actions">
+            <button id="pasteAnalyze" class="btn" title="Paste">
+              <i class="fas fa-paste"></i>
+            </button>
+            <button id="copyAnalysis" class="btn" title="Copy Analysis">
+              <i class="fas fa-copy"></i>
+            </button>
+            <button id="downloadAnalysis" class="btn" title="Download Analysis">
+              <i class="fas fa-download"></i>
+            </button>
+          </div>
+        </div>
+        
+        <div class="drop-zone" id="analyzeDropZone">
+          <div class="drop-zone-icon">
+            <i class="fas fa-cloud-upload-alt"></i>
+          </div>
+          <div class="drop-zone-text">
+            Drag & drop files here or click to browse
+          </div>
+          <input type="file" id="analyzeFileInput" class="hidden" accept=".txt,.csv,.json,.xml,.html,.css,.js">
+        </div>
+        
+        <div class="editor-section">
+          <div class="editor-container">
+            <div class="editor-header">
+              <span>Text to Analyze</span>
+              <button id="toggleAnalyzeWordWrap" class="icon-btn" title="Toggle word wrap">
+                <i class="fas fa-text-width"></i>
+              </button>
+            </div>
+            <div class="editor-wrapper">
+              <div class="line-numbers" id="analyzeLineNumbers">1</div>
+              <textarea id="analyzeText" class="editor" placeholder="Paste text or code here to analyze..."></textarea>
+            </div>
+          </div>
+
+          <div class="controls">
+            <div class="control-group">
+              <button class="btn btn-primary" id="analyzeBtn" title="Analyze">
+                <i class="fas fa-chart-bar"></i> Analyze
+              </button>
+              <button class="btn" id="clearAnalysis" title="Clear">
+                <i class="fas fa-eraser"></i> Clear
+              </button>
+            </div>
+          </div>
+          
+          <div class="editor-container">
+            <div class="editor-header">
+              <span>Analysis Results</span>
+            </div>
+            <div class="editor-wrapper">
+              <div class="line-numbers" id="analysisResultsLineNumbers">1</div>
+              <textarea id="analysisResults" class="editor" readonly placeholder="Analysis results will appear here..."></textarea>
+            </div>
+          </div>
+        </div>
+        
+        <div class="stats" id="analysisStats">
+          <div class="stat">
+            <span class="stat-label">Words:</span>
+            <span id="analysisWordCount">0</span>
+          </div>
+          <div class="stat">
+            <span class="stat-label">Characters:</span>
+            <span id="analysisCharCount">0</span>
+          </div>
+          <div class="stat">
+            <span class="stat-label">Lines:</span>
+            <span id="analysisLineCount">0</span>
+          </div>
+          <div class="stat">
+            <span class="stat-label">Sentences:</span>
+            <span id="analysisSentenceCount">0</span>
+          </div>
+          <div class="stat">
+            <span class="stat-label">Paragraphs:</span>
+            <span id="analysisParagraphCount">0</span>
+          </div>
+          <div class="stat">
+            <span class="stat-label">Reading Time:</span>
+            <span id="analysisReadingTime">0 min</span>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Recent Files -->
+    <div class="recent-files hidden" id="recentFiles">
+      <div class="recent-files-header">
+        Recent Files
+      </div>
+      <div class="recent-files-list" id="recentFilesList">
+        <div class="empty-state">No recent files</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Find/Replace Modal -->
+  <div class="find-replace-container" id="findReplaceContainer" style="display: none;">
+    <div class="find-replace-header">
+      <div class="find-replace-title">Find and Replace</div>
+      <button class="icon-btn" id="closeFindReplace">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+    <input type="text" id="findInput" class="find-replace-input" placeholder="Find...">
+    <input type="text" id="replaceInput" class="find-replace-input" placeholder="Replace with...">
+    <div class="find-replace-actions">
+      <button class="btn" id="findNextBtn">
+        <i class="fas fa-arrow-down"></i> Next
+      </button>
+      <button class="btn" id="findPrevBtn">
+        <i class="fas fa-arrow-up"></i> Prev
+      </button>
+      <button class="btn btn-success" id="replaceBtn">
+        <i class="fas fa-exchange-alt"></i> Replace
+      </button>
+      <button class="btn btn-success" id="replaceAllBtn">
+        <i class="fas fa-exchange-alt"></i> All
+      </button>
+    </div>
+    <div class="find-replace-info" id="findReplaceInfo">Ready</div>
+  </div>
+
+  <!-- Keyboard Shortcuts Modal -->
+  <div class="modal-container hidden" id="shortcutsModal">
+    <div class="modal">
+      <div class="modal-header">
+        <h3>Keyboard Shortcuts</h3>
+        <button id="closeShortcuts" class="icon-btn">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <table class="shortcuts-table">
+          <tr>
+            <td><kbd>Ctrl</kbd> + <kbd>F</kbd></td>
+            <td>Find/Replace</td>
+          </tr>
+          <tr>
+            <td><kbd>Ctrl</kbd> + <kbd>T</kbd></td>
+            <td>Toggle Theme</td>
+          </tr>
+          <tr>
+            <td><kbd>Ctrl</kbd> + <kbd>S</kbd></td>
+            <td>Save/Download</td>
+          </tr>
+          <tr>
+            <td><kbd>Ctrl</kbd> + <kbd>H</kbd></td>
+            <td>Show Keyboard Shortcuts</td>
+          </tr>
+          <tr>
+            <td><kbd>Ctrl</kbd> + <kbd>W</kbd></td>
+            <td>Save Workspace</td>
+          </tr>
+          <tr>
+            <td><kbd>Esc</kbd></td>
+            <td>Close Modals/Previews</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Settings Modal -->
+  <div class="modal-container hidden" id="settingsModal">
+    <div class="modal">
+      <div class="modal-header">
+        <h3>Settings</h3>
+        <button id="closeSettings" class="icon-btn">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="setting-item">
+          <label for="autoSaveToggle">Auto Save</label>
+          <input type="checkbox" id="autoSaveToggle">
+        </div>
+        <div class="setting-item">
+          <label for="wordWrapToggle">Word Wrap</label>
+          <input type="checkbox" id="wordWrapToggle">
+        </div>
+        <div class="setting-item">
+          <label for="lineNumbersToggle">Line Numbers</label>
+          <input type="checkbox" id="lineNumbersToggle" checked>
+        </div>
+        <div class="setting-item">
+          <label for="syntaxHighlightingToggle">Syntax Highlighting</label>
+          <input type="checkbox" id="syntaxHighlightingToggle">
+        </div>
+        <div class="setting-item">
+          <label for="recentFilesToggle">Recent Files</label>
+          <input type="checkbox" id="recentFilesToggle" checked>
+        </div>
+        <div class="setting-actions">
+          <button id="saveSettings" class="btn btn-primary">Save Settings</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div id="toast" class="toast"></div>
+
+  <script>
+    // Main Application Controller
+    document.addEventListener('DOMContentLoaded', function() {
+      // Initialize app
+      const app = new CodeTextCleanerApp();
+      app.init();
+    });
+
+    class CodeTextCleanerApp {
+      constructor() {
+        this.currentTool = 'text';
+        this.settings = this.loadSettings();
+        this.recentFiles = this.loadRecentFiles();
+        this.findReplace = {
+          currentMatch: -1,
+          matches: [],
+          activeEditor: null
+        };
+      }
+
+      init() {
+        this.setupEventListeners();
+        this.applySettings();
+        this.updateRecentFilesUI();
+      }
+
+      setupEventListeners() {
+        // Navigation
+        document.querySelectorAll('.nav-item').forEach(item => {
+          item.addEventListener('click', (e) => {
+            const tool = e.currentTarget.dataset.tool;
+            this.switchTool(tool);
+          });
+        });
+
+        // Theme toggle
+        document.getElementById('themeToggle').addEventListener('click', () => {
+          this.toggleTheme();
+        });
+
+        // Find/Replace
+        document.getElementById('findReplaceBtn').addEventListener('click', () => {
+          this.toggleFindReplace();
+        });
+
+        document.getElementById('closeFindReplace').addEventListener('click', () => {
+          this.closeFindReplace();
+        });
+
+        document.getElementById('findNextBtn').addEventListener('click', () => {
+          this.findNext();
+        });
+
+        document.getElementById('findPrevBtn').addEventListener('click', () => {
+          this.findPrev();
+        });
+
+        document.getElementById('replaceBtn').addEventListener('click', () => {
+          this.replace();
+        });
+
+        document.getElementById('replaceAllBtn').addEventListener('click', () => {
+          this.replaceAll();
+        });
+
+        // Modals
+        document.getElementById('settingsBtn').addEventListener('click', () => {
+          this.openModal('settingsModal');
+        });
+
+        document.getElementById('shortcutsBtn').addEventListener('click', () => {
+          this.openModal('shortcutsModal');
+        });
+
+        document.getElementById('closeSettings').addEventListener('click', () => {
+          this.closeModal('settingsModal');
+        });
+
+        document.getElementById('closeShortcuts').addEventListener('click', () => {
+          this.closeModal('shortcutsModal');
+        });
+
+        document.getElementById('saveSettings').addEventListener('click', () => {
+          this.saveSettings();
+          this.closeModal('settingsModal');
+          this.showToast('Settings saved successfully', 'success');
+        });
+
+        // Workspace
+        document.getElementById('saveWorkspaceBtn').addEventListener('click', () => {
+          this.saveWorkspace();
+        });
+
+        // Text Tools
+        this.setupTextToolsEventListeners();
+
+        // Code Cleaner
+        this.setupCodeCleanerEventListeners();
+
+        // HTML Decoder
+        this.setupDecoderEventListeners();
+
+        // Combine
+        this.setupCombineEventListeners();
+
+        // Split
+        this.setupSplitEventListeners();
+
+        // Regex Tester
+        this.setupRegexEventListeners();
+
+        // Text Comparison
+        this.setupCompareEventListeners();
+
+        // Text Analysis
+        this.setupAnalysisEventListeners();
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+          this.handleKeyboardShortcuts(e);
+        });
+
+        // Window resize
+        window.addEventListener('resize', () => {
+          this.updateLineNumbers();
+        });
+      }
+
+      setupTextToolsEventListeners() {
+        // Paste
+        document.getElementById('pasteText').addEventListener('click', () => {
+          this.pasteToEditor('inputText');
+        });
+
+        // Copy
+        document.getElementById('copyOutput').addEventListener('click', () => {
+          this.copyFromEditor('outputText');
+        });
+
+        // Download
+        document.getElementById('downloadTxt').addEventListener('click', () => {
+          this.downloadText('outputText', 'text.txt', document.getElementById('textEncoding').value);
+        });
+
+        // Word wrap toggle
+        document.getElementById('toggleWordWrap').addEventListener('click', () => {
+          this.toggleWordWrap('inputText');
+        });
+
+        // Text actions
+        document.querySelectorAll('[data-action]').forEach(btn => {
+          btn.addEventListener('click', (e) => {
+            const action = e.currentTarget.dataset.action;
+            this.applyTextAction(action);
+          });
+        });
+
+        // Special actions
+        document.getElementById('prettyJson').addEventListener('click', () => {
+          this.prettyJson();
+        });
+
+        document.getElementById('base64Encode').addEventListener('click', () => {
+          this.base64Encode();
+        });
+
+        document.getElementById('base64Decode').addEventListener('click', () => {
+          this.base64Decode();
+        });
+
+        document.getElementById('urlEncode').addEventListener('click', () => {
+          this.urlEncode();
+        });
+
+        document.getElementById('urlDecode').addEventListener('click', () => {
+          this.urlDecode();
+        });
+
+        // Update stats on input
+        document.getElementById('inputText').addEventListener('input', () => {
+          this.updateTextStats('inputText', 'wordCount', 'charCount', 'lineCount');
+          this.updateLineNumbers('inputText', 'inputLineNumbers');
+        });
+
+        // Drag and drop
+        this.setupDragAndDrop('textDropZone', 'textFileInput', (file) => {
+          this.loadFile(file, 'inputText');
+        });
+      }
+
+      setupCodeCleanerEventListeners() {
+        // Paste
+        document.getElementById('pasteCode').addEventListener('click', () => {
+          this.pasteToEditor('codeInput');
+        });
+
+        // Copy
+        document.getElementById('copyCode').addEventListener('click', () => {
+          this.copyFromEditor('codeOutput');
+        });
+
+        // Download
+        document.getElementById('downloadCode').addEventListener('click', () => {
+          this.downloadText('codeOutput', 'code.txt', document.getElementById('codeEncoding').value);
+        });
+
+        // Preview
+        document.getElementById('previewCode').addEventListener('click', () => {
+          this.previewCode();
+        });
+
+        document.getElementById('closePreview').addEventListener('click', () => {
+          document.getElementById('previewWrap').classList.add('hidden');
+        });
+
+        // Device mode
+        document.getElementById('deviceMode').addEventListener('change', (e) => {
+          this.setPreviewDevice(e.target.value);
+        });
+
+        // Word wrap toggle
+        document.getElementById('toggleCodeWordWrap').addEventListener('click', () => {
+          this.toggleWordWrap('codeInput');
+        });
+
+        // Code actions
+        document.querySelectorAll('[data-code-action]').forEach(btn => {
+          btn.addEventListener('click', (e) => {
+            const action = e.currentTarget.dataset.codeAction;
+            this.applyCodeAction(action);
+          });
+        });
+
+        // Special actions
+        document.getElementById('formatHtml').addEventListener('click', () => {
+          this.formatHtml();
+        });
+
+        document.getElementById('formatCss').addEventListener('click', () => {
+          this.formatCss();
+        });
+
+        document.getElementById('formatJs').addEventListener('click', () => {
+          this.formatJs();
+        });
+
+        document.getElementById('beautifyJson').addEventListener('click', () => {
+          this.beautifyJson();
+        });
+
+        // Update line numbers
+        document.getElementById('codeInput').addEventListener('input', () => {
+          this.updateLineNumbers('codeInput', 'codeInputLineNumbers');
+        });
+
+        // Drag and drop
+        this.setupDragAndDrop('codeDropZone', 'codeFileInput', (file) => {
+          this.loadFile(file, 'codeInput');
+        });
+      }
+
+      setupDecoderEventListeners() {
+        // Copy
+        document.getElementById('copyDecoded').addEventListener('click', () => {
+          this.copyFromEditor('decoded');
+        });
+
+        // Decode/Encode
+        document.getElementById('decodeBtn').addEventListener('click', () => {
+          this.decodeHtml();
+        });
+
+        document.getElementById('encodeBtn').addEventListener('click', () => {
+          this.encodeHtml();
+        });
+
+        // Word wrap toggle
+        document.getElementById('toggleDecoderWordWrap').addEventListener('click', () => {
+          this.toggleWordWrap('encoded');
+        });
+
+        // Update line numbers
+        document.getElementById('encoded').addEventListener('input', () => {
+          this.updateLineNumbers('encoded', 'encodedLineNumbers');
+        });
+      }
+
+      setupCombineEventListeners() {
+        // Copy
+        document.getElementById('copyCombined').addEventListener('click', () => {
+          this.copyFromEditor('combinedOutput');
+        });
+
+        // Download
+        document.getElementById('downloadCombined').addEventListener('click', () => {
+          this.downloadText('combinedOutput', 'combined.html', document.getElementById('combinedEncoding').value);
+        });
+
+        // Preview
+        document.getElementById('previewCombined').addEventListener('click', () => {
+          this.previewCombined();
+        });
+
+        document.getElementById('closeCombinedPreview').addEventListener('click', () => {
+          document.getElementById('previewCombinedWrap').classList.add('hidden');
+        });
+
+        // Device mode
+        document.getElementById('deviceModeCombined').addEventListener('change', (e) => {
+          this.setPreviewDevice(e.target.value, 'previewCombined');
+        });
+
+        // Combine button
+        document.getElementById('combineBtn').addEventListener('click', () => {
+          this.combineCode();
+        });
+
+        // Word wrap toggles
+        document.getElementById('toggleCombineHtmlWordWrap').addEventListener('click', () => {
+          this.toggleWordWrap('combineHtml');
+        });
+
+        document.getElementById('toggleCombineCssWordWrap').addEventListener('click', () => {
+          this.toggleWordWrap('combineCss');
+        });
+
+        document.getElementById('toggleCombineJsWordWrap').addEventListener('click', () => {
+          this.toggleWordWrap('combineJs');
+        });
+
+        document.getElementById('toggleCombinedOutputWordWrap').addEventListener('click', () => {
+          this.toggleWordWrap('combinedOutput');
+        });
+
+        // Update line numbers
+        document.getElementById('combineHtml').addEventListener('input', () => {
+          this.updateLineNumbers('combineHtml', 'combineHtmlLineNumbers');
+        });
+
+        document.getElementById('combineCss').addEventListener('input', () => {
+          this.updateLineNumbers('combineCss', 'combineCssLineNumbers');
+        });
+
+        document.getElementById('combineJs').addEventListener('input', () => {
+          this.updateLineNumbers('combineJs', 'combineJsLineNumbers');
+        });
+      }
+
+      setupSplitEventListeners() {
+        // Downloads
+        document.getElementById('downloadHtml').addEventListener('click', () => {
+          this.downloadText('splitHtml', 'index.html', document.getElementById('splitEncoding').value);
+        });
+
+        document.getElementById('downloadCss').addEventListener('click', () => {
+          this.downloadText('splitCss', 'styles.css', document.getElementById('splitEncoding').value);
+        });
+
+        document.getElementById('downloadJs').addEventListener('click', () => {
+          this.downloadText('splitJs', 'script.js', document.getElementById('splitEncoding').value);
+        });
+
+        // Split button
+        document.getElementById('splitBtn').addEventListener('click', () => {
+          this.splitCode();
+        });
+
+        // Word wrap toggles
+        document.getElementById('toggleSplitInputWordWrap').addEventListener('click', () => {
+          this.toggleWordWrap('splitInput');
+        });
+
+        document.getElementById('toggleSplitHtmlWordWrap').addEventListener('click', () => {
+          this.toggleWordWrap('splitHtml');
+        });
+
+        document.getElementById('toggleSplitCssWordWrap').addEventListener('click', () => {
+          this.toggleWordWrap('splitCss');
+        });
+
+        document.getElementById('toggleSplitJsWordWrap').addEventListener('click', () => {
+          this.toggleWordWrap('splitJs');
+        });
+
+        // Update line numbers
+        document.getElementById('splitInput').addEventListener('input', () => {
+          this.updateLineNumbers('splitInput', 'splitInputLineNumbers');
+        });
+
+        // Drag and drop
+        this.setupDragAndDrop('splitDropZone', 'splitFileInput', (file) => {
+          this.loadFile(file, 'splitInput');
+        });
+      }
+
+      setupRegexEventListeners() {
+        // Copy
+        document.getElementById('copyRegexResult').addEventListener('click', () => {
+          this.copyFromElement('regexResult');
+        });
+
+        // Test button
+        document.getElementById('testRegex').addEventListener('click', () => {
+          this.testRegex();
+        });
+
+        // Clear button
+        document.getElementById('clearRegex').addEventListener('click', () => {
+          this.clearRegex();
+        });
+
+        // Regex flags
+        document.querySelectorAll('.regex-flag').forEach(flag => {
+          flag.addEventListener('click', (e) => {
+            e.currentTarget.classList.toggle('active');
+          });
+        });
+
+        // Update line numbers
+        document.getElementById('regexTestText').addEventListener('input', () => {
+          this.updateLineNumbers('regexTestText', 'regexTestLineNumbers');
+        });
+      }
+
+      setupCompareEventListeners() {
+        // Copy
+        document.getElementById('copyCompareResult').addEventListener('click', () => {
+          this.copyFromElement('compareResult');
+        });
+
+        // Compare button
+        document.getElementById('compareBtn').addEventListener('click', () => {
+          this.compareText();
+        });
+
+        // Update line numbers and stats
+        document.getElementById('compareText1').addEventListener('input', () => {
+          this.updateLineNumbers('compareText1', 'compareText1LineNumbers');
+          this.updateCompareStats();
+        });
+
+        document.getElementById('compareText2').addEventListener('input', () => {
+          this.updateLineNumbers('compareText2', 'compareText2LineNumbers');
+          this.updateCompareStats();
+        });
+      }
+
+      setupAnalysisEventListeners() {
+        // Paste
+        document.getElementById('pasteAnalyze').addEventListener('click', () => {
+          this.pasteToEditor('analyzeText');
+        });
+
+        // Copy
+        document.getElementById('copyAnalysis').addEventListener('click', () => {
+          this.copyFromEditor('analysisResults');
+        });
+
+        // Download
+        document.getElementById('downloadAnalysis').addEventListener('click', () => {
+          this.downloadText('analysisResults', 'analysis.txt', 'utf-8');
+        });
+
+        // Analyze button
+        document.getElementById('analyzeBtn').addEventListener('click', () => {
+          this.analyzeText();
+        });
+
+        // Clear button
+        document.getElementById('clearAnalysis').addEventListener('click', () => {
+          this.clearAnalysis();
+        });
+
+        // Word wrap toggle
+        document.getElementById('toggleAnalyzeWordWrap').addEventListener('click', () => {
+          this.toggleWordWrap('analyzeText');
+        });
+
+        // Update line numbers
+        document.getElementById('analyzeText').addEventListener('input', () => {
+          this.updateLineNumbers('analyzeText', 'analyzeLineNumbers');
+        });
+
+        // Drag and drop
+        this.setupDragAndDrop('analyzeDropZone', 'analyzeFileInput', (file) => {
+          this.loadFile(file, 'analyzeText');
+        });
+      }
+
+      setupDragAndDrop(dropZoneId, fileInputId, callback) {
+        const dropZone = document.getElementById(dropZoneId);
+        const fileInput = document.getElementById(fileInputId);
+
+        // Click to browse
+        dropZone.addEventListener('click', () => {
+          fileInput.click();
+        });
+
+        // File input change
+        fileInput.addEventListener('change', (e) => {
+          if (e.target.files.length > 0) {
+            callback(e.target.files[0]);
+          }
+        });
+
+        // Drag over
+        dropZone.addEventListener('dragover', (e) => {
+          e.preventDefault();
+          dropZone.classList.add('drag-over');
+        });
+
+        // Drag leave
+        dropZone.addEventListener('dragleave', () => {
+          dropZone.classList.remove('drag-over');
+        });
+
+        // Drop
+        dropZone.addEventListener('drop', (e) => {
+          e.preventDefault();
+          dropZone.classList.remove('drag-over');
+          
+          if (e.dataTransfer.files.length > 0) {
+            callback(e.dataTransfer.files[0]);
+          }
+        });
+      }
+
+      switchTool(tool) {
+        // Update navigation
+        document.querySelectorAll('.nav-item').forEach(item => {
+          item.classList.remove('active');
+        });
+        document.querySelector(`[data-tool="${tool}"]`).classList.add('active');
+
+        // Update panels
+        document.querySelectorAll('.panel').forEach(panel => {
+          panel.classList.remove('active');
+        });
+        document.getElementById(`panel-${tool}`).classList.add('active');
+
+        // Update current tool
+        this.currentTool = tool;
+
+        // Close find/replace when switching tools
+        this.closeFindReplace();
+
+        // Update line numbers for the active tool
+        this.updateLineNumbers();
+      }
+
+      toggleTheme() {
+        document.body.classList.toggle('light-theme');
+        const isLight = document.body.classList.contains('light-theme');
+        const icon = document.querySelector('#themeToggle i');
+        icon.className = isLight ? 'fas fa-sun' : 'fas fa-moon';
+        
+        // Save theme preference
+        this.settings.theme = isLight ? 'light' : 'dark';
+        this.saveSettings();
+      }
+
+      toggleFindReplace() {
+        const container = document.getElementById('findReplaceContainer');
+        container.style.display = container.style.display === 'none' ? 'block' : 'none';
+        
+        if (container.style.display === 'block') {
+          document.getElementById('findInput').focus();
+        }
+      }
+
+      closeFindReplace() {
+        document.getElementById('findReplaceContainer').style.display = 'none';
+        this.findReplace = {
+          currentMatch: -1,
+          matches: [],
+          activeEditor: null
+        };
+      }
+
+      findNext() {
+        const findText = document.getElementById('findInput').value;
+        if (!findText) return;
+
+        // Get active editor
+        const activeEditor = this.getActiveEditor();
+        if (!activeEditor) return;
+
+        // If this is a new search or different editor, find all matches
+        if (this.findReplace.activeEditor !== activeEditor || this.findReplace.matches.length === 0) {
+          this.findAllMatches(activeEditor, findText);
+        }
+
+        // Move to next match
+        if (this.findReplace.matches.length > 0) {
+          this.findReplace.currentMatch = (this.findReplace.currentMatch + 1) % this.findReplace.matches.length;
+          this.highlightMatch(activeEditor, this.findReplace.currentMatch);
+          this.updateFindReplaceInfo();
+        }
+      }
+
+      findPrev() {
+        const findText = document.getElementById('findInput').value;
+        if (!findText) return;
+
+        // Get active editor
+        const activeEditor = this.getActiveEditor();
+        if (!activeEditor) return;
+
+        // If this is a new search or different editor, find all matches
+        if (this.findReplace.activeEditor !== activeEditor || this.findReplace.matches.length === 0) {
+          this.findAllMatches(activeEditor, findText);
+        }
+
+        // Move to previous match
+        if (this.findReplace.matches.length > 0) {
+          this.findReplace.currentMatch = (this.findReplace.currentMatch - 1 + this.findReplace.matches.length) % this.findReplace.matches.length;
+          this.highlightMatch(activeEditor, this.findReplace.currentMatch);
+          this.updateFindReplaceInfo();
+        }
+      }
+
+      findAllMatches(editor, findText) {
+        const text = editor.value;
+        const matches = [];
+        let pos = 0;
+
+        while (pos < text.length) {
+          const foundPos = text.indexOf(findText, pos);
+          if (foundPos === -1) break;
+          
+          matches.push({
+            start: foundPos,
+            end: foundPos + findText.length
+          });
+          
+          pos = foundPos + 1;
+        }
+
+        this.findReplace = {
+          currentMatch: -1,
+          matches: matches,
+          activeEditor: editor
+        };
+
+        this.updateFindReplaceInfo();
+      }
+
+      highlightMatch(editor, matchIndex) {
+        const match = this.findReplace.matches[matchIndex];
+        if (!match) return;
+
+        editor.focus();
+        editor.setSelectionRange(match.start, match.end);
+      }
+
+      replace() {
+        const findText = document.getElementById('findInput').value;
+        const replaceText = document.getElementById('replaceInput').value;
+        
+        if (!findText) return;
+
+        const activeEditor = this.getActiveEditor();
+        if (!activeEditor) return;
+
+        // If we have a current match, replace it
+        if (this.findReplace.currentMatch >= 0 && this.findReplace.currentMatch < this.findReplace.matches.length) {
+          const match = this.findReplace.matches[this.findReplace.currentMatch];
+          const text = activeEditor.value;
+          
+          activeEditor.value = text.substring(0, match.start) + replaceText + text.substring(match.end);
+          
+          // Update matches after replacement
+          this.findAllMatches(activeEditor, findText);
+          
+          // Move to next match
+          this.findNext();
+        }
+      }
+
+      replaceAll() {
+        const findText = document.getElementById('findInput').value;
+        const replaceText = document.getElementById('replaceInput').value;
+        
+        if (!findText) return;
+
+        const activeEditor = this.getActiveEditor();
+        if (!activeEditor) return;
+
+        // Replace all occurrences
+        const regex = new RegExp(this.escapeRegExp(findText), 'g');
+        activeEditor.value = activeEditor.value.replace(regex, replaceText);
+        
+        // Reset find/replace state
+        this.findReplace = {
+          currentMatch: -1,
+          matches: [],
+          activeEditor: null
+        };
+        
+        this.updateFindReplaceInfo();
+        this.showToast(`Replaced ${activeEditor.value.split(replaceText).length - 1} occurrences`, 'success');
+      }
+
+      updateFindReplaceInfo() {
+        const info = document.getElementById('findReplaceInfo');
+        const count = this.findReplace.matches.length;
+        
+        if (count === 0) {
+          info.textContent = 'No matches found';
+        } else {
+          const current = this.findReplace.currentMatch + 1;
+          info.textContent = `${current} of ${count} matches`;
+        }
+      }
+
+      getActiveEditor() {
+        // Try to find the focused editor
+        const activeElement = document.activeElement;
+        if (activeElement && activeElement.classList.contains('editor')) {
+          return activeElement;
+        }
+        
+        // If no editor is focused, use the current tool's main input editor
+        switch (this.currentTool) {
+          case 'text': return document.getElementById('inputText');
+          case 'code': return document.getElementById('codeInput');
+          case 'decoder': return document.getElementById('encoded');
+          case 'combine': return document.getElementById('combineHtml');
+          case 'split': return document.getElementById('splitInput');
+          case 'regex': return document.getElementById('regexTestText');
+          case 'compare': return document.getElementById('compareText1');
+          case 'analyze': return document.getElementById('analyzeText');
+          default: return null;
+        }
+      }
+
+      escapeRegExp(string) {
+        return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      }
+
+      openModal(modalId) {
+        document.getElementById(modalId).classList.remove('hidden');
+      }
+
+      closeModal(modalId) {
+        document.getElementById(modalId).classList.add('hidden');
+      }
+
+      saveSettings() {
+        this.settings.autoSave = document.getElementById('autoSaveToggle').checked;
+        this.settings.wordWrap = document.getElementById('wordWrapToggle').checked;
+        this.settings.lineNumbers = document.getElementById('lineNumbersToggle').checked;
+        this.settings.syntaxHighlighting = document.getElementById('syntaxHighlightingToggle').checked;
+        this.settings.recentFiles = document.getElementById('recentFilesToggle').checked;
+        
+        localStorage.setItem('codeTextCleanerSettings', JSON.stringify(this.settings));
+        this.applySettings();
+      }
+
+      loadSettings() {
+        const saved = localStorage.getItem('codeTextCleanerSettings');
+        if (saved) {
+          return JSON.parse(saved);
+        }
+        
+        return {
+          theme: 'dark',
+          autoSave: false,
+          wordWrap: false,
+          lineNumbers: true,
+          syntaxHighlighting: false,
+          recentFiles: true
+        };
+      }
+
+      applySettings() {
+        // Apply theme
+        if (this.settings.theme === 'light') {
+          document.body.classList.add('light-theme');
+          document.querySelector('#themeToggle i').className = 'fas fa-sun';
+        } else {
+          document.body.classList.remove('light-theme');
+          document.querySelector('#themeToggle i').className = 'fas fa-moon';
+        }
+        
+        // Apply settings to UI
+        document.getElementById('autoSaveToggle').checked = this.settings.autoSave;
+        document.getElementById('wordWrapToggle').checked = this.settings.wordWrap;
+        document.getElementById('lineNumbersToggle').checked = this.settings.lineNumbers;
+        document.getElementById('syntaxHighlightingToggle').checked = this.settings.syntaxHighlighting;
+        document.getElementById('recentFilesToggle').checked = this.settings.recentFiles;
+        
+        // Show/hide recent files
+        if (this.settings.recentFiles) {
+          document.getElementById('recentFiles').classList.remove('hidden');
+        } else {
+          document.getElementById('recentFiles').classList.add('hidden');
+        }
+        
+        // Apply word wrap to all editors
+        if (this.settings.wordWrap) {
+          document.querySelectorAll('.editor').forEach(editor => {
+            editor.classList.add('word-wrap');
+          });
+        }
+      }
+
+      saveWorkspace() {
+        const workspace = {
+          tool: this.currentTool,
+          data: {}
+        };
+        
+        // Save data for each tool
+        workspace.data.text = {
+          input: document.getElementById('inputText').value,
+          output: document.getElementById('outputText').value
+        };
+        
+        workspace.data.code = {
+          input: document.getElementById('codeInput').value,
+          output: document.getElementById('codeOutput').value
+        };
+        
+        workspace.data.decoder = {
+          encoded: document.getElementById('encoded').value,
+          decoded: document.getElementById('decoded').value
+        };
+        
+        workspace.data.combine = {
+          html: document.getElementById('combineHtml').value,
+          css: document.getElementById('combineCss').value,
+          js: document.getElementById('combineJs').value,
+          output: document.getElementById('combinedOutput').value
+        };
+        
+        workspace.data.split = {
+          input: document.getElementById('splitInput').value,
+          html: document.getElementById('splitHtml').value,
+          css: document.getElementById('splitCss').value,
+          js: document.getElementById('splitJs').value
+        };
+        
+        workspace.data.regex = {
+          pattern: document.getElementById('regexPattern').value,
+          flags: Array.from(document.querySelectorAll('.regex-flag.active')).map(flag => flag.dataset.flag),
+          testText: document.getElementById('regexTestText').value
+        };
+        
+        workspace.data.compare = {
+          text1: document.getElementById('compareText1').value,
+          text2: document.getElementById('compareText2').value
+        };
+        
+        workspace.data.analyze = {
+          text: document.getElementById('analyzeText').value,
+          results: document.getElementById('analysisResults').value
+        };
+        
+        // Save to localStorage
+        localStorage.setItem('codeTextCleanerWorkspace', JSON.stringify(workspace));
+        this.showToast('Workspace saved successfully', 'success');
+      }
+
+      loadWorkspace() {
+        const saved = localStorage.getItem('codeTextCleanerWorkspace');
+        if (!saved) return;
+        
+        try {
+          const workspace = JSON.parse(saved);
+          
+          // Switch to the saved tool
+          this.switchTool(workspace.tool);
+          
+          // Load data for each tool
+          if (workspace.data.text) {
+            document.getElementById('inputText').value = workspace.data.text.input || '';
+            document.getElementById('outputText').value = workspace.data.text.output || '';
+            this.updateTextStats('inputText', 'wordCount', 'charCount', 'lineCount');
+          }
+          
+          if (workspace.data.code) {
+            document.getElementById('codeInput').value = workspace.data.code.input || '';
+            document.getElementById('codeOutput').value = workspace.data.code.output || '';
+          }
+          
+          if (workspace.data.decoder) {
+            document.getElementById('encoded').value = workspace.data.decoder.encoded || '';
+            document.getElementById('decoded').value = workspace.data.decoder.decoded || '';
+          }
+          
+          if (workspace.data.combine) {
+            document.getElementById('combineHtml').value = workspace.data.combine.html || '';
+            document.getElementById('combineCss').value = workspace.data.combine.css || '';
+            document.getElementById('combineJs').value = workspace.data.combine.js || '';
+            document.getElementById('combinedOutput').value = workspace.data.combine.output || '';
+          }
+          
+          if (workspace.data.split) {
+            document.getElementById('splitInput').value = workspace.data.split.input || '';
+            document.getElementById('splitHtml').value = workspace.data.split.html || '';
+            document.getElementById('splitCss').value = workspace.data.split.css || '';
+            document.getElementById('splitJs').value = workspace.data.split.js || '';
+          }
+          
+          if (workspace.data.regex) {
+            document.getElementById('regexPattern').value = workspace.data.regex.pattern || '';
+            document.getElementById('regexTestText').value = workspace.data.regex.testText || '';
+            
+            // Set flags
+            document.querySelectorAll('.regex-flag').forEach(flag => {
+              flag.classList.remove('active');
+              if (workspace.data.regex.flags.includes(flag.dataset.flag)) {
+                flag.classList.add('active');
+              }
+            });
+          }
+          
+          if (workspace.data.compare) {
+            document.getElementById('compareText1').value = workspace.data.compare.text1 || '';
+            document.getElementById('compareText2').value = workspace.data.compare.text2 || '';
+            this.updateCompareStats();
+          }
+          
+          if (workspace.data.analyze) {
+            document.getElementById('analyzeText').value = workspace.data.analyze.text || '';
+            document.getElementById('analysisResults').value = workspace.data.analyze.results || '';
+          }
+          
+          // Update line numbers
+          this.updateLineNumbers();
+          
+          this.showToast('Workspace loaded successfully', 'success');
+        } catch (e) {
+          console.error('Error loading workspace:', e);
+          this.showToast('Error loading workspace', 'error');
+        }
+      }
+
+      loadRecentFiles() {
+        const saved = localStorage.getItem('codeTextCleanerRecentFiles');
+        if (saved) {
+          return JSON.parse(saved);
+        }
+        return [];
+      }
+
+      saveRecentFile(file) {
+        // Remove if already exists
+        this.recentFiles = this.recentFiles.filter(f => f.name !== file.name);
+        
+        // Add to beginning
+        this.recentFiles.unshift({
+          name: file.name,
+          size: file.size,
+          date: new Date().toISOString()
+        });
+        
+        // Keep only the last 10 files
+        if (this.recentFiles.length > 10) {
+          this.recentFiles = this.recentFiles.slice(0, 10);
+        }
+        
+        // Save to localStorage
+        localStorage.setItem('codeTextCleanerRecentFiles', JSON.stringify(this.recentFiles));
+        this.updateRecentFilesUI();
+      }
+
+      updateRecentFilesUI() {
+        const container = document.getElementById('recentFilesList');
+        
+        if (this.recentFiles.length === 0) {
+          container.innerHTML = '<div class="empty-state">No recent files</div>';
+          return;
+        }
+        
+        container.innerHTML = '';
+        
+        this.recentFiles.forEach(file => {
+          const item = document.createElement('div');
+          item.className = 'recent-file-item';
+          
+          const name = document.createElement('div');
+          name.className = 'recent-file-name';
+          name.textContent = file.name;
+          
+          const date = document.createElement('div');
+          date.className = 'recent-file-date';
+          date.textContent = new Date(file.date).toLocaleDateString();
+          
+          item.appendChild(name);
+          item.appendChild(date);
+          
+          item.addEventListener('click', () => {
+            // In a real app, we would reload the file here
+            this.showToast(`Opening ${file.name}...`, 'info');
+          });
+          
+          container.appendChild(item);
+        });
+      }
+
+      handleKeyboardShortcuts(e) {
+        // Ignore if in an input field
+        if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') {
+          return;
+        }
+        
+        // Ctrl/Cmd + F: Find/Replace
+        if ((e.ctrlKey || e.metaKey) && e.key === 'f') {
+          e.preventDefault();
+          this.toggleFindReplace();
+        }
+        
+        // Ctrl/Cmd + T: Toggle theme
+        if ((e.ctrlKey || e.metaKey) && e.key === 't') {
+          e.preventDefault();
+          this.toggleTheme();
+        }
+        
+        // Ctrl/Cmd + S: Save/Download
+        if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+          e.preventDefault();
+          
+          // Trigger download for current tool
+          switch (this.currentTool) {
+            case 'text':
+              document.getElementById('downloadTxt').click();
+              break;
+            case 'code':
+              document.getElementById('downloadCode').click();
+              break;
+            case 'combine':
+              document.getElementById('downloadCombined').click();
+              break;
+            case 'analyze':
+              document.getElementById('downloadAnalysis').click();
+              break;
+          }
+        }
+        
+        // Ctrl/Cmd + H: Show keyboard shortcuts
+        if ((e.ctrlKey || e.metaKey) && e.key === 'h') {
+          e.preventDefault();
+          this.openModal('shortcutsModal');
+        }
+        
+        // Ctrl/Cmd + W: Save workspace
+        if ((e.ctrlKey || e.metaKey) && e.key === 'w') {
+          e.preventDefault();
+          this.saveWorkspace();
+        }
+        
+        // Esc: Close modals/previews
+        if (e.key === 'Escape') {
+          document.querySelectorAll('.modal-container').forEach(modal => {
+            modal.classList.add('hidden');
+          });
+          
+          document.querySelectorAll('.preview-container').forEach(preview => {
+            preview.classList.add('hidden');
+          });
+          
+          this.closeFindReplace();
+        }
+      }
+
+      updateLineNumbers(editorId, lineNumbersId) {
+        if (!this.settings.lineNumbers) {
+          document.querySelectorAll('.line-numbers').forEach(el => {
+            el.style.display = 'none';
+          });
+          return;
+        }
+        
+        document.querySelectorAll('.line-numbers').forEach(el => {
+          el.style.display = 'block';
+        });
+        
+        // If specific editor is provided, update only that one
+        if (editorId && lineNumbersId) {
+          const editor = document.getElementById(editorId);
+          const lineNumbers = document.getElementById(lineNumbersId);
+          
+          if (editor && lineNumbers) {
+            const lines = editor.value.split('\n').length;
+            let numbers = '';
+            for (let i = 1; i <= lines; i++) {
+              numbers += i + '\n';
+            }
+            lineNumbers.textContent = numbers;
+          }
+          return;
+        }
+        
+        // Otherwise, update all line numbers
+        const editorLineNumbersMap = [
+          ['inputText', 'inputLineNumbers'],
+          ['outputText', 'outputLineNumbers'],
+          ['codeInput', 'codeInputLineNumbers'],
+          ['codeOutput', 'codeOutputLineNumbers'],
+          ['encoded', 'encodedLineNumbers'],
+          ['decoded', 'decodedLineNumbers'],
+          ['combineHtml', 'combineHtmlLineNumbers'],
+          ['combineCss', 'combineCssLineNumbers'],
+          ['combineJs', 'combineJsLineNumbers'],
+          ['combinedOutput', 'combinedOutputLineNumbers'],
+          ['splitInput', 'splitInputLineNumbers'],
+          ['splitHtml', 'splitHtmlLineNumbers'],
+          ['splitCss', 'splitCssLineNumbers'],
+          ['splitJs', 'splitJsLineNumbers'],
+          ['regexTestText', 'regexTestLineNumbers'],
+          ['compareText1', 'compareText1LineNumbers'],
+          ['compareText2', 'compareText2LineNumbers'],
+          ['analyzeText', 'analyzeLineNumbers'],
+          ['analysisResults', 'analysisResultsLineNumbers']
+        ];
+        
+        editorLineNumbersMap.forEach(([editorId, lineNumbersId]) => {
+          const editor = document.getElementById(editorId);
+          const lineNumbers = document.getElementById(lineNumbersId);
+          
+          if (editor && lineNumbers) {
+            const lines = editor.value.split('\n').length;
+            let numbers = '';
+            for (let i = 1; i <= lines; i++) {
+              numbers += i + '\n';
+            }
+            lineNumbers.textContent = numbers;
+          }
+        });
+      }
+
+      toggleWordWrap(editorId) {
+        const editor = document.getElementById(editorId);
+        if (editor) {
+          editor.classList.toggle('word-wrap');
+        }
+      }
+
+      pasteToEditor(editorId) {
+        const editor = document.getElementById(editorId);
+        if (editor) {
+          navigator.clipboard.readText().then(text => {
+            editor.value = text;
+            this.updateLineNumbers(editorId, editorId.replace('Text', 'LineNumbers').replace('Input', 'LineNumbers').replace('Output', 'LineNumbers'));
+            
+            if (editorId === 'inputText') {
+              this.updateTextStats('inputText', 'wordCount', 'charCount', 'lineCount');
+            }
+            
+            this.showToast('Text pasted successfully', 'success');
+          }).catch(err => {
+            this.showToast('Failed to paste text', 'error');
+            console.error('Failed to paste text:', err);
+          });
+        }
+      }
+
+      copyFromEditor(editorId) {
+        const editor = document.getElementById(editorId);
+        if (editor) {
+          navigator.clipboard.writeText(editor.value).then(() => {
+            this.showToast('Text copied to clipboard', 'success');
+          }).catch(err => {
+            this.showToast('Failed to copy text', 'error');
+            console.error('Failed to copy text:', err);
+          });
+        }
+      }
+
+      copyFromElement(elementId) {
+        const element = document.getElementById(elementId);
+        if (element) {
+          navigator.clipboard.writeText(element.textContent).then(() => {
+            this.showToast('Text copied to clipboard', 'success');
+          }).catch(err => {
+            this.showToast('Failed to copy text', 'error');
+            console.error('Failed to copy text:', err);
+          });
+        }
+      }
+
+      downloadText(editorId, filename, encoding) {
+        const editor = document.getElementById(editorId);
+        if (!editor) return;
+        
+        const text = editor.value;
+        const blob = new Blob([text], { type: `text/plain;charset=${encoding}` });
+        const url = URL.createObjectURL(blob);
+        
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        
+        // Clean up
+        setTimeout(() => {
+          document.body.removeChild(a);
+          URL.revokeObjectURL(url);
+        }, 100);
+        
+        this.showToast(`File downloaded as ${filename}`, 'success');
+      }
+
+      loadFile(file, editorId) {
+        const reader = new FileReader();
+        
+        reader.onload = (e) => {
+          const editor = document.getElementById(editorId);
+          if (editor) {
+            editor.value = e.target.result;
+            this.updateLineNumbers(editorId, editorId.replace('Text', 'LineNumbers').replace('Input', 'LineNumbers').replace('Output', 'LineNumbers'));
+            
+            if (editorId === 'inputText') {
+              this.updateTextStats('inputText', 'wordCount', 'charCount', 'lineCount');
+            }
+            
+            // Add to recent files
+            this.saveRecentFile(file);
+            
+            this.showToast(`File loaded: ${file.name}`, 'success');
+          }
+        };
+        
+        reader.onerror = () => {
+          this.showToast('Error loading file', 'error');
+        };
+        
+        reader.readAsText(file);
+      }
+
+      updateTextStats(editorId, wordCountId, charCountId, lineCountId) {
+        const editor = document.getElementById(editorId);
+        if (!editor) return;
+        
+        const text = editor.value;
+        const words = text.trim() === '' ? 0 : text.trim().split(/\s+/).length;
+        const chars = text.length;
+        const lines = text.split('\n').length;
+        
+        document.getElementById(wordCountId).textContent = words;
+        document.getElementById(charCountId).textContent = chars;
+        document.getElementById(lineCountId).textContent = lines;
+      }
+
+      applyTextAction(action) {
+        const input = document.getElementById('inputText');
+        const output = document.getElementById('outputText');
+        
+        if (!input || !output) return;
+        
+        let text = input.value;
+        
+        switch (action) {
+          case 'lower':
+            text = text.toLowerCase();
+            break;
+          case 'upper':
+            text = text.toUpperCase();
+            break;
+          case 'title':
+            text = text.replace(/\w\S*/g, (txt) => {
+              return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+            });
+            break;
+          case 'trimspaces':
+            text = text.replace(/\s+/g, ' ').trim();
+            break;
+          case 'reverse':
+            text = text.split('').reverse().join('');
+            break;
+          case 'sort':
+            text = text.split('\n').sort().join('\n');
+            break;
+          case 'removeEmptyLines':
+            text = text.replace(/^\s*\n/gm, '');
+            break;
+          case 'removeDuplicateLines':
+            const lines = text.split('\n');
+            const uniqueLines = [...new Set(lines)];
+            text = uniqueLines.join('\n');
+            break;
+          case 'addLineNumbers':
+            const linesToAddNumbers = text.split('\n');
+            text = linesToAddNumbers.map((line, i) => `${i + 1}. ${line}`).join('\n');
+            break;
+          case 'camelCase':
+            text = text.replace(/(?:^\w|[A-Z]|\b\w)/g, (word, index) => {
+              return index === 0 ? word.toLowerCase() : word.toUpperCase();
+            }).replace(/\s+/g, '');
+            break;
+          case 'snake_case':
+            text = text.replace(/\s+/g, '_').toLowerCase();
+            break;
+          case 'kebab-case':
+            text = text.replace(/\s+/g, '-').toLowerCase();
+            break;
+          case 'PascalCase':
+            text = text.replace(/(?:^\w|[A-Z]|\b\w)/g, (word) => {
+              return word.toUpperCase();
+            }).replace(/\s+/g, '');
+            break;
+        }
+        
+        output.value = text;
+        this.updateLineNumbers('outputText', 'outputLineNumbers');
+        this.showToast('Text transformed successfully', 'success');
+      }
+
+      prettyJson() {
+        const input = document.getElementById('inputText');
+        const output = document.getElementById('outputText');
+        
+        if (!input || !output) return;
+        
+        try {
+          const json = JSON.parse(input.value);
+          output.value = JSON.stringify(json, null, 2);
+          this.updateLineNumbers('outputText', 'outputLineNumbers');
+          this.showToast('JSON formatted successfully', 'success');
+        } catch (e) {
+          this.showToast('Invalid JSON', 'error');
+        }
+      }
+
+      base64Encode() {
+        const input = document.getElementById('inputText');
+        const output = document.getElementById('outputText');
+        
+        if (!input || !output) return;
+        
+        try {
+          output.value = btoa(unescape(encodeURIComponent(input.value)));
+          this.updateLineNumbers('outputText', 'outputLineNumbers');
+          this.showToast('Text encoded to Base64', 'success');
+        } catch (e) {
+          this.showToast('Error encoding to Base64', 'error');
+        }
+      }
+
+      base64Decode() {
+        const input = document.getElementById('inputText');
+        const output = document.getElementById('outputText');
+        
+        if (!input || !output) return;
+        
+        try {
+          output.value = decodeURIComponent(escape(atob(input.value)));
+          this.updateLineNumbers('outputText', 'outputLineNumbers');
+          this.showToast('Base64 decoded successfully', 'success');
+        } catch (e) {
+          this.showToast('Error decoding Base64', 'error');
+        }
+      }
+
+      urlEncode() {
+        const input = document.getElementById('inputText');
+        const output = document.getElementById('outputText');
+        
+        if (!input || !output) return;
+        
+        try {
+          output.value = encodeURIComponent(input.value);
+          this.updateLineNumbers('outputText', 'outputLineNumbers');
+          this.showToast('URL encoded successfully', 'success');
+        } catch (e) {
+          this.showToast('Error encoding URL', 'error');
+        }
+      }
+
+      urlDecode() {
+        const input = document.getElementById('inputText');
+        const output = document.getElementById('outputText');
+        
+        if (!input || !output) return;
+        
+        try {
+          output.value = decodeURIComponent(input.value);
+          this.updateLineNumbers('outputText', 'outputLineNumbers');
+          this.showToast('URL decoded successfully', 'success');
+        } catch (e) {
+          this.showToast('Error decoding URL', 'error');
+        }
+      }
+
+      applyCodeAction(action) {
+        const input = document.getElementById('codeInput');
+        const output = document.getElementById('codeOutput');
+        
+        if (!input || !output) return;
+        
+        let code = input.value;
+        
+        switch (action) {
+          case 'minify-html':
+            code = code.replace(/\n\s*/g, '').replace(/\s*</g, '<').replace(/>\s*/g, '>');
+            break;
+          case 'minify-css':
+            code = code.replace(/\n\s*/g, '').replace(/\s*{\s*/g, '{').replace(/;\s*/g, ';').replace(/:\s*/g, ':').replace(/\s*}\s*/g, '}');
+            break;
+          case 'minify-js':
+            // Simple JS minification (not a full parser)
+            code = code.replace(/\n\s*/g, '').replace(/\s*;\s*/g, ';').replace(/\s*{\s*/g, '{').replace(/\s*}\s*/g, '}').replace(/\s*,\s*/g, ',');
+            break;
+          case 'remove-comments':
+            // Remove single-line comments
+            code = code.replace(/\/\/.*$/gm, '');
+            // Remove multi-line comments
+            code = code.replace(/\/\*[\s\S]*?\*\//g, '');
+            break;
+        }
+        
+        output.value = code;
+        this.updateLineNumbers('codeOutput', 'codeOutputLineNumbers');
+        this.showToast('Code processed successfully', 'success');
+      }
+
+      formatHtml() {
+        const input = document.getElementById('codeInput');
+        const output = document.getElementById('codeOutput');
+        
+        if (!input || !output) return;
+        
+        try {
+          // Simple HTML formatter
+          let formatted = '';
+          const reg = /(>)(<)(\/*)/g;
+          let html = input.value.replace(reg, '$1\r\n$2$3');
+          
+          let pad = 0;
+          html.split('\r\n').forEach(node => {
+            let indent = 0;
+            if (node.match(/.+<\/\w[^>]*>$/)) {
+              indent = 0;
+            } else if (node.match(/^<\/\w/) && pad > 0) {
+              pad -= 1;
+            } else if (node.match(/^<\w[^>]*[^\/]>.*$/)) {
+              indent = 1;
+            } else {
+              indent = 0;
+            }
+            
+            let padding = '';
+            for (let i = 0; i < pad; i++) {
+              padding += '  ';
+            }
+            
+            formatted += padding + node + '\r\n';
+            pad += indent;
+          });
+          
+          output.value = formatted;
+          this.updateLineNumbers('codeOutput', 'codeOutputLineNumbers');
+          this.showToast('HTML formatted successfully', 'success');
+        } catch (e) {
+          this.showToast('Error formatting HTML', 'error');
+        }
+      }
+
+      formatCss() {
+        const input = document.getElementById('codeInput');
+        const output = document.getElementById('codeOutput');
+        
+        if (!input || !output) return;
+        
+        try {
+          // Simple CSS formatter
+          let formatted = '';
+          let rules = input.value.split('}');
+          
+          rules.forEach(rule => {
+            if (rule.trim() === '') return;
+            
+            let parts = rule.split('{');
+            if (parts.length < 2) return;
+            
+            let selector = parts[0].trim();
+            let properties = parts[1].trim();
+            
+            formatted += selector + ' {\n';
+            
+            let props = properties.split(';');
+            props.forEach(prop => {
+              if (prop.trim() === '') return;
+              formatted += '  ' + prop.trim() + ';\n';
+            });
+            
+            formatted += '}\n\n';
+          });
+          
+          output.value = formatted.trim();
+          this.updateLineNumbers('codeOutput', 'codeOutputLineNumbers');
+          this.showToast('CSS formatted successfully', 'success');
+        } catch (e) {
+          this.showToast('Error formatting CSS', 'error');
+        }
+      }
+
+      formatJs() {
+        const input = document.getElementById('codeInput');
+        const output = document.getElementById('codeOutput');
+        
+        if (!input || !output) return;
+        
+        try {
+          // Simple JS formatter (not a full parser)
+          let formatted = '';
+          let indentLevel = 0;
+          const indent = '  ';
+          
+          input.value.split('\n').forEach(line => {
+            let trimmed = line.trim();
+            
+            // Decrease indent for closing braces
+            if (trimmed.startsWith('}')) {
+              indentLevel = Math.max(0, indentLevel - 1);
+            }
+            
+            // Add current line with proper indentation
+            formatted += indent.repeat(indentLevel) + trimmed + '\n';
+            
+            // Increase indent for opening braces
+            if (trimmed.endsWith('{')) {
+              indentLevel++;
+            }
+          });
+          
+          output.value = formatted;
+          this.updateLineNumbers('codeOutput', 'codeOutputLineNumbers');
+          this.showToast('JavaScript formatted successfully', 'success');
+        } catch (e) {
+          this.showToast('Error formatting JavaScript', 'error');
+        }
+      }
+
+      beautifyJson() {
+        const input = document.getElementById('codeInput');
+        const output = document.getElementById('codeOutput');
+        
+        if (!input || !output) return;
+        
+        try {
+          const json = JSON.parse(input.value);
+          output.value = JSON.stringify(json, null, 2);
+          this.updateLineNumbers('codeOutput', 'codeOutputLineNumbers');
+          this.showToast('JSON beautified successfully', 'success');
+        } catch (e) {
+          this.showToast('Invalid JSON', 'error');
+        }
+      }
+
+      previewCode() {
+        const input = document.getElementById('codeInput');
+        const preview = document.getElementById('previewFrame');
+        const previewWrap = document.getElementById('previewWrap');
+        
+        if (!input || !preview || !previewWrap) return;
+        
+        // Check if it's HTML
+        if (input.value.includes('<') && input.value.includes('>')) {
+          const blob = new Blob([input.value], { type: 'text/html' });
+          const url = URL.createObjectURL(blob);
+          preview.src = url;
+          previewWrap.classList.remove('hidden');
+          
+          // Set device mode
+          this.setPreviewDevice(document.getElementById('deviceMode').value);
+          
+          this.showToast('Preview generated', 'success');
+        } else {
+          this.showToast('Not valid HTML for preview', 'error');
+        }
+      }
+
+      setPreviewDevice(mode, frameId = 'previewFrame') {
+        const frame = document.getElementById(frameId);
+        if (!frame) return;
+        
+        switch (mode) {
+          case 'desktop':
+            frame.style.width = '100%';
+            break;
+          case 'tablet':
+            frame.style.width = '768px';
+            break;
+          case 'mobile':
+            frame.style.width = '375px';
+            break;
+        }
+      }
+
+      decodeHtml() {
+        const encoded = document.getElementById('encoded');
+        const decoded = document.getElementById('decoded');
+        
+        if (!encoded || !decoded) return;
+        
+        try {
+          const txt = document.createElement('textarea');
+          txt.innerHTML = encoded.value;
+          decoded.value = txt.value;
+          this.updateLineNumbers('decoded', 'decodedLineNumbers');
+          this.showToast('HTML decoded successfully', 'success');
+        } catch (e) {
+          this.showToast('Error decoding HTML', 'error');
+        }
+      }
+
+      encodeHtml() {
+        const encoded = document.getElementById('encoded');
+        const decoded = document.getElementById('decoded');
+        
+        if (!encoded || !decoded) return;
+        
+        try {
+          encoded.value = decoded.value
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#039;');
+          this.updateLineNumbers('encoded', 'encodedLineNumbers');
+          this.showToast('HTML encoded successfully', 'success');
+        } catch (e) {
+          this.showToast('Error encoding HTML', 'error');
+        }
+      }
+
+      combineCode() {
+        const html = document.getElementById('combineHtml').value;
+        const css = document.getElementById('combineCss').value;
+        const js = document.getElementById('combineJs').value;
+        const output = document.getElementById('combinedOutput');
+        
+        if (!output) return;
+        
+        let combined = '';
+        
+        // Check if HTML is a full document or just body content
+        if (html.includes('<html') || html.includes('<!DOCTYPE')) {
+          // Full HTML document
+          combined = html;
+          
+          // Insert CSS before </head>
+          if (css && combined.includes('</head>')) {
+            const styleTag = `<style>\n${css}\n</style>`;
+            combined = combined.replace('</head>', styleTag + '\n</head>');
+          }
+          
+          // Insert JS before </body>
+          if (js && combined.includes('</body>')) {
+            const scriptTag = `<script>\n${js}\n</script>`;
+            combined = combined.replace('</body>', scriptTag + '\n</body>');
+          }
+        } else {
+          // Just body content, create a full document
+          combined = `<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Combined Document</title>`;
+          
+          if (css) {
+            combined += `\n  <style>\n${css}\n  </style>`;
+          }
+          
+          combined += `
+</head>
+<body>
+  ${html}`;
+          
+          if (js) {
+            combined += `\n  <script>\n${js}\n  </script>`;
+          }
+          
+          combined += `
+</body>
+</html>`;
+        }
+        
+        output.value = combined;
+        this.updateLineNumbers('combinedOutput', 'combinedOutputLineNumbers');
+        this.showToast('Code combined successfully', 'success');
+      }
+
+      previewCombined() {
+        const output = document.getElementById('combinedOutput');
+        const preview = document.getElementById('previewCombined');
+        const previewWrap = document.getElementById('previewCombinedWrap');
+        
+        if (!output || !preview || !previewWrap) return;
+        
+        const blob = new Blob([output.value], { type: 'text/html' });
+        const url = URL.createObjectURL(blob);
+        preview.src = url;
+        previewWrap.classList.remove('hidden');
+        
+        // Set device mode
+        this.setPreviewDevice(document.getElementById('deviceModeCombined').value, 'previewCombined');
+        
+        this.showToast('Preview generated', 'success');
+      }
+
+      splitCode() {
+        const input = document.getElementById('splitInput');
+        const htmlOutput = document.getElementById('splitHtml');
+        const cssOutput = document.getElementById('splitCss');
+        const jsOutput = document.getElementById('splitJs');
+        
+        if (!input || !htmlOutput || !cssOutput || !jsOutput) return;
+        
+        const htmlContent = input.value;
+        
+        // Extract CSS from <style> tags
+        const cssMatches = htmlContent.match(/<style[^>]*>([\s\S]*?)<\/style>/gi);
+        let css = '';
+        if (cssMatches) {
+          cssMatches.forEach(match => {
+            css += match.replace(/<style[^>]*>|<\/style>/gi, '') + '\n';
+          });
+        }
+        
+        // Extract JavaScript from <script> tags
+        const jsMatches = htmlContent.match(/<script[^>]*>([\s\S]*?)<\/script>/gi);
+        let js = '';
+        if (jsMatches) {
+          jsMatches.forEach(match => {
+            js += match.replace(/<script[^>]*>|<\/script>/gi, '') + '\n';
+          });
+        }
+        
+        // Remove CSS and JS from HTML
+        let html = htmlContent
+          .replace(/<style[^>]*>[\s\S]*?<\/style>/gi, '')
+          .replace(/<script[^>]*>[\s\S]*?<\/script>/gi, '');
+        
+        // Clean up HTML
+        html = html.trim();
+        css = css.trim();
+        js = js.trim();
+        
+        // Set outputs
+        htmlOutput.value = html;
+        cssOutput.value = css;
+        jsOutput.value = js;
+        
+        // Update line numbers
+        this.updateLineNumbers('splitHtml', 'splitHtmlLineNumbers');
+        this.updateLineNumbers('splitCss', 'splitCssLineNumbers');
+        this.updateLineNumbers('splitJs', 'splitJsLineNumbers');
+        
+        this.showToast('HTML split successfully', 'success');
+      }
+
+      testRegex() {
+        const pattern = document.getElementById('regexPattern').value;
+        const testText = document.getElementById('regexTestText').value;
+        const result = document.getElementById('regexResult');
+        const matchCount = document.getElementById('regexMatchCount');
+        const testTime = document.getElementById('regexTestTime');
+        
+        if (!pattern || !testText) {
+          this.showToast('Please enter both pattern and test text', 'warning');
+          return;
+        }
+        
+        try {
+          // Get flags
+          const flags = Array.from(document.querySelectorAll('.regex-flag.active'))
+            .map(flag => flag.dataset.flag)
+            .join('');
+          
+          // Create regex
+          const regex = new RegExp(pattern, flags);
+          
+          // Time the test
+          const startTime = performance.now();
+          
+          // Find all matches
+          const matches = [];
+          let match;
+          
+          while ((match = regex.exec(testText)) !== null) {
+            matches.push({
+              index: match.index,
+              text: match[0],
+              groups: match.slice(1)
+            });
+            
+            // Prevent infinite loops for zero-length matches
+            if (match.index === regex.lastIndex) {
+              regex.lastIndex++;
+            }
+          }
+          
+          const endTime = performance.now();
+          
+          // Display results
+          if (matches.length > 0) {
+            let resultHtml = '';
+            let lastIndex = 0;
+            
+            matches.forEach(match => {
+              // Add text before match
+              resultHtml += this.escapeHtml(testText.substring(lastIndex, match.index));
+              
+              // Add highlighted match
+              resultHtml += `<span class="regex-match">${this.escapeHtml(match.text)}</span>`;
+              
+              lastIndex = match.index + match.text.length;
+            });
+            
+            // Add remaining text
+            resultHtml += this.escapeHtml(testText.substring(lastIndex));
+            
+            result.innerHTML = resultHtml;
+          } else {
+            result.innerHTML = '<div class="empty-state">No matches found</div>';
+          }
+          
+          // Update stats
+          matchCount.textContent = matches.length;
+          testTime.textContent = `${(endTime - startTime).toFixed(2)}ms`;
+          
+          this.showToast('Regex test completed', 'success');
+        } catch (e) {
+          result.innerHTML = `<div class="empty-state">Invalid regex: ${e.message}</div>`;
+          matchCount.textContent = '0';
+          testTime.textContent = '0ms';
+          this.showToast('Invalid regex pattern', 'error');
+        }
+      }
+
+      clearRegex() {
+        document.getElementById('regexPattern').value = '';
+        document.getElementById('regexTestText').value = 'Hello World 123\nTest 456\nAnother 789 line';
+        document.getElementById('regexResult').innerHTML = '<div class="empty-state">Enter a regex pattern and click "Test" to see matches</div>';
+        document.getElementById('regexMatchCount').textContent = '0';
+        document.getElementById('regexTestTime').textContent = '0ms';
+        
+        // Reset flags
+        document.querySelectorAll('.regex-flag').forEach(flag => {
+          flag.classList.remove('active');
+        });
+        
+        this.updateLineNumbers('regexTestText', 'regexTestLineNumbers');
+      }
+
+      compareText() {
+        const text1 = document.getElementById('compareText1').value;
+        const text2 = document.getElementById('compareText2').value;
+        const result = document.getElementById('compareResult');
+        
+        if (!text1 && !text2) {
+          this.showToast('Please enter text in both fields', 'warning');
+          return;
+        }
+        
+        // Simple diff algorithm
+        const lines1 = text1.split('\n');
+        const lines2 = text2.split('\n');
+        
+        let resultHtml = '';
+        let i = 0, j = 0;
+        
+        while (i < lines1.length || j < lines2.length) {
+          if (i < lines1.length && j < lines2.length && lines1[i] === lines2[j]) {
+            // Lines are the same
+            resultHtml += `<div class="diff-line same">${this.escapeHtml(lines1[i])}</div>`;
+            i++;
+            j++;
+          } else if (i < lines1.length && (j >= lines2.length || lines1[i] !== lines2[j])) {
+            // Line only in text1 (removed)
+            resultHtml += `<div class="diff-line removed">- ${this.escapeHtml(lines1[i])}</div>`;
+            i++;
+          } else if (j < lines2.length && (i >= lines1.length || lines1[i] !== lines2[j])) {
+            // Line only in text2 (added)
+            resultHtml += `<div class="diff-line added">+ ${this.escapeHtml(lines2[j])}</div>`;
+            j++;
+          }
+        }
+        
+        result.innerHTML = resultHtml;
+        this.showToast('Text comparison completed', 'success');
+      }
+
+      updateCompareStats() {
+        const text1 = document.getElementById('compareText1').value;
+        const text2 = document.getElementById('compareText2').value;
+        const stats = document.getElementById('compareStats');
+        
+        const lines1 = text1.split('\n').length;
+        const chars1 = text1.length;
+        const lines2 = text2.split('\n').length;
+        const chars2 = text2.length;
+        
+        stats.innerHTML = `
+          <div class="stat">
+            <span class="stat-label">Text 1:</span>
+            <span>${lines1} lines, ${chars1} chars</span>
+          </div>
+          <div class="stat">
+            <span class="stat-label">Text 2:</span>
+            <span>${lines2} lines, ${chars2} chars</span>
+          </div>
+        `;
+      }
+
+      analyzeText() {
+        const text = document.getElementById('analyzeText').value;
+        const results = document.getElementById('analysisResults');
+        
+        if (!text) {
+          this.showToast('Please enter text to analyze', 'warning');
+          return;
+        }
+        
+        // Basic statistics
+        const chars = text.length;
+        const charsNoSpaces = text.replace(/\s/g, '').length;
+        const words = text.trim() === '' ? 0 : text.trim().split(/\s+/).length;
+        const lines = text.split('\n').length;
+        const sentences = text.split(/[.!?]+/).filter(s => s.trim().length > 0).length;
+        const paragraphs = text.split(/\n\s*\n/).filter(p => p.trim().length > 0).length;
+        
+        // Character frequency
+        const charFreq = {};
+        for (let char of text.toLowerCase()) {
+          if (char.match(/[a-z]/)) {
+            charFreq[char] = (charFreq[char] || 0) + 1;
+          }
+        }
+        
+        // Word frequency
+        const wordFreq = {};
+        const wordsArray = text.toLowerCase().match(/\b\w+\b/g) || [];
+        for (let word of wordsArray) {
+          wordFreq[word] = (wordFreq[word] || 0) + 1;
+        }
+        
+        // Sort frequencies
+        const sortedCharFreq = Object.entries(charFreq)
+          .sort((a, b) => b[1] - a[1])
+          .slice(0, 10);
+        
+        const sortedWordFreq = Object.entries(wordFreq)
+          .sort((a, b) => b[1] - a[1])
+          .slice(0, 10);
+        
+        // Reading time (average 200 words per minute)
+        const readingTime = Math.ceil(words / 200);
+        
+        // Generate results
+        let resultsText = `TEXT ANALYSIS RESULTS
+=====================
+
+Basic Statistics:
+- Characters: ${chars}
+- Characters (no spaces): ${charsNoSpaces}
+- Words: ${words}
+- Lines: ${lines}
+- Sentences: ${sentences}
+- Paragraphs: ${paragraphs}
+- Estimated reading time: ${readingTime} min
+
+Most Common Characters:
+`;
+        
+        sortedCharFreq.forEach(([char, count]) => {
+          resultsText += `- '${char}': ${count} times (${(count / charsNoSpaces * 100).toFixed(1)}%)\n`;
+        });
+        
+        resultsText += `
+Most Common Words:
+`;
+        
+        sortedWordFreq.forEach(([word, count]) => {
+          resultsText += `- '${word}': ${count} times (${(count / words * 100).toFixed(1)}%)\n`;
+        });
+        
+        results.value = resultsText;
+        this.updateLineNumbers('analysisResults', 'analysisResultsLineNumbers');
+        
+        // Update stats
+        document.getElementById('analysisWordCount').textContent = words;
+        document.getElementById('analysisCharCount').textContent = chars;
+        document.getElementById('analysisLineCount').textContent = lines;
+        document.getElementById('analysisSentenceCount').textContent = sentences;
+        document.getElementById('analysisParagraphCount').textContent = paragraphs;
+        document.getElementById('analysisReadingTime').textContent = `${readingTime} min`;
+        
+        this.showToast('Text analysis completed', 'success');
+      }
+
+      clearAnalysis() {
+        document.getElementById('analyzeText').value = '';
+        document.getElementById('analysisResults').value = '';
+        
+        // Reset stats
+        document.getElementById('analysisWordCount').textContent = '0';
+        document.getElementById('analysisCharCount').textContent = '0';
+        document.getElementById('analysisLineCount').textContent = '0';
+        document.getElementById('analysisSentenceCount').textContent = '0';
+        document.getElementById('analysisParagraphCount').textContent = '0';
+        document.getElementById('analysisReadingTime').textContent = '0 min';
+        
+        this.updateLineNumbers('analyzeText', 'analyzeLineNumbers');
+        this.updateLineNumbers('analysisResults', 'analysisResultsLineNumbers');
+      }
+
+      escapeHtml(text) {
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+      }
+
+      showToast(message, type = 'info') {
+        const toast = document.getElementById('toast');
+        
+        // Set message
+        toast.textContent = message;
+        
+        // Set type
+        toast.className = 'toast';
+        toast.classList.add(type);
+        
+        // Show toast
+        setTimeout(() => {
+          toast.classList.add('show');
+        }, 10);
+        
+        // Hide after delay
+        setTimeout(() => {
+          toast.classList.remove('show');
+        }, 3000);
+      }
+    }
+  </script>
+</body>
+</html>

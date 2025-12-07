@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="ocean">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Clock Studio – Modern Analog Clock</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css  " />
+  <link rel="stylesheet" href="./jam.css">
+  <!-- Favicon -->
+<link rel="icon" type="image/png" href="https://images.icon-icons.com/39/PNG/96/xclock_clock_time_5987.png">
+
+<!-- Web App Manifest -->
+<link rel="manifest" href="./manifest.json">
+<meta name="theme-color" content="#4e54c8">
+
+<!-- Tambahan optional -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Jam">
+</head>
+<body>
+  <div class="app-container">
+    <header>
+      <div class="logo">
+        <i class="fa-solid fa-clock"></i>
+        <h1>Jam</h1>
+      </div>
+      <div class="theme-selector" role="group" aria-label="Theme selector">
+        <button class="theme-btn dark" data-theme="dark" title="Dark Theme" aria-label="Dark Theme">
+          <i class="fa-solid fa-moon"></i>
+        </button>
+        <button class="theme-btn ocean active" data-theme="ocean" title="Ocean Theme" aria-label="Ocean Theme">
+          <i class="fa-solid fa-water"></i>
+        </button>
+        <button class="theme-btn sunset" data-theme="sunset" title="Sunset Theme" aria-label="Sunset Theme">
+          <i class="fa-solid fa-cloud-sun"></i>
+        </button>
+        <button class="theme-btn forest" data-theme="forest" title="Forest Theme" aria-label="Forest Theme">
+          <i class="fa-solid fa-tree"></i>
+        </button>
+      </div>
+    </header>
+
+    <div class="main-content">
+      <div class="card">
+        <div class="clock-wrapper">
+          <div class="clock classic" id="analogClock">
+            <div class="clock-face">
+              <div class="clock-number">12</div>
+              <div class="clock-number">1</div>
+              <div class="clock-number">2</div>
+              <div class="clock-number">3</div>
+              <div class="clock-number">4</div>
+              <div class="clock-number">5</div>
+              <div class="clock-number">6</div>
+              <div class="clock-number">7</div>
+              <div class="clock-number">8</div>
+              <div class="clock-number">9</div>
+              <div class="clock-number">10</div>
+              <div class="clock-number">11</div>
+            </div>
+            <div class="hand hour-hand" id="hourHand"></div>
+            <div class="hand minute-hand" id="minuteHand"></div>
+            <div class="hand second-hand" id="secondHand"></div>
+            <div class="clock-center"></div>
+          </div>
+          <button class="sound-toggle active" id="soundToggle" title="Toggle Sound" aria-label="Toggle sound">
+            <i class="fa-solid fa-volume-high"></i>
+          </button>
+          <button class="fullscreen-btn" id="fullscreenBtn" title="Fullscreen" aria-label="Fullscreen">
+            <i class="fa-solid fa-expand"></i>
+          </button>
+        </div>
+
+        <div class="digital-time" id="digitalTime">00:00:00</div>
+        <div class="date-display" id="dateDisplay">—</div>
+        <div class="location-display" id="locationDisplay">
+          <i class="fa-solid fa-location-dot"></i>
+          <span id="locationText">Detecting location...</span>
+          <span id="locationStatus" class="location-status loading">
+            <i class="fa-solid fa-spinner fa-spin"></i>
+          </span>
+        </div>
+
+        <div class="clock-styles" role="group" aria-label="Clock style selector">
+          <button class="clock-style active" data-style="classic" title="Classic" aria-label="Classic style">
+            <i class="fa-regular fa-clock"></i>
+          </button>
+          <button class="clock-style" data-style="modern" title="Modern" aria-label="Modern style">
+            <i class="fa-solid fa-clock"></i>
+          </button>
+          <button class="clock-style" data-style="minimal" title="Minimal" aria-label="Minimal style">
+            <i class="fa-regular fa-circle"></i>
+          </button>
+          <button class="clock-style" data-style="roman" title="Roman Numerals" aria-label="Roman numerals">
+            <i class="fa-solid fa-landmark"></i>
+          </button>
+        </div>
+
+        <div class="clock-controls">
+          <button class="btn" id="toggleFormat" aria-label="Toggle 12/24 hour format">
+            <i class="fa-solid fa-clock-rotate-left"></i> Toggle 12/24
+          </button>
+          <button class="btn btn-secondary" id="syncNow" aria-label="Sync time now">
+            <i class="fa-solid fa-arrows-rotate"></i> Sync Now
+          </button>
+          <button class="btn btn-secondary" id="updateLocation" aria-label="Update location">
+            <i class="fa-solid fa-location-crosshairs"></i> Update Location
+          </button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="tabs" role="tablist">
+          <button class="tab active" data-tab="info" role="tab" aria-selected="true">Time Info</button>
+          <button class="tab" data-tab="world" role="tab" aria-selected="false">World Clock</button>
+          <button class="tab" data-tab="pomodoro" role="tab" aria-selected="false">Pomodoro</button>
+          <button class="tab" data-tab="countdown" role="tab" aria-selected="false">Countdown</button>
+          <button class="tab" data-tab="timezone" role="tab" aria-selected="false">Timezone</button>
+          <button class="tab" data-tab="event" role="tab" aria-selected="false">Events</button>
+          <button class="tab" data-tab="daycounter" role="tab" aria-selected="false">Day Counter</button>
+          <button class="tab" data-tab="stopwatch" role="tab" aria-selected="false">Stopwatch</button>
+          <button class="tab" data-tab="alarm" role="tab" aria-selected="false">Alarm</button>
+        </div>
+
+        <div class="tab-content active" id="info-tab">
+          <div class="info-card">
+            <h3><i class="fa-solid fa-info-circle"></i> Time Information</h3>
+            <div class="info-grid">
+              <div class="info-item"><div class="info-label">Timezone</div><div class="info-value" id="timezone">—</div></div>
+              <div class="info-item"><div class="info-label">UTC Offset</div><div class="info-value" id="utcOffset">—</div></div>
+              <div class="info-item"><div class="info-label">Day of Year</div><div class="info-value" id="dayOfYear">—</div></div>
+              <div class="info-item"><div class="info-label">Week Number</div><div class="info-value" id="weekNumber">—</div></div>
+            </div>
+          </div>
+
+          <div class="info-card">
+            <h3><i class="fa-solid fa-location-dot"></i> Location Information</h3>
+            <div class="info-grid">
+              <div class="info-item"><div class="info-label">Latitude</div><div class="info-value" id="latitude">—</div></div>
+              <div class="info-item"><div class="info-label">Longitude</div><div class="info-value" id="longitude">—</div></div>
+              <div class="info-item"><div class="info-label">Country</div><div class="info-value" id="country">—</div></div>
+              <div class="info-item"><div class="info-label">Region</div><div class="info-value" id="region">—</div></div>
+            </div>
+          </div>
+
+          <div class="info-card">
+            <h3><i class="fa-solid fa-chart-simple"></i> Day Progress</h3>
+            <div class="info-item">
+              <div class="info-label">Day Completed</div>
+              <div class="info-value" id="dayProgress">0%</div>
+              <div class="progress-container">
+                <div class="progress-bar" id="dayProgressBar"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="info-card">
+            <h3><i class="fa-solid fa-sun"></i> Sun Info</h3>
+            <div class="info-grid">
+              <div class="info-item"><div class="info-label">Sunrise</div><div class="info-value" id="sunrise">—</div></div>
+              <div class="info-item"><div class="info-label">Sunset</div><div class="info-value" id="sunset">—</div></div>
+            </div>
+          </div>
+
+          <div class="info-card">
+            <h3><i class="fa-solid fa-palette"></i> Theme Settings</h3>
+            <div class="auto-theme-container">
+              <span>Auto Theme Switching</span>
+              <div class="toggle-switch" id="autoThemeToggle">
+                <div class="toggle-slider"></div>
+              </div>
+            </div>
+            <div class="info-item">
+              <div class="info-label">Current Time</div>
+              <div class="info-value" id="currentTimeForTheme">—</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tab-content" id="world-tab">
+          <div class="info-card">
+            <h3><i class="fa-solid fa-earth-americas"></i> World Clock</h3>
+            <div class="world-clock" id="worldClockContainer">
+              <div class="world-clock-item"><span>New York</span><span id="ny-time">—</span></div>
+              <div class="world-clock-item"><span>London</span><span id="london-time">—</span></div>
+              <div class="world-clock-item"><span>Tokyo</span><span id="tokyo-time">—</span></div>
+              <div class="world-clock-item"><span>Sydney</span><span id="sydney-time">—</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tab-content" id="pomodoro-tab">
+          <div class="info-card">
+            <h3><i class="fa-solid fa-hourglass-half"></i> Pomodoro Timer</h3>
+            <div class="pomodoro-container" style="flex-direction: column; align-items: center; gap: 16px;">
+              <div class="pomodoro-status" id="pomodoroStatus">Ready to focus</div>
+              <div class="pomodoro-timer" id="pomodoroTimer">25:00</div>
+              <div class="pomodoro-controls">
+                <button class="btn" id="pomodoroStart" aria-label="Start/Pause Pomodoro">
+                  <i class="fa-solid fa-play"></i> Start
+                </button>
+                <button class="btn btn-secondary" id="pomodoroReset" aria-label="Reset Pomodoro">
+                  <i class="fa-solid fa-arrows-rotate"></i> Reset
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Countdown Timer Tab -->
+        <div class="tab-content" id="countdown-tab">
+          <div class="info-card">
+            <h3><i class="fa-solid fa-hourglass-end"></i> Countdown Timer</h3>
+            <div class="countdown-container">
+              <div class="countdown-display" id="countdownDisplay">00:00:00</div>
+              <div class="countdown-controls">
+                <div class="input-group">
+                  <label for="countdownHours">Hours</label>
+                  <input type="number" id="countdownHours" min="0" max="23" value="0">
+                </div>
+                <div class="input-group">
+                  <label for="countdownMinutes">Minutes</label>
+                  <input type="number" id="countdownMinutes" min="0" max="59" value="5">
+                </div>
+                <div class="input-group">
+                  <label for="countdownSeconds">Seconds</label>
+                  <input type="number" id="countdownSeconds" min="0" max="59" value="0">
+                </div>
+                <div class="countdown-controls">
+                  <button class="btn" id="countdownStart">
+                    <i class="fa-solid fa-play"></i> Start
+                  </button>
+                  <button class="btn btn-secondary" id="countdownPause">
+                    <i class="fa-solid fa-pause"></i> Pause
+                  </button>
+                  <button class="btn btn-secondary" id="countdownReset">
+                    <i class="fa-solid fa-arrows-rotate"></i> Reset
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Timezone Converter Tab -->
+        <div class="tab-content" id="timezone-tab">
+          <div class="info-card">
+            <h3><i class="fa-solid fa-globe"></i> Timezone Converter</h3>
+            <div class="timezone-container">
+              <div class="input-group">
+                <label for="fromTime">From Time</label>
+                <input type="time" id="fromTime" value="12:00">
+              </div>
+              <div class="input-group">
+                <label for="fromTimezone">From Timezone</label>
+                <select id="fromTimezone">
+                  <option value="UTC">UTC</option>
+                  <option value="America/New_York">New York (EST)</option>
+                  <option value="America/Los_Angeles">Los Angeles (PST)</option>
+                  <option value="Europe/London">London (GMT)</option>
+                  <option value="Europe/Paris">Paris (CET)</option>
+                  <option value="Asia/Tokyo">Tokyo (JST)</option>
+                  <option value="Asia/Shanghai">Shanghai (CST)</option>
+                  <option value="Australia/Sydney">Sydney (AEST)</option>
+                </select>
+              </div>
+              <div class="input-group">
+                <label for="toTimezone">To Timezone</label>
+                <select id="toTimezone">
+                  <option value="UTC">UTC</option>
+                  <option value="America/New_York" selected>New York (EST)</option>
+                  <option value="America/Los_Angeles">Los Angeles (PST)</option>
+                  <option value="Europe/London">London (GMT)</option>
+                  <option value="Europe/Paris">Paris (CET)</option>
+                  <option value="Asia/Tokyo">Tokyo (JST)</option>
+                  <option value="Asia/Shanghai">Shanghai (CST)</option>
+                  <option value="Australia/Sydney">Sydney (AEST)</option>
+                </select>
+              </div>
+              <button class="btn" id="convertTimezone">
+                <i class="fa-solid fa-arrows-rotate"></i> Convert
+              </button>
+              <div class="timezone-result" id="timezoneResult" style="display: none;">
+                <div class="timezone-result-time" id="timezoneResultTime">—</div>
+                <div class="timezone-result-info" id="timezoneResultInfo">—</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Event Countdown Tab -->
+        <div class="tab-content" id="event-tab">
+          <div class="info-card">
+            <h3><i class="fa-solid fa-calendar-check"></i> Event Countdown</h3>
+            <div class="event-container">
+              <div class="event-display" id="eventDisplay">No events</div>
+              <div class="event-controls">
+                <div class="input-group">
+                  <label for="eventName">Event Name</label>
+                  <input type="text" id="eventName" placeholder="Enter event name">
+                </div>
+                <div class="input-group">
+                  <label for="eventDate">Event Date & Time</label>
+                  <input type="datetime-local" id="eventDate">
+                </div>
+                <button class="btn" id="addEvent">
+                  <i class="fa-solid fa-plus"></i> Add Event
+                </button>
+              </div>
+              <div class="event-list" id="eventList"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Day Counter Tab -->
+        <div class="tab-content" id="daycounter-tab">
+          <div class="info-card">
+            <h3><i class="fa-solid fa-calendar-days"></i> Day Counter</h3>
+            <div class="day-counter-container">
+              <div class="day-counter-display" id="dayCounterDisplay">0 days</div>
+              <div class="day-counter-controls">
+                <div class="input-group">
+                  <label for="counterStartDate">Start Date</label>
+                  <input type="date" id="counterStartDate">
+                </div>
+                <div class="input-group">
+                  <label for="counterEndDate">End Date (optional)</label>
+                  <input type="date" id="counterEndDate">
+                </div>
+                <button class="btn" id="updateDayCounter">
+                  <i class="fa-solid fa-calculator"></i> Calculate
+                </button>
+              </div>
+              <div class="info-item">
+                <div class="info-label">Result</div>
+                <div class="info-value" id="dayCounterResult">Select dates to calculate</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Stopwatch Tab -->
+        <div class="tab-content" id="stopwatch-tab">
+          <div class="info-card">
+            <h3><i class="fa-solid fa-stopwatch"></i> Stopwatch</h3>
+            <div class="stopwatch-container">
+              <div class="stopwatch-display" id="stopwatchDisplay">00:00:00</div>
+              <div class="stopwatch-controls">
+                <button class="btn" id="stopwatchStart">
+                  <i class="fa-solid fa-play"></i> Start
+                </button>
+                <button class="btn btn-secondary" id="stopwatchPause">
+                  <i class="fa-solid fa-pause"></i> Pause
+                </button>
+                <button class="btn btn-secondary" id="stopwatchReset">
+                  <i class="fa-solid fa-arrows-rotate"></i> Reset
+                </button>
+                <button class="btn btn-secondary" id="stopwatchLap">
+                  <i class="fa-solid fa-flag"></i> Lap
+                </button>
+              </div>
+              <div class="lap-list" id="lapList"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Alarm Tab -->
+        <div class="tab-content" id="alarm-tab">
+          <div class="info-card">
+            <h3><i class="fa-solid fa-bell"></i> Alarm</h3>
+            <div class="alarm-container">
+              <div class="alarm-controls">
+                <div class="input-group">
+                  <label for="alarmTime">Alarm Time</label>
+                  <input type="time" id="alarmTime">
+                </div>
+                <div class="input-group">
+                  <label for="alarmLabel">Alarm Label</label>
+                  <input type="text" id="alarmLabel" placeholder="Enter alarm label">
+                </div>
+                <button class="btn" id="addAlarm">
+                  <i class="fa-solid fa-plus"></i> Add Alarm
+                </button>
+              </div>
+              <div class="alarm-list" id="alarmList"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <footer>
+      <p>Jam &copy; 2025 | A modern clock application with multiple features</p>
+    </footer>
+  </div>
+
+  <script src="./jam.js"></script>
+</body>
+</html>

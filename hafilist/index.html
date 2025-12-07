@@ -1,0 +1,989 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Hafilist - Aplikasi pelacak keuangan pribadi yang modern dan intuitif">
+    <meta name="author" content="Nazwa">
+    <title>Hafilist - Pelacak Keuangan Pribadi</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts - Poppins & Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <link rel="stylesheet" href="./hafi.css">
+  <!-- Favicon -->
+<link rel="icon" type="image/png" href="https://images.icon-icons.com/39/PNG/96/xclock_clock_time_5987.png">
+
+<!-- Web App Manifest -->
+<link rel="manifest" href="./manifest.json">
+<meta name="theme-color" content="#4e54c8">
+
+<!-- Tambahan optional -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Hafilist">
+
+    
+</head>
+<body>
+    <!-- Skip to content link for accessibility -->
+    <a href="#main-content" class="skip-to-content">Skip to main content</a>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay" aria-hidden="true">
+        <div class="loading-content">
+            <div class="loading-spinner-lg" role="status" aria-label="Loading"></div>
+            <div class="loading-text" id="loadingText">Memuat data...</div>
+        </div>
+    </div>
+
+    <!-- Notification -->
+    <div class="notification" id="notification" role="alert" aria-live="assertive">
+        <div class="notification-icon" id="notificationIcon">
+            <i class="fas fa-check-circle"></i>
+        </div>
+        <div class="notification-content">
+            <div class="notification-title" id="notificationTitle">Berhasil</div>
+            <div class="notification-message" id="notificationMessage">Operasi berhasil dilakukan</div>
+        </div>
+        <button class="notification-close" id="notificationClose" aria-label="Close notification">
+            <i class="fas fa-times"></i>
+        </button>
+    </div>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light" role="navigation" aria-label="Main navigation">
+        <div class="container">
+            <a class="navbar-brand" href="#" aria-label="Hafilist Home">
+                ㅤ<i class="fas fa-wallet"></i>‎ Hafilist
+            </a>
+            <div class="d-flex align-items-center">
+                <button class="theme-toggle me-3" id="themeToggle" aria-label="Toggle theme">
+                    <i class="fas fa-moon"></i>
+                </button>
+                <button class="btn btn-outline-primary btn-sm d-none d-md-block" id="settingsBtn">
+                    <i class="fas fa-cog me-1"></i> Pengaturan
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="container my-4" id="main-content">
+        <!-- Dashboard Section -->
+        <section id="dashboardSection" class="content-section" aria-labelledby="dashboard-heading">
+            <div class="row mb-4">
+                <div class="col-12">
+                    <h2 id="dashboard-heading">Dashboard</h2>
+                </div>
+            </div>
+
+            <!-- Financial Stats -->
+            <div class="row mb-4" role="region" aria-label="Financial statistics">
+                <div class="col-md-3 col-6 mb-3">
+                    <div class="stat-card income">
+                        <div class="stat-value" id="totalIncome">Rp 0</div>
+                        <div class="stat-label">Pemasukan</div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6 mb-3">
+                    <div class="stat-card expense">
+                        <div class="stat-value" id="totalExpense">Rp 0</div>
+                        <div class="stat-label">Pengeluaran</div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6 mb-3">
+                    <div class="stat-card balance">
+                        <div class="stat-value" id="totalBalance">Rp 0</div>
+                        <div class="stat-label">Saldo</div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6 mb-3">
+                    <div class="stat-card health">
+                        <div class="financial-health-score">
+                            <div class="score-circle" id="healthScoreCircle" role="progressbar" 
+                                 aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" 
+                                 aria-label="Financial health score">
+                                <div class="score-value" id="healthScoreValue">0</div>
+                            </div>
+                            <div class="score-label">Skor Kesehatan</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Charts Row -->
+            <div class="row mb-4">
+                <div class="col-md-8 mb-4">
+                    <div class="dashboard-card">
+                        <h5 class="card-title">Ringkasan Keuangan</h5>
+                        <div class="chart-container">
+                            <canvas id="summaryChart" aria-label="Financial summary chart"></canvas>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="dashboard-card">
+                        <h5 class="card-title">Kategori Pengeluaran</h5>
+                        <div class="chart-container">
+                            <canvas id="categoryChart" aria-label="Expense category chart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Transactions -->
+            <div class="row mb-4">
+                <div class="col-12">
+                    <div class="dashboard-card">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h5 class="card-title mb-0">Transaksi Terbaru</h5>
+                            <a href="#" class="btn btn-sm btn-outline-primary" id="viewAllTransactionsBtn">
+                                Lihat Semua
+                            </a>
+                        </div>
+                        <div id="recentTransactionsList" role="list" aria-label="Recent transactions">
+                            <!-- Transactions will be dynamically added here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Budgets & Goals Row -->
+            <div class="row mb-4">
+                <div class="col-md-6 mb-4">
+                    <div class="dashboard-card">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h5 class="card-title mb-0">Anggaran</h5>
+                            <a href="#" class="btn btn-sm btn-outline-primary" id="addBudgetBtn">
+                                <i class="fas fa-plus me-1"></i> Tambah
+                            </a>
+                        </div>
+                        <div id="budgetsList" role="list" aria-label="Budgets">
+                            <!-- Budgets will be dynamically added here -->
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-4">
+                    <div class="dashboard-card">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h5 class="card-title mb-0">Tujuan Keuangan</h5>
+                            <a href="#" class="btn btn-sm btn-outline-primary" id="addGoalBtn">
+                                <i class="fas fa-plus me-1"></i> Tambah
+                            </a>
+                        </div>
+                        <div id="goalsList" role="list" aria-label="Financial goals">
+                            <!-- Goals will be dynamically added here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Insights & Recommendations Row -->
+            <div class="row">
+                <div class="col-md-6 mb-4">
+                    <div class="dashboard-card">
+                        <h5 class="card-title">Insight Keuangan</h5>
+                        <div id="insightsList" role="list" aria-label="Financial insights">
+                            <!-- Insights will be dynamically added here -->
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-4">
+                    <div class="dashboard-card">
+                        <h5 class="card-title">Rekomendasi Anggaran</h5>
+                        <div id="recommendationsList" role="list" aria-label="Budget recommendations">
+                            <!-- Recommendations will be dynamically added here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Transactions Section -->
+        <section id="transactionsSection" class="content-section d-none" aria-labelledby="transactions-heading">
+            <div class="row mb-4">
+                <div class="col-12">
+                    <h2 id="transactions-heading">Transaksi</h2>
+                </div>
+            </div>
+
+            <!-- Search and Filter -->
+            <div class="row mb-4">
+                <div class="col-md-6 mb-3">
+                    <div class="search-container">
+                        <i class="fas fa-search search-icon" aria-hidden="true"></i>
+                        <input type="text" class="search-input" id="transactionSearch" 
+                               placeholder="Cari transaksi..." aria-label="Search transactions">
+                        <div class="search-suggestions" id="transactionSuggestions" role="listbox">
+                            <!-- Suggestions will be dynamically added here -->
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <div class="d-flex gap-2">
+                        <select class="form-select" id="transactionFilter" aria-label="Filter transactions by type">
+                            <option value="all">Semua Transaksi</option>
+                            <option value="income">Pemasukan</option>
+                            <option value="expense">Pengeluaran</option>
+                        </select>
+                        <select class="form-select" id="transactionCategoryFilter" aria-label="Filter transactions by category">
+                            <option value="all">Semua Kategori</option>
+                            <!-- Categories will be dynamically added here -->
+                        </select>
+                        <select class="form-select" id="transactionSort" aria-label="Sort transactions">
+                            <option value="newest">Terbaru</option>
+                            <option value="oldest">Terlama</option>
+                            <option value="amount-high">Jumlah Tertinggi</option>
+                            <option value="amount-low">Jumlah Terendah</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Transactions List -->
+            <div class="row">
+                <div class="col-12">
+                    <div class="dashboard-card">
+                        <div id="transactionsList" role="list" aria-label="All transactions">
+                            <!-- Transactions will be dynamically added here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Budgets Section -->
+        <section id="budgetsSection" class="content-section d-none" aria-labelledby="budgets-heading">
+            <div class="row mb-4">
+                <div class="col-12">
+                    <h2 id="budgets-heading">Anggaran</h2>
+                </div>
+            </div>
+
+            <!-- Budgets List -->
+            <div class="row">
+                <div class="col-12">
+                    <div class="dashboard-card">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h5 class="card-title mb-0">Daftar Anggaran</h5>
+                            <button class="btn btn-primary" id="addBudgetBtn2">
+                                <i class="fas fa-plus me-1"></i> Tambah Anggaran
+                            </button>
+                        </div>
+                        <div id="budgetsListFull" role="list" aria-label="All budgets">
+                            <!-- Budgets will be dynamically added here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Goals Section -->
+        <section id="goalsSection" class="content-section d-none" aria-labelledby="goals-heading">
+            <div class="row mb-4">
+                <div class="col-12">
+                    <h2 id="goals-heading">Tujuan Keuangan</h2>
+                </div>
+            </div>
+
+            <!-- Goals List -->
+            <div class="row">
+                <div class="col-12">
+                    <div class="dashboard-card">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h5 class="card-title mb-0">Daftar Tujuan</h5>
+                            <button class="btn btn-primary" id="addGoalBtn2">
+                                <i class="fas fa-plus me-1"></i> Tambah Tujuan
+                            </button>
+                        </div>
+                        <div id="goalsListFull" role="list" aria-label="All financial goals">
+                            <!-- Goals will be dynamically added here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Debts Section -->
+        <section id="debtsSection" class="content-section d-none" aria-labelledby="debts-heading">
+            <div class="row mb-4">
+                <div class="col-12">
+                    <h2 id="debts-heading">Hutang & Piutang</h2>
+                </div>
+            </div>
+
+            <!-- Tabs -->
+            <div class="row mb-4">
+                <div class="col-12">
+                    <ul class="nav nav-tabs" id="debtTabs" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active" id="debts-tab" data-bs-toggle="tab" data-bs-target="#debts" type="button" role="tab" aria-controls="debts" aria-selected="true">Hutang</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="receivables-tab" data-bs-toggle="tab" data-bs-target="#receivables" type="button" role="tab" aria-controls="receivables" aria-selected="false">Piutang</button>
+                        </li>
+                    </ul>
+                    <div class="tab-content" id="debtTabsContent">
+                        <div class="tab-pane fade show active" id="debts" role="tabpanel" aria-labelledby="debts-tab">
+                            <div class="dashboard-card mt-3">
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <h5 class="card-title mb-0">Daftar Hutang</h5>
+                                    <button class="btn btn-primary" id="addDebtBtn">
+                                        <i class="fas fa-plus me-1"></i> Tambah Hutang
+                                    </button>
+                                </div>
+                                <div id="debtsList" role="list" aria-label="Debts">
+                                    <!-- Debts will be dynamically added here -->
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="receivables" role="tabpanel" aria-labelledby="receivables-tab">
+                            <div class="dashboard-card mt-3">
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <h5 class="card-title mb-0">Daftar Piutang</h5>
+                                    <button class="btn btn-primary" id="addReceivableBtn">
+                                        <i class="fas fa-plus me-1"></i> Tambah Piutang
+                                    </button>
+                                </div>
+                                <div id="receivablesList" role="list" aria-label="Receivables">
+                                    <!-- Receivables will be dynamically added here -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Reports Section -->
+        <section id="reportsSection" class="content-section d-none" aria-labelledby="reports-heading">
+            <div class="row mb-4">
+                <div class="col-12">
+                    <h2 id="reports-heading">Laporan & Analitik</h2>
+                </div>
+            </div>
+
+            <!-- Date Range Selector -->
+            <div class="row mb-4">
+                <div class="col-md-6 mb-3">
+                    <div class="d-flex gap-2">
+                        <input type="date" class="form-control" id="reportStartDate" aria-label="Report start date">
+                        <input type="date" class="form-control" id="reportEndDate" aria-label="Report end date">
+                        <button class="btn btn-primary" id="applyDateRangeBtn">Terapkan</button>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <div class="d-flex justify-content-end gap-2">
+                        <button class="btn btn-outline-primary" id="exportReportBtn">
+                            <i class="fas fa-download me-1"></i> Ekspor
+                        </button>
+                        <button class="btn btn-outline-primary" id="printReportBtn">
+                            <i class="fas fa-print me-1"></i> Cetak
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Report Charts -->
+            <div class="row mb-4">
+                <div class="col-md-8 mb-4">
+                    <div class="dashboard-card">
+                        <h5 class="card-title">Tren Keuangan</h5>
+                        <div class="chart-container">
+                            <canvas id="trendChart" aria-label="Financial trend chart"></canvas>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="dashboard-card">
+                        <h5 class="card-title">Perbandingan Pemasukan & Pengeluaran</h5>
+                        <div class="chart-container">
+                            <canvas id="comparisonChart" aria-label="Income vs expense comparison chart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Category Breakdown -->
+            <div class="row mb-4">
+                <div class="col-12">
+                    <div class="dashboard-card">
+                        <h5 class="card-title">Rincian Kategori</h5>
+                        <div class="chart-container" style="height: 400px;">
+                            <canvas id="categoryBreakdownChart" aria-label="Category breakdown chart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Financial Summary -->
+            <div class="row">
+                <div class="col-12">
+                    <div class="dashboard-card">
+                        <h5 class="card-title">Ringkasan Keuangan</h5>
+                        <div id="financialSummary">
+                            <!-- Financial summary will be dynamically added here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Settings Section -->
+        <section id="settingsSection" class="content-section d-none" aria-labelledby="settings-heading">
+            <div class="row mb-4">
+                <div class="col-12">
+                    <h2 id="settings-heading">Pengaturan</h2>
+                </div>
+            </div>
+
+            <!-- General Settings -->
+            <div class="settings-section">
+                <h3 class="settings-title">Umum</h3>
+                <div class="settings-card">
+                    <div class="settings-item">
+                        <div>
+                            <div class="settings-label">Tema</div>
+                            <div class="settings-description">Ganti antara tema terang dan gelap</div>
+                        </div>
+                        <div class="form-switch">
+                            <input class="form-check-input" type="checkbox" id="themeSwitch" role="switch" aria-checked="false">
+                        </div>
+                    </div>
+                    <div class="settings-item">
+                        <div>
+                            <div class="settings-label">Bahasa</div>
+                            <div class="settings-description">Pilih bahasa aplikasi</div>
+                        </div>
+                        <select class="form-select" id="languageSelect" style="width: auto;" aria-label="Select language">
+                            <option value="id">Bahasa Indonesia</option>
+                            <option value="en">English</option>
+                        </select>
+                    </div>
+                    <div class="settings-item">
+                        <div>
+                            <div class="settings-label">Mata Uang</div>
+                            <div class="settings-description">Pilih mata uang default</div>
+                        </div>
+                        <select class="form-select" id="currencySelect" style="width: auto;" aria-label="Select currency">
+                            <option value="idr">Rupiah (Rp)</option>
+                            <option value="usd">Dollar AS ($)</option>
+                            <option value="eur">Euro (€)</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Data Management -->
+            <div class="settings-section">
+                <h3 class="settings-title">Manajemen Data</h3>
+                <div class="settings-card">
+                    <div class="export-import-container">
+                        <a href="#" class="export-import-btn" id="exportDataBtn">
+                            <i class="fas fa-file-export export-import-icon"></i>
+                            <div class="export-import-title">Ekspor Data</div>
+                            <div class="export-import-description">Simpan data ke file</div>
+                        </a>
+                        <a href="#" class="export-import-btn" id="importDataBtn">
+                            <i class="fas fa-file-import export-import-icon"></i>
+                            <div class="export-import-title">Impor Data</div>
+                            <div class="export-import-description">Muat data dari file</div>
+                        </a>
+                    </div>
+                    <div class="settings-item">
+                        <div>
+                            <div class="settings-label">Backup Otomatis</div>
+                            <div class="settings-description">Backup data secara otomatis setiap hari</div>
+                        </div>
+                        <div class="form-switch">
+                            <input class="form-check-input" type="checkbox" id="autoBackupSwitch" role="switch" aria-checked="false">
+                        </div>
+                    </div>
+                    <div class="settings-item">
+                        <div>
+                            <div class="settings-label">Hapus Data Otomatis</div>
+                            <div class="settings-description">Hapus data transaksi setelah periode tertentu</div>
+                        </div>
+                        <select class="form-select" id="autoDeleteSelect" style="width: auto;" aria-label="Auto-delete data period">
+                            <option value="never">Tidak Pernah</option>
+                            <option value="6months">6 Bulan</option>
+                            <option value="1year">1 Tahun</option>
+                            <option value="2years">2 Tahun</option>
+                        </select>
+                    </div>
+                    <div class="settings-item">
+                        <div>
+                            <div class="settings-label">Hapus Semua Data</div>
+                            <div class="settings-description">Hapus semua data dari aplikasi</div>
+                        </div>
+                        <button class="btn btn-danger" id="clearDataBtn">Hapus Data</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Security Settings -->
+            <div class="settings-section">
+                <h3 class="settings-title">Keamanan</h3>
+                <div class="settings-card">
+                    <div class="settings-item">
+                        <div>
+                            <div class="settings-label">PIN Aplikasi</div>
+                            <div class="settings-description">Aktifkan PIN untuk mengamankan aplikasi</div>
+                        </div>
+                        <div class="form-switch">
+                            <input class="form-check-input" type="checkbox" id="pinSwitch" role="switch" aria-checked="false">
+                        </div>
+                    </div>
+                    <div id="pinSetupSection" class="d-none">
+                        <div class="security-card">
+                            <h5 class="security-title">Atur PIN</h5>
+                            <div class="pin-container" role="group" aria-label="PIN input">
+                                <input type="password" class="pin-input" maxlength="1" data-index="0" aria-label="PIN digit 1">
+                                <input type="password" class="pin-input" maxlength="1" data-index="1" aria-label="PIN digit 2">
+                                <input type="password" class="pin-input" maxlength="1" data-index="2" aria-label="PIN digit 3">
+                                <input type="password" class="pin-input" maxlength="1" data-index="3" aria-label="PIN digit 4">
+                            </div>
+                            <div class="d-flex justify-content-center gap-2">
+                                <button class="btn btn-primary" id="savePinBtn">Simpan PIN</button>
+                                <button class="btn btn-outline-secondary" id="cancelPinBtn">Batal</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="settings-item">
+                        <div>
+                            <div class="settings-label">Autentikasi Biometrik</div>
+                            <div class="settings-description">Gunakan sidik jari atau wajah untuk masuk</div>
+                        </div>
+                        <div class="form-switch">
+                            <input class="form-check-input" type="checkbox" id="biometricSwitch" role="switch" aria-checked="false">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Notification Settings -->
+            <div class="settings-section">
+                <h3 class="settings-title">Notifikasi</h3>
+                <div class="settings-card">
+                    <div class="settings-item">
+                        <div>
+                            <div class="settings-label">Notifikasi Anggaran</div>
+                            <div class="settings-description">Beritahu saat anggaran hampir habis</div>
+                        </div>
+                        <div class="form-switch">
+                            <input class="form-check-input" type="checkbox" id="budgetNotificationSwitch" role="switch" aria-checked="true">
+                        </div>
+                    </div>
+                    <div class="settings-item">
+                        <div>
+                            <div class="settings-label">Notifikasi Tujuan</div>
+                            <div class="settings-description">Beritahu tentang kemajuan tujuan keuangan</div>
+                        </div>
+                        <div class="form-switch">
+                            <input class="form-check-input" type="checkbox" id="goalNotificationSwitch" role="switch" aria-checked="true">
+                        </div>
+                    </div>
+                    <div class="settings-item">
+                        <div>
+                            <div class="settings-label">Notifikasi Transaksi Berulang</div>
+                            <div class="settings-description">Ingatkan untuk transaksi berulang</div>
+                        </div>
+                        <div class="form-switch">
+                            <input class="form-check-input" type="checkbox" id="recurringNotificationSwitch" role="switch" aria-checked="true">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- About -->
+            <div class="settings-section">
+                <h3 class="settings-title">Tentang</h3>
+                <div class="settings-card">
+                    <div class="settings-item">
+                        <div>
+                            <div class="settings-label">Versi Aplikasi</div>
+                            <div class="settings-description">1.0.0</div>
+                        </div>
+                    </div>
+                    <div class="settings-item">
+                        <div>
+                            <div class="settings-label">Pengembang</div>
+                            <div class="settings-description">Thio Saputra</div>
+                        </div>
+                    </div>
+                    <div class="settings-item">
+                        <div>
+                            <div class="settings-label">Hak Cipta</div>
+                            <div class="settings-description">© 2025 Hafilist. Hak cipta dilindungi.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Floating Action Button -->
+    <button class="fab" id="addTransactionFab" aria-label="Add transaction">
+        <i class="fas fa-plus"></i>
+    </button>
+
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav d-md-none" role="navigation" aria-label="Mobile navigation">
+        <a href="#" class="nav-item active" data-section="dashboardSection" aria-current="page">
+            <i class="fas fa-home"></i>
+            <span>Beranda</span>
+        </a>
+        <a href="#" class="nav-item" data-section="transactionsSection">
+            <i class="fas fa-exchange-alt"></i>
+            <span>Transaksi</span>
+        </a>
+        <a href="#" class="nav-item" data-section="budgetsSection">
+            <i class="fas fa-wallet"></i>
+            <span>Anggaran</span>
+        </a>
+        <a href="#" class="nav-item" data-section="goalsSection">
+            <i class="fas fa-bullseye"></i>
+            <span>Tujuan</span>
+        </a>
+        <a href="#" class="nav-item" data-section="debtsSection">
+            <i class="fas fa-hand-holding-usd"></i>
+            <span>Hutang</span>
+        </a>
+        <a href="#" class="nav-item" data-section="reportsSection">
+            <i class="fas fa-chart-line"></i>
+            <span>Laporan</span>
+        </a>
+        <a href="#" class="nav-item" data-section="settingsSection">
+            <i class="fas fa-cog"></i>
+            <span>Pengaturan</span>
+        </a>
+    </nav>
+
+    <!-- Add Transaction Modal -->
+    <div class="modal fade" id="addTransactionModal" tabindex="-1" aria-labelledby="addTransactionModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addTransactionModalLabel">Tambah Transaksi</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="addTransactionForm">
+                        <div class="mb-3">
+                            <label for="transactionType" class="form-label">Jenis Transaksi</label>
+                            <select class="form-select" id="transactionType" required aria-required="true">
+                                <option value="income">Pemasukan</option>
+                                <option value="expense">Pengeluaran</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="transactionAmount" class="form-label">Jumlah</label>
+                            <div class="input-group">
+                                <span class="input-group-text">Rp</span>
+                                <input type="text" class="form-control" id="transactionAmount" placeholder="0" required aria-required="true">
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="transactionDate" class="form-label">Tanggal</label>
+                            <input type="date" class="form-control" id="transactionDate" required aria-required="true">
+                        </div>
+                        <div class="mb-3">
+                            <label for="transactionCategory" class="form-label">Kategori</label>
+                            <select class="form-select" id="transactionCategory" required aria-required="true">
+                                <!-- Categories will be dynamically added here -->
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="transactionDescription" class="form-label">Deskripsi</label>
+                            <input type="text" class="form-control" id="transactionDescription" placeholder="Deskripsi transaksi">
+                        </div>
+                        <div class="mb-3">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="transactionRecurring">
+                                <label class="form-check-label" for="transactionRecurring">
+                                    Transaksi Berulang
+                                </label>
+                            </div>
+                        </div>
+                        <div class="mb-3 d-none" id="recurringOptions">
+                            <label for="recurringFrequency" class="form-label">Frekuensi</label>
+                            <select class="form-select" id="recurringFrequency">
+                                <option value="daily">Harian</option>
+                                <option value="weekly">Mingguan</option>
+                                <option value="monthly">Bulanan</option>
+                                <option value="yearly">Tahunan</option>
+                            </select>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="button" class="btn btn-primary" id="saveTransactionBtn">Simpan</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Budget Modal -->
+    <div class="modal fade" id="addBudgetModal" tabindex="-1" aria-labelledby="addBudgetModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addBudgetModalLabel">Tambah Anggaran</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="addBudgetForm">
+                        <div class="mb-3">
+                            <label for="budgetName" class="form-label">Nama Anggaran</label>
+                            <input type="text" class="form-control" id="budgetName" placeholder="Nama anggaran" required aria-required="true">
+                        </div>
+                        <div class="mb-3">
+                            <label for="budgetCategory" class="form-label">Kategori</label>
+                            <select class="form-select" id="budgetCategory" required aria-required="true">
+                                <!-- Categories will be dynamically added here -->
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="budgetAmount" class="form-label">Jumlah Anggaran</label>
+                            <div class="input-group">
+                                <span class="input-group-text">Rp</span>
+                                <input type="text" class="form-control" id="budgetAmount" placeholder="0" required aria-required="true">
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="budgetPeriod" class="form-label">Periode</label>
+                            <select class="form-select" id="budgetPeriod" required aria-required="true">
+                                <option value="weekly">Mingguan</option>
+                                <option value="monthly">Bulanan</option>
+                                <option value="yearly">Tahunan</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="budgetNotification" class="form-label">Notifikasi</label>
+                            <select class="form-select" id="budgetNotification">
+                                <option value="none">Tidak Ada</option>
+                                <option value="80">80% Terpakai</option>
+                                <option value="90">90% Terpakai</option>
+                                <option value="100">100% Terpakai</option>
+                            </select>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="button" class="btn btn-primary" id="saveBudgetBtn">Simpan</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Goal Modal -->
+    <div class="modal fade" id="addGoalModal" tabindex="-1" aria-labelledby="addGoalModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addGoalModalLabel">Tambah Tujuan Keuangan</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="addGoalForm">
+                        <div class="mb-3">
+                            <label for="goalName" class="form-label">Nama Tujuan</label>
+                            <input type="text" class="form-control" id="goalName" placeholder="Nama tujuan" required aria-required="true">
+                        </div>
+                        <div class="mb-3">
+                            <label for="goalTargetAmount" class="form-label">Jumlah Target</label>
+                            <div class="input-group">
+                                <span class="input-group-text">Rp</span>
+                                <input type="text" class="form-control" id="goalTargetAmount" placeholder="0" required aria-required="true">
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="goalCurrentAmount" class="form-label">Jumlah Saat Ini</label>
+                            <div class="input-group">
+                                <span class="input-group-text">Rp</span>
+                                <input type="text" class="form-control" id="goalCurrentAmount" placeholder="0" value="0">
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="goalTargetDate" class="form-label">Target Tanggal</label>
+                            <input type="date" class="form-control" id="goalTargetDate" required aria-required="true">
+                        </div>
+                        <div class="mb-3">
+                            <label for="goalDescription" class="form-label">Deskripsi</label>
+                            <textarea class="form-control" id="goalDescription" rows="3" placeholder="Deskripsi tujuan"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="button" class="btn btn-primary" id="saveGoalBtn">Simpan</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Debt Modal -->
+    <div class="modal fade" id="addDebtModal" tabindex="-1" aria-labelledby="addDebtModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addDebtModalLabel">Tambah Hutang</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="addDebtForm">
+                        <div class="mb-3">
+                            <label for="debtName" class="form-label">Nama</label>
+                            <input type="text" class="form-control" id="debtName" placeholder="Nama pemberi pinjaman" required aria-required="true">
+                        </div>
+                        <div class="mb-3">
+                            <label for="debtAmount" class="form-label">Jumlah</label>
+                            <div class="input-group">
+                                <span class="input-group-text">Rp</span>
+                                <input type="text" class="form-control" id="debtAmount" placeholder="0" required aria-required="true">
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="debtDate" class="form-label">Tanggal Pinjam</label>
+                            <input type="date" class="form-control" id="debtDate" required aria-required="true">
+                        </div>
+                        <div class="mb-3">
+                            <label for="debtDueDate" class="form-label">Tanggal Jatuh Tempo</label>
+                            <input type="date" class="form-control" id="debtDueDate" required aria-required="true">
+                        </div>
+                        <div class="mb-3">
+                            <label for="debtInterestRate" class="form-label">Suku Bunga (%)</label>
+                            <input type="number" class="form-control" id="debtInterestRate" placeholder="0" min="0" step="0.1" value="0">
+                        </div>
+                        <div class="mb-3">
+                            <label for="debtDescription" class="form-label">Deskripsi</label>
+                            <textarea class="form-control" id="debtDescription" rows="3" placeholder="Deskripsi hutang"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="button" class="btn btn-primary" id="saveDebtBtn">Simpan</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Receivable Modal -->
+    <div class="modal fade" id="addReceivableModal" tabindex="-1" aria-labelledby="addReceivableModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addReceivableModalLabel">Tambah Piutang</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="addReceivableForm">
+                        <div class="mb-3">
+                            <label for="receivableName" class="form-label">Nama</label>
+                            <input type="text" class="form-control" id="receivableName" placeholder="Nama peminjam" required aria-required="true">
+                        </div>
+                        <div class="mb-3">
+                            <label for="receivableAmount" class="form-label">Jumlah</label>
+                            <div class="input-group">
+                                <span class="input-group-text">Rp</span>
+                                <input type="text" class="form-control" id="receivableAmount" placeholder="0" required aria-required="true">
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="receivableDate" class="form-label">Tanggal Pinjam</label>
+                            <input type="date" class="form-control" id="receivableDate" required aria-required="true">
+                        </div>
+                        <div class="mb-3">
+                            <label for="receivableDueDate" class="form-label">Tanggal Jatuh Tempo</label>
+                            <input type="date" class="form-control" id="receivableDueDate" required aria-required="true">
+                        </div>
+                        <div class="mb-3">
+                            <label for="receivableDescription" class="form-label">Deskripsi</label>
+                            <textarea class="form-control" id="receivableDescription" rows="3" placeholder="Deskripsi piutang"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="button" class="btn btn-primary" id="saveReceivableBtn">Simpan</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Export Options Modal -->
+    <div class="modal fade" id="exportOptionsModal" tabindex="-1" aria-labelledby="exportOptionsModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exportOptionsModalLabel">Ekspor Data</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">Pilih Format Ekspor</label>
+                        <div class="d-grid gap-2">
+                            <button type="button" class="btn btn-outline-primary" id="exportJsonBtn">
+                                <i class="fas fa-file-code me-2"></i> JSON
+                            </button>
+                            <button type="button" class="btn btn-outline-primary" id="exportCsvBtn">
+                                <i class="fas fa-file-csv me-2"></i> CSV
+                            </button>
+                            <button type="button" class="btn btn-outline-primary" id="exportPdfBtn">
+                                <i class="fas fa-file-pdf me-2"></i> PDF
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Batal</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Import Data Modal -->
+    <div class="modal fade" id="importDataModal" tabindex="-1" aria-labelledby="importDataModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="importDataModalLabel">Impor Data</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="importFile" class="form-label">Pilih File</label>
+                        <input type="file" class="form-control" id="importFile" accept=".json,.csv" aria-required="true">
+                        <div class="form-text">Hanya file JSON dan CSV yang didukung</div>
+                    </div>
+                    <div class="alert alert-warning" role="alert">
+                        <i class="fas fa-exclamation-triangle me-2"></i>
+                        Impor data akan menimpa data yang ada. Pastikan Anda telah melakukan backup sebelum melanjutkan.
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="button" class="btn btn-primary" id="confirmImportBtn">Impor</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="./hapi.js"></script>
+</body>
+</html>

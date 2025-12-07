@@ -1,0 +1,2396 @@
+{
+  "platforms": [
+    {
+      "id": "cloudflare-pages",
+      "name": "Cloudflare Pages",
+      "type": "static",
+      "category": "popular",
+      "logo": "fab fa-cloudflare",
+      "logoColor": "linear-gradient(135deg, #f38020, #ff6b35)",
+      "description": "Platform hosting static site gratis dari Cloudflare dengan CDN global tercepat dan SSL otomatis.",
+      "features": [
+        "100% gratis tanpa batas bandwidth",
+        "CDN global 200+ locations",
+        "SSL certificate otomatis",
+        "Integrasi Git seamless",
+        "Custom domain gratis",
+        "Serverless functions"
+      ],
+      "url": "https://dash.cloudflare.com",
+      "pricing": {
+        "free": true,
+        "storage": "Unlimited",
+        "bandwidth": "Unlimited",
+        "customDomains": true,
+        "ssl": true
+      },
+      "tags": ["cdn", "git", "serverless", "ssl"]
+    },
+    {
+      "id": "netlify",
+      "name": "Netlify",
+      "type": "static",
+      "category": "popular",
+      "logo": "fas fa-globe",
+      "logoColor": "linear-gradient(135deg, #00d084, #00b870)",
+      "description": "Platform modern untuk deploy static site dengan fitur CI/CD otomatis dan serverless functions.",
+      "features": [
+        "100GB bandwidth gratis/bulan",
+        "CI/CD otomatis dari Git",
+        "Serverless functions",
+        "Form handling gratis",
+        "Deploy preview untuk PR",
+        "A/B testing"
+      ],
+      "url": "https://netlify.com",
+      "pricing": {
+        "free": true,
+        "storage": "100GB",
+        "bandwidth": "100GB",
+        "customDomains": true,
+        "ssl": true
+      },
+      "tags": ["ci-cd", "git", "serverless", "forms"]
+    },
+    {
+      "id": "vercel",
+      "name": "Vercel",
+      "type": "both",
+      "category": "popular",
+      "logo": "fas fa-bolt",
+      "logoColor": "linear-gradient(135deg, #000, #333)",
+      "description": "Platform optimal untuk Next.js dan React dengan preview deployment otomatis dan analytics.",
+      "features": [
+        "Unlimited projects",
+        "Preview deployments",
+        "Serverless functions",
+        "Analytics gratis",
+        "Custom domain",
+        "Edge functions"
+      ],
+      "url": "https://vercel.com",
+      "pricing": {
+        "free": true,
+        "storage": "Unlimited",
+        "bandwidth": "100GB",
+        "customDomains": true,
+        "ssl": true
+      },
+      "tags": ["nextjs", "react", "serverless", "analytics"]
+    },
+    {
+      "id": "github-pages",
+      "name": "GitHub Pages",
+      "type": "static",
+      "category": "standard",
+      "logo": "fab fa-github",
+      "logoColor": "linear-gradient(135deg, #333, #555)",
+      "description": "Hosting static site gratis langsung dari repository GitHub Anda.",
+      "features": [
+        "Unlimited repositories",
+        "Custom domain support",
+        "HTTPS otomatis",
+        "Jekyll support",
+        "Integrasi GitHub seamless",
+        "1GB storage"
+      ],
+      "url": "https://pages.github.com",
+      "pricing": {
+        "free": true,
+        "storage": "1GB",
+        "bandwidth": "100GB",
+        "customDomains": true,
+        "ssl": true
+      },
+      "tags": ["git", "jekyll", "github", "static"]
+    },
+    {
+      "id": "firebase-hosting",
+      "name": "Firebase Hosting",
+      "type": "static",
+      "category": "standard",
+      "logo": "fas fa-fire",
+      "logoColor": "linear-gradient(135deg, #ffca28, #ffc107)",
+      "description": "Hosting web production-grade dengan CDN global dan SSL otomatis dari Google.",
+      "features": [
+        "10GB storage gratis",
+        "360MB transfer/hari",
+        "CDN global",
+        "One-click rollback",
+        "Custom domain",
+        "Cloud Functions integration"
+      ],
+      "url": "https://firebase.google.com",
+      "pricing": {
+        "free": true,
+        "storage": "10GB",
+        "bandwidth": "360MB/hari",
+        "customDomains": true,
+        "ssl": true
+      },
+      "tags": ["google", "cdn", "functions", "rollback"]
+    },
+    {
+      "id": "heroku",
+      "name": "Heroku",
+      "type": "dynamic",
+      "category": "standard",
+      "logo": "fas fa-server",
+      "logoColor": "linear-gradient(135deg, #430098, #6a1b9a)",
+      "description": "Platform cloud untuk deploy aplikasi web dengan berbagai bahasa pemrograman.",
+      "features": [
+        "550 dyno hours/bulan",
+        "Support multiple languages",
+        "Add-ons marketplace",
+        "Git deployment",
+        "Automatic scaling",
+        "PostgreSQL gratis"
+      ],
+      "url": "https://heroku.com",
+      "pricing": {
+        "free": true,
+        "storage": "Unlimited",
+        "bandwidth": "550 hours",
+        "customDomains": true,
+        "ssl": true
+      },
+      "tags": ["paas", "git", "scaling", "database"]
+    },
+    {
+      "id": "render",
+      "name": "Render",
+      "type": "both",
+      "category": "standard",
+      "logo": "fas fa-cube",
+      "logoColor": "linear-gradient(135deg, #46e3b7, #26d0ce)",
+      "description": "Unified cloud untuk build dan run aplikasi dan website dengan mudah.",
+      "features": [
+        "Static sites gratis",
+        "Web services gratis",
+        "Auto-deploy dari Git",
+        "SSL otomatis",
+        "Private network",
+        "Databases gratis"
+      ],
+      "url": "https://render.com",
+      "pricing": {
+        "free": true,
+        "storage": "Unlimited",
+        "bandwidth": "750GB",
+        "customDomains": true,
+        "ssl": true
+      },
+      "tags": ["paas", "git", "database", "ssl"]
+    },
+    {
+      "id": "railway",
+      "name": "Railway",
+      "type": "dynamic",
+      "category": "standard",
+      "logo": "fas fa-train",
+      "logoColor": "linear-gradient(135deg, #0b0d0e, #2c3e50)",
+      "description": "Platform deployment infrastructure yang sederhana untuk developer.",
+      "features": [
+        "$5 credit gratis",
+        "Unlimited projects",
+        "Build dari GitHub",
+        "Custom domains",
+        "Auto scaling",
+        "PostgreSQL gratis"
+      ],
+      "url": "https://railway.app",
+      "pricing": {
+        "free": true,
+        "storage": "Unlimited",
+        "bandwidth": "$5 credit",
+        "customDomains": true,
+        "ssl": true
+      },
+      "tags": ["paas", "git", "scaling", "database"]
+    },
+    {
+      "id": "surge",
+      "name": "Surge",
+      "type": "static",
+      "category": "standard",
+      "logo": "fas fa-bolt",
+      "logoColor": "linear-gradient(135deg, #00d4aa, #00b894)",
+      "description": "CLI tool untuk deploy static sites ke CDN global dalam hitungan detik.",
+      "features": [
+        "Unlimited projects",
+        "Custom domain",
+        "HTTPS otomatis",
+        "Form handling",
+        "Basic auth",
+        "Collaboration"
+      ],
+      "url": "https://surge.sh",
+      "pricing": {
+        "free": true,
+        "storage": "Unlimited",
+        "bandwidth": "Unlimited",
+        "customDomains": true,
+        "ssl": true
+      },
+      "tags": ["cli", "cdn", "forms", "auth"]
+    },
+    {
+      "id": "000webhost",
+      "name": "000webhost",
+      "type": "dynamic",
+      "category": "standard",
+      "logo": "fas fa-globe",
+      "logoColor": "linear-gradient(135deg, #ff6b6b, #ee5a52)",
+      "description": "Hosting PHP gratis dengan cPanel dan support MySQL database.",
+      "features": [
+        "300MB storage",
+        "3GB bandwidth",
+        "PHP & MySQL",
+        "Website builder",
+        "Auto installer",
+        "Free SSL"
+      ],
+      "url": "https://www.000webhost.com",
+      "pricing": {
+        "free": true,
+        "storage": "300MB",
+        "bandwidth": "3GB",
+        "customDomains": true,
+        "ssl": true
+      },
+      "tags": ["php", "mysql", "cpanel", "builder"]
+    },
+    {
+      "id": "infinityfree",
+      "name": "InfinityFree",
+      "type": "dynamic",
+      "category": "standard",
+      "logo": "fas fa-infinity",
+      "logoColor": "linear-gradient(135deg, #4a90e2, #357abd)",
+      "description": "Hosting gratis dengan unlimited disk space dan bandwidth untuk website dinamis.",
+      "features": [
+        "Unlimited disk space",
+        "Unlimited bandwidth",
+        "PHP & MySQL",
+        "Softaculous installer",
+        "Free SSL",
+        "Auto backup"
+      ],
+      "url": "https://infinityfree.net",
+      "pricing": {
+        "free": true,
+        "storage": "Unlimited",
+        "bandwidth": "Unlimited",
+        "customDomains": true,
+        "ssl": true
+      },
+      "tags": ["php", "mysql", "unlimited", "backup"]
+    },
+    {
+      "id": "gitlab-pages",
+      "name": "GitLab Pages",
+      "type": "static",
+      "category": "standard",
+      "logo": "fab fa-gitlab",
+      "logoColor": "linear-gradient(135deg, #fc6d26, #e24329)",
+      "description": "Hosting static sites gratis terintegrasi dengan GitLab CI/CD.",
+      "features": [
+        "Unlimited sites",
+        "Custom domains",
+        "HTTPS otomatis",
+        "Access control",
+        "CI/CD integration",
+        "GitLab LFS support"
+      ],
+      "url": "https://pages.gitlab.io",
+      "pricing": {
+        "free": true,
+        "storage": "Unlimited",
+        "bandwidth": "Unlimited",
+        "customDomains": true,
+        "ssl": true
+      },
+      "tags": ["git", "ci-cd", "gitlab", "static"]
+    },
+    {
+      "id": "bitbucket-cloud",
+      "name": "Bitbucket Cloud",
+      "type": "static",
+      "category": "standard",
+      "logo": "fab fa-bitbucket",
+      "logoColor": "linear-gradient(135deg, #0052cc, #0747a6)",
+      "description": "Platform Git dengan integrated static site hosting untuk teams.",
+      "features": [
+        "5 users gratis",
+        "1GB storage",
+        "Static site hosting",
+        "Pipelines CI/CD",
+        "Integration with Jira",
+        "Custom domain"
+      ],
+      "url": "https://bitbucket.org",
+      "pricing": {
+        "free": true,
+        "storage": "1GB",
+        "bandwidth": "Unlimited",
+        "customDomains": true,
+        "ssl": true
+      },
+      "tags": ["git", "ci-cd", "jira", "teams"]
+    },
+    {
+      "id": "pythonanywhere",
+      "name": "PythonAnywhere",
+      "type": "dynamic",
+      "category": "standard",
+      "logo": "fab fa-python",
+      "logoColor": "linear-gradient(135deg, #ffd43b, #fab005)",
+      "description": "Hosting Python gratis dengan web app support dan development environment.",
+      "features": [
+        "1 web app gratis",
+        "512MB storage",
+        "Python 2.7 & 3.x",
+        "MySQL database",
+        "Bash console",
+        "Scheduled tasks"
+      ],
+      "url": "https://www.pythonanywhere.com",
+      "pricing": {
+        "free": true,
+        "storage": "512MB",
+        "bandwidth": "Unlimited",
+        "customDomains": false,
+        "ssl": true
+      },
+      "tags": ["python", "mysql", "console", "tasks"]
+    },
+    {
+      "id": "replit",
+      "name": "Replit",
+      "type": "both",
+      "category": "standard",
+      "logo": "fas fa-code",
+      "logoColor": "linear-gradient(135deg, #667eea, #764ba2)",
+      "description": "Online IDE dengan hosting built-in untuk 50+ programming languages.",
+      "features": [
+        "Unlimited public repls",
+        "50+ languages",
+        "Web hosting",
+        "Database support",
+        "Collaboration",
+        "Custom domains"
+      ],
+      "url": "https://replit.com",
+      "pricing": {
+        "free": true,
+        "storage": "1GB",
+        "bandwidth": "Unlimited",
+        "customDomains": true,
+        "ssl": true
+      },
+      "tags": ["ide", "languages", "collaboration", "database"]
+    },
+    {
+      "id": "glitch",
+      "name": "Glitch",
+      "type": "both",
+      "category": "standard",
+      "logo": "fas fa-bug",
+      "logoColor": "linear-gradient(135deg, #ff3366, #ff1744)",
+      "description": "Platform untuk create and deploy web apps dengan real-time collaboration.",
+      "features": [
+        "Unlimited projects",
+        "Node.js support",
+        "Real-time collaboration",
+        "Custom domains",
+        "Import from GitHub",
+        "Community projects"
+      ],
+      "url": "https://glitch.com",
+      "pricing": {
+        "free": true,
+        "storage": "Unlimited",
+        "bandwidth": "Unlimited",
+        "customDomains": true,
+        "ssl": true
+      },
+      "tags": ["nodejs", "collaboration", "github", "community"]
+    },
+    {
+      "id": "deno-deploy",
+      "name": "Deno Deploy",
+      "type": "dynamic",
+      "category": "standard",
+      "logo": "fas fa-dharmachakra",
+      "logoColor": "linear-gradient(135deg, #000, #333)",
+      "description": "Edge computing platform untuk Deno runtime dengan global distribution.",
+      "features": [
+        "100k requests/hari",
+        "1GB storage",
+        "Global edge network",
+        "Deno runtime",
+        "TypeScript support",
+        "Custom domains"
+      ],
+      "url": "https://deno.com/deploy",
+      "pricing": {
+        "free": true,
+        "storage": "1GB",
+        "bandwidth": "100k requests",
+        "customDomains": true,
+        "ssl": true
+      },
+      "tags": ["deno", "typescript", "edge", "global"]
+    },
+    {
+      "id": "flyio",
+      "name": "Fly.io",
+      "type": "dynamic",
+      "category": "standard",
+      "logo": "fas fa-plane",
+      "logoColor": "linear-gradient(135deg, #4801ff, #6a0dad)",
+      "description": "Run apps globally on Fly.io's edge network with full-stack apps support.",
+      "features": [
+        "3 shared-cpu-1x VMs",
+        "3GB persistent volume",
+        "160ms global latency",
+        "Docker support",
+        "Postgres database",
+        "Custom domains"
+      ],
+      "url": "https://fly.io",
+      "pricing": {
+        "free": true,
+        "storage": "3GB",
+        "bandwidth": "160ms global",
+        "customDomains": true,
+        "ssl": true
+      },
+      "tags": ["docker", "postgres", "global", "edge"]
+    },
+    {
+      "id": "netlify-functions",
+      "name": "Netlify Functions",
+      "type": "both",
+      "category": "standard",
+      "logo": "fas fa-function",
+      "logoColor": "linear-gradient(135deg, #00d084, #00b870)",
+      "description": "Serverless functions platform integrated with Netlify hosting.",
+      "features": [
+        "125k requests/month",
+        "100GB bandwidth",
+        "JavaScript/Go support",
+        "Identity functions",
+        "Background functions",
+        "Edge functions"
+      ],
+      "url": "https://functions.netlify.com",
+      "pricing": {
+        "free": true,
+        "storage": "Unlimited",
+        "bandwidth": "100GB",
+        "customDomains": true,
+        "ssl": true
+      },
+      "tags": ["serverless", "functions", "javascript", "go"]
+    },
+    {
+      "id": "vercel-edge-functions",
+      "name": "Vercel Edge Functions",
+      "type": "both",
+      "category": "standard",
+      "logo": "fas fa-globe-americas",
+      "logoColor": "linear-gradient(135deg, #000, #333)",
+      "description": "Edge computing platform untuk Vercel dengan global distribution.",
+      "features": [
+        "Unlimited edge functions",
+        "Global edge network",
+        "JavaScript/TypeScript",
+        "Zero cold starts",
+        "Custom domains",
+        "Analytics included"
+      ],
+      "url": "https://vercel.com/docs/concepts/functions/edge-functions",
+      "pricing": {
+        "free": true,
+        "storage": "Unlimited",
+        "bandwidth": "Unlimited",
+        "customDomains": true,
+        "ssl": true
+      },
+      "tags": ["edge", "serverless", "typescript", "analytics"]
+    },
+    {
+      "id": "aws-amplify",
+      "name": "AWS Amplify",
+      "type": "both",
+      "category": "enterprise",
+      "logo": "fab fa-aws",
+      "logoColor": "linear-gradient(135deg, #ff9900, #ff6600)",
+      "description": "Full-stack platform untuk build dan deploy web & mobile apps dengan AWS services.",
+      "features": [
+        "5GB storage gratis",
+        "15GB bandwidth",
+        "CI/CD pipeline",
+        "Custom domains",
+        "Serverless backend",
+        "Analytics & monitoring"
+      ],
+      "url": "https://aws.amazon.com/amplify",
+      "pricing": {
+        "free": true,
+        "storage": "5GB",
+        "bandwidth": "15GB",
+        "customDomains": true,
+        "ssl": true
+      },
+      "tags": ["aws", "serverless", "ci-cd", "analytics"]
+    },
+    {
+      "id": "azure-static-web-apps",
+      "name": "Azure Static Web Apps",
+      "type": "both",
+      "category": "enterprise",
+      "logo": "fab fa-microsoft",
+      "logoColor": "linear-gradient(135deg, #0078d4, #005a9e)",
+      "description": "Modern web app hosting dari Microsoft Azure dengan serverless API integration.",
+      "features": [
+        "100 static apps gratis",
+        "5 Azure Functions",
+        "Custom domains",
+        "SSL certificates",
+        "GitHub integration",
+        "Global distribution"
+      ],
+      "url": "https://azure.microsoft.com/services/app-service/static",
+      "pricing": {
+        "free": true,
+        "storage": "100GB",
+        "bandwidth": "100GB",
+        "customDomains": true,
+        "ssl": true
+      },
+      "tags": ["azure", "functions", "github", "global"]
+    },
+    {
+      "id": "google-cloud-run",
+      "name": "Google Cloud Run",
+      "type": "dynamic",
+      "category": "enterprise",
+      "logo": "fab fa-google",
+      "logoColor": "linear-gradient(135deg, #4285f4, #1a73e8)",
+      "description": "Serverless container platform dari Google Cloud dengan automatic scaling.",
+      "features": [
+        "2M requests/month",
+        "360,000 vCPU-seconds",
+        "1GB memory",
+        "Custom domains",
+        "SSL certificates",
+        "Global endpoints"
+      ],
+      "url": "https://cloud.google.com/run",
+      "pricing": {
+        "free": true,
+        "storage": "Unlimited",
+        "bandwidth": "2M requests",
+        "customDomains": true,
+        "ssl": true
+      },
+      "tags": ["google", "serverless", "containers", "scaling"]
+    },
+    {
+      "id": "oracle-cloud-free-tier",
+      "name": "Oracle Cloud Free Tier",
+      "type": "dynamic",
+      "category": "enterprise",
+      "logo": "fas fa-cloud",
+      "logoColor": "linear-gradient(135deg, #f80000, #cc0000)",
+      "description": "Cloud infrastructure gratis dari Oracle dengan compute dan storage resources.",
+      "features": [
+        "2 AMD-based VMs",
+        "1 ARM-based VM",
+        "20GB block storage",
+        "10GB object storage",
+        "Autonomous Database",
+        "Load balancer"
+      ],
+      "url": "https://www.oracle.com/cloud/free",
+      "pricing": {
+        "free": true,
+        "storage": "30GB",
+        "bandwidth": "10TB",
+        "customDomains": true,
+        "ssl": true
+      },
+      "tags": ["oracle", "vm", "database", "storage"]
+    },
+    {
+      "id": "digitalocean-app-platform",
+      "name": "DigitalOcean App Platform",
+      "type": "both",
+      "category": "enterprise",
+      "logo": "fab fa-digital-ocean",
+      "logoColor": "linear-gradient(135deg, #0080ff, #0066cc)",
+      "description": "PaaS platform dari DigitalOcean untuk build, deploy, dan scale apps.",
+      "features": [
+        "3 static sites gratis",
+        "550 app hours/month",
+        "1GB RAM",
+        "1GB storage",
+        "Custom domains",
+        "GitHub integration"
+      ],
+      "url": "https://www.digitalocean.com/products/app-platform",
+      "pricing": {
+        "free": true,
+        "storage": "1GB",
+        "bandwidth": "550 hours",
+        "customDomains": true,
+        "ssl": true
+      },
+      "tags": ["paas", "github", "scaling", "apps"]
+    },
+    {
+      "id": "back4app",
+      "name": "Back4App",
+      "type": "dynamic",
+      "category": "standard",
+      "logo": "fas fa-database",
+      "logoColor": "linear-gradient(135deg, #00b894, #00a085)",
+      "description": "Backend-as-a-Service platform dengan Parse Server integration.",
+      "features": [
+        "1GB database",
+        "10GB file storage",
+        "25k API requests/month",
+        "Real-time database",
+        "User authentication",
+        "Push notifications"
+      ],
+      "url": "https://www.back4app.com",
+      "pricing": {
+        "free": true,
+        "storage": "11GB",
+        "bandwidth": "25k requests",
+        "customDomains": true,
+        "ssl": true
+      },
+      "tags": ["baas", "database", "auth", "notifications"]
+    },
+    {
+      "id": "supabase",
+      "name": "Supabase",
+      "type": "dynamic",
+      "category": "standard",
+      "logo": "fas fa-database",
+      "logoColor": "linear-gradient(135deg, #3ecf8e, #2fb87a)",
+      "description": "Open source Firebase alternative dengan PostgreSQL database.",
+      "features": [
+        "500MB database",
+        "1GB file storage",
+        "2M API requests/month",
+        "Real-time subscriptions",
+        "Auth & user management",
+        "Edge functions"
+      ],
+      "url": "https://supabase.com",
+      "pricing": {
+        "free": true,
+        "storage": "1.5GB",
+        "bandwidth": "2M requests",
+        "customDomains": true,
+        "ssl": true
+      },
+      "tags": ["postgresql", "auth", "realtime", "opensource"]
+    },
+    {
+      "id": "netlify-drop",
+      "name": "Netlify Drop",
+      "type": "static",
+      "category": "standard",
+      "logo": "fas fa-upload",
+      "logoColor": "linear-gradient(135deg, #00d084, #00b870)",
+      "description": "Drag-and-drop static site hosting tanpa perlu Git atau command line.",
+      "features": [
+        "Drag & drop deployment",
+        "Instant preview",
+        "Custom domains",
+        "HTTPS otomatis",
+        "Form handling",
+        "No configuration needed"
+      ],
+      "url": "https://app.netlify.com/drop",
+      "pricing": {
+        "free": true,
+        "storage": "Unlimited",
+        "bandwidth": "100GB",
+        "customDomains": true,
+        "ssl": true
+      },
+      "tags": ["drag-drop", "simple", "forms", "no-config"]
+    },
+    {
+      "id": "tiiny-host",
+      "name": "Tiiny Host",
+      "type": "static",
+      "category": "standard",
+      "logo": "fas fa-link",
+      "logoColor": "linear-gradient(135deg, #667eea, #764ba2)",
+      "description": "Simple static site hosting dengan ZIP file upload dan custom domain.",
+      "features": [
+        "1 site gratis",
+        "1GB storage",
+        "Custom domain",
+        "HTTPS otomatis",
+        "ZIP file upload",
+        "Password protection"
+      ],
+      "url": "https://tiiny.host",
+      "pricing": {
+        "free": true,
+        "storage": "1GB",
+        "bandwidth": "Unlimited",
+        "customDomains": true,
+        "ssl": true
+      },
+      "tags": ["zip", "simple", "password", "static"]
+    },
+    {
+      "id": "neocities",
+      "name": "Neocities",
+      "type": "static",
+      "category": "standard",
+      "logo": "fas fa-city",
+      "logoColor": "linear-gradient(135deg, #ff6b6b, #ee5a52)",
+      "description": "Static site hosting dengan social features dan community-driven approach.",
+      "features": [
+        "1GB storage gratis",
+        "200GB bandwidth",
+        "Custom domains",
+        "HTTPS support",
+        "Site editor",
+        "Community features"
+      ],
+      "url": "https://neocities.org",
+      "pricing": {
+        "free": true,
+        "storage": "1GB",
+        "bandwidth": "200GB",
+        "customDomains": true,
+        "ssl": true
+      },
+      "tags": ["community", "social", "editor", "static"]
+    },
+    {
+      "id": "github-codespaces",
+      "name": "GitHub Codespaces",
+      "type": "dynamic",
+      "category": "standard",
+      "logo": "fab fa-github",
+      "logoColor": "linear-gradient(135deg, #333, #555)",
+      "description": "Cloud development environment dengan integrated development dan deployment.",
+      "features": [
+        "60 hours/month gratis",
+        "2-core processor",
+        "8GB RAM",
+        "16GB storage",
+        "VS Code integration",
+        "Prebuilt dev containers"
+      ],
+      "url": "https://github.com/features/codespaces",
+      "pricing": {
+        "free": true,
+        "storage": "16GB",
+        "bandwidth": "60 hours",
+        "customDomains": false,
+        "ssl": true
+      },
+      "tags": ["vscode", "development", "cloud", "github"]
+    },
+    {
+      "id": "codesandbox",
+      "name": "CodeSandbox",
+      "type": "both",
+      "category": "standard",
+      "logo": "fas fa-code",
+      "logoColor": "linear-gradient(135deg, #000, #333)",
+      "description": "Online code editor dengan instant preview dan deployment untuk web apps.",
+      "features": [
+        "Unlimited public sandboxes",
+        "React, Vue, Angular support",
+        "Live collaboration",
+        "GitHub integration",
+        "Custom domains",
+        "Server containers"
+      ],
+      "url": "https://codesandbox.io",
+      "pricing": {
+        "free": true,
+        "storage": "Unlimited",
+        "bandwidth": "Unlimited",
+        "customDomains": true,
+        "ssl": true
+      },
+      "tags": ["ide", "react", "collaboration", "github"]
+    },
+    {
+      "id": "stackblitz",
+      "name": "StackBlitz",
+      "type": "both",
+      "category": "standard",
+      "logo": "fas fa-bolt",
+      "logoColor": "linear-gradient(135deg, #137cbd, #0e5a8a)",
+      "description": "Online IDE dengan WebContainer technology untuk instant development environment.",
+      "features": [
+        "Unlimited projects",
+        "Node.js in browser",
+        "Real-time collaboration",
+        "GitHub integration",
+        "Custom domains",
+        "Package manager support"
+      ],
+      "url": "https://stackblitz.com",
+      "pricing": {
+        "free": true,
+        "storage": "Unlimited",
+        "bandwidth": "Unlimited",
+        "customDomains": true,
+        "ssl": true
+      },
+      "tags": ["ide", "nodejs", "webcontainer", "collaboration"]
+    },
+    {
+      "id": "codepen",
+      "name": "CodePen",
+      "type": "static",
+      "category": "standard",
+      "logo": "fab fa-codepen",
+      "logoColor": "linear-gradient(135deg, #000, #333)",
+      "description": "Social development environment untuk front-end developers dengan live preview.",
+      "features": [
+        "Unlimited public pens",
+        "HTML, CSS, JS support",
+        "Live preview",
+        "Collaboration mode",
+        "Embed anywhere",
+        "Preprocessor support"
+      ],
+      "url": "https://codepen.io",
+      "pricing": {
+        "free": true,
+        "storage": "Unlimited",
+        "bandwidth": "Unlimited",
+        "customDomains": false,
+        "ssl": true
+      },
+      "tags": ["frontend", "html-css-js", "social", "preprocessors"]
+    },
+    {
+      "id": "jsfiddle",
+      "name": "JSFiddle",
+      "type": "static",
+      "category": "standard",
+      "logo": "fas fa-code",
+      "logoColor": "linear-gradient(135deg, #467fcf, #3a6bb5)",
+      "description": "Online playground untuk web developers dengan code sharing capabilities.",
+      "features": [
+        "Unlimited public fiddles",
+        "HTML, CSS, JS support",
+        "Multiple frameworks",
+        "Collaboration",
+        "Embed support",
+        "Version control"
+      ],
+      "url": "https://jsfiddle.net",
+      "pricing": {
+        "free": true,
+        "storage": "Unlimited",
+        "bandwidth": "Unlimited",
+        "customDomains": false,
+        "ssl": true
+      },
+      "tags": ["frontend", "frameworks", "collaboration", "sharing"]
+    },
+    {
+      "id": "expo",
+      "name": "Expo",
+      "type": "both",
+      "category": "standard",
+      "logo": "fas fa-mobile-alt",
+      "logoColor": "linear-gradient(135deg, #ff6b6b, #ee5a52)",
+      "description": "Platform untuk build dan deploy React Native apps dengan web support.",
+      "features": [
+        "Unlimited projects",
+        "React Native support",
+        "Web deployment",
+        "OTA updates",
+        "Push notifications",
+        "Analytics included"
+      ],
+      "url": "https://expo.dev",
+      "pricing": {
+        "free": true,
+        "storage": "Unlimited",
+        "bandwidth": "Unlimited",
+        "customDomains": true,
+        "ssl": true
+      },
+      "tags": ["react-native", "mobile", "web", "analytics"]
+    },
+    {
+      "id": "deta",
+      "name": "Deta",
+      "type": "dynamic",
+      "category": "standard",
+      "logo": "fas fa-microchip",
+      "logoColor": "linear-gradient(135deg, #00d4aa, #00b894)",
+      "description": "Simple backend platform untuk microservices dan APIs dengan NoSQL database.",
+      "features": [
+        "3 microservices gratis",
+        "1GB database",
+        "Python & Node.js support",
+        "Custom domains",
+        "Auto scaling",
+        "Simple CLI"
+      ],
+      "url": "https://deta.sh",
+      "pricing": {
+        "free": true,
+        "storage": "1GB",
+        "bandwidth": "Unlimited",
+        "customDomains": true,
+        "ssl": true
+      },
+      "tags": ["microservices", "python", "nodejs", "nosql"]
+    },
+    {
+      "id": "zeabur",
+      "name": "Zeabur",
+      "type": "both",
+      "category": "standard",
+      "logo": "fas fa-rocket",
+      "logoColor": "linear-gradient(135deg, #667eea, #764ba2)",
+      "description": "Modern deployment platform dengan auto-scaling dan global CDN.",
+      "features": [
+        "3 services gratis",
+        "100GB bandwidth",
+        "Auto-deploy dari Git",
+        "Custom domains",
+        "Database included",
+        "Analytics dashboard"
+      ],
+      "url": "https://zeabur.com",
+      "pricing": {
+        "free": true,
+        "storage": "Unlimited",
+        "bandwidth": "100GB",
+        "customDomains": true,
+        "ssl": true
+      },
+      "tags": ["git", "scaling", "cdn", "analytics"]
+    },
+    {
+      "id": "koyeb",
+      "name": "Koyeb",
+      "type": "dynamic",
+      "category": "standard",
+      "logo": "fas fa-server",
+      "logoColor": "linear-gradient(135deg, #ff6b6b, #ee5a52)",
+      "description": "Serverless platform untuk deploy apps dengan global edge network.",
+      "features": [
+        "2 services gratis",
+        "512MB RAM",
+        "1 vCPU",
+        "10GB storage",
+        "Custom domains",
+        "Auto scaling"
+      ],
+      "url": "https://koyeb.com",
+      "pricing": {
+        "free": true,
+        "storage": "10GB",
+        "bandwidth": "Unlimited",
+        "customDomains": true,
+        "ssl": true
+      },
+      "tags": ["serverless", "edge", "scaling", "global"]
+    },
+    {
+      "id": "coolify",
+      "name": "Coolify",
+      "type": "both",
+      "category": "standard",
+      "logo": "fas fa-snowflake",
+      "logoColor": "linear-gradient(135deg, #00d4aa, #00b894)",
+      "description": "Self-hostable alternative to Vercel/Netlify with auto-deployment.",
+      "features": [
+        "Open source",
+        "Self-hostable",
+        "Docker support",
+        "Multiple applications",
+        "Database management",
+        "Auto deployment"
+      ],
+      "url": "https://coolify.io",
+      "pricing": {
+        "free": true,
+        "storage": "Unlimited",
+        "bandwidth": "Unlimited",
+        "customDomains": true,
+        "ssl": true
+      },
+      "tags": ["opensource", "self-hosted", "docker", "automation"]
+    },
+    {
+      "id": "uptimerobot",
+      "name": "UptimeRobot Status Pages",
+      "type": "static",
+      "category": "standard",
+      "logo": "fas fa-heartbeat",
+      "logoColor": "linear-gradient(135deg, #00d4aa, #00b894)",
+      "description": "Free status page hosting untuk monitoring dan incident communication.",
+      "features": [
+        "1 status page gratis",
+        "50 monitors",
+        "Custom domain",
+        "SSL certificate",
+        "Incident management",
+        "Public & private pages"
+      ],
+      "url": "https://uptimerobot.com",
+      "pricing": {
+        "free": true,
+        "storage": "Unlimited",
+        "bandwidth": "Unlimited",
+        "customDomains": true,
+        "ssl": true
+      },
+      "tags": ["monitoring", "status", "incident", "ssl"]
+    },
+    {
+      "id": "readme",
+      "name": "ReadMe",
+      "type": "static",
+      "category": "standard",
+      "logo": "fas fa-book",
+      "logoColor": "linear-gradient(135deg, #667eea, #764ba2)",
+      "description": "Documentation hosting dengan interactive API explorer and developer portal.",
+      "features": [
+        "1 project gratis",
+        "Custom domain",
+        "API explorer",
+        "Version control",
+        "Analytics included",
+        "Markdown support"
+      ],
+      "url": "https://readme.com",
+      "pricing": {
+        "free": true,
+        "storage": "Unlimited",
+        "bandwidth": "Unlimited",
+        "customDomains": true,
+        "ssl": true
+      },
+      "tags": ["documentation", "api", "markdown", "analytics"]
+    },
+    {
+      "id": "gitbook",
+      "name": "GitBook",
+      "type": "static",
+      "category": "standard",
+      "logo": "fas fa-book-open",
+      "logoColor": "linear-gradient(135deg, #00d4aa, #00b894)",
+      "description": "Modern documentation platform dengan collaboration features dan beautiful design.",
+      "features": [
+        "1 space gratis",
+        "Unlimited collaborators",
+        "Custom domain",
+        "Version control",
+        "Analytics dashboard",
+        "API integration"
+      ],
+      "url": "https://gitbook.com",
+      "pricing": {
+        "free": true,
+        "storage": "Unlimited",
+        "bandwidth": "Unlimited",
+        "customDomains": true,
+        "ssl": true
+      },
+      "tags": ["documentation", "collaboration", "versioning", "api"]
+    },
+    {
+      "id": "notion-sites",
+      "name": "Notion Sites",
+      "type": "static",
+      "category": "standard",
+      "logo": "fas fa-sticky-note",
+      "logoColor": "linear-gradient(135deg, #000, #333)",
+      "description": "Convert Notion pages into beautiful websites with custom domains.",
+      "features": [
+        "Unlimited pages",
+        "Custom domain",
+        "SSL certificate",
+        "SEO optimization",
+        "Analytics integration",
+        "Template library"
+      ],
+      "url": "https://notion.so",
+      "pricing": {
+        "free": true,
+        "storage": "Unlimited",
+        "bandwidth": "Unlimited",
+        "customDomains": true,
+        "ssl": true
+      },
+      "tags": ["notion", "websites", "seo", "templates"]
+    },
+    {
+      "id": "teleport",
+      "name": "Teleport",
+      "type": "static",
+      "category": "standard",
+      "logo": "fas fa-portal-enter",
+      "logoColor": "linear-gradient(135deg, #667eea, #764ba2)",
+      "description": "Simple static site generator with hosting included and instant deployment.",
+      "features": [
+        "Unlimited sites",
+        "Custom domains",
+        "SSL certificates",
+        "CDN included",
+        "Git integration",
+        "Analytics dashboard"
+      ],
+      "url": "https://teleport.sh",
+      "pricing": {
+        "free": true,
+        "storage": "Unlimited",
+        "bandwidth": "Unlimited",
+        "customDomains": true,
+        "ssl": true
+      },
+      "tags": ["generator", "git", "cdn", "analytics"]
+    },
+    {
+      "id": "pika",
+      "name": "Pika",
+      "type": "static",
+      "category": "standard",
+      "logo": "fas fa-feather",
+      "logoColor": "linear-gradient(135deg, #ff6b6b, #ee5a52)",
+      "description": "Ultra-lightweight static site hosting with focus on performance and simplicity.",
+      "features": [
+        "Unlimited sites",
+        "100MB storage/site",
+        "Custom domains",
+        "Global CDN",
+        "Instant deployment",
+        "Performance analytics"
+      ],
+      "url": "https://pika.sh",
+      "pricing": {
+        "free": true,
+        "storage": "100MB",
+        "bandwidth": "Unlimited",
+        "customDomains": true,
+        "ssl": true
+      },
+      "tags": ["lightweight", "performance", "cdn", "analytics"]
+    },
+    {
+      "id": "pagesdev",
+      "name": "Pages.dev",
+      "type": "static",
+      "category": "standard",
+      "logo": "fas fa-cloud",
+      "logoColor": "linear-gradient(135deg, #f38020, #ff6b35)",
+      "description": "Cloudflare Pages alternative dengan focus on developer experience and performance.",
+      "features": [
+        "Unlimited projects",
+        "Unlimited bandwidth",
+        "Custom domains",
+        "SSL certificates",
+        "Git integration",
+        "Edge functions"
+      ],
+      "url": "https://pages.dev",
+      "pricing": {
+        "free": true,
+        "storage": "Unlimited",
+        "bandwidth": "Unlimited",
+        "customDomains": true,
+        "ssl": true
+      },
+      "tags": ["git", "edge", "functions", "performance"]
+    },
+    {
+      "id": "hostinger-free-hosting",
+      "name": "Hostinger Free Hosting",
+      "type": "dynamic",
+      "category": "standard",
+      "logo": "fas fa-hotel",
+      "logoColor": "linear-gradient(135deg, #00d4aa, #00b894)",
+      "description": "Free web hosting with cPanel and website builder for beginners.",
+      "features": [
+        "1 website gratis",
+        "30GB bandwidth",
+        "3 email accounts",
+        "1-click WordPress install",
+        "Website builder",
+        "24/7 support"
+      ],
+      "url": "https://www.hostinger.com/free-hosting",
+      "pricing": {
+        "free": true,
+        "storage": "Unlimited",
+        "bandwidth": "30GB",
+        "customDomains": false,
+        "ssl": true
+      },
+      "tags": ["cpanel", "wordpress", "builder", "email"]
+    },
+    {
+      "id": "awardspace",
+      "name": "AwardSpace",
+      "type": "dynamic",
+      "category": "standard",
+      "logo": "fas fa-trophy",
+      "logoColor": "linear-gradient(135deg, #667eea, #764ba2)",
+      "description": "Free web hosting with PHP, MySQL, and website builder included.",
+      "features": [
+        "1 website gratis",
+        "1GB storage",
+        "5GB bandwidth",
+        "PHP & MySQL",
+        "Website builder",
+        "Free subdomain"
+      ],
+      "url": "https://www.awardspace.com",
+      "pricing": {
+        "free": true,
+        "storage": "1GB",
+        "bandwidth": "5GB",
+        "customDomains": false,
+        "ssl": true
+      },
+      "tags": ["php", "mysql", "builder", "subdomain"]
+    },
+    {
+      "id": "freehosting",
+      "name": "FreeHosting",
+      "type": "dynamic",
+      "category": "standard",
+      "logo": "fas fa-gift",
+      "logoColor": "linear-gradient(135deg, #ff6b6b, #ee5a52)",
+      "description": "Completely free web hosting with no ads and full features.",
+      "features": [
+        "Unlimited websites",
+        "10GB storage",
+        "Unlimited bandwidth",
+        "PHP & MySQL",
+        "Auto script installer",
+        "Free SSL"
+      ],
+      "url": "https://freehosting.com",
+      "pricing": {
+        "free": true,
+        "storage": "10GB",
+        "bandwidth": "Unlimited",
+        "customDomains": true,
+        "ssl": true
+      },
+      "tags": ["php", "mysql", "unlimited", "ssl"]
+    },
+    {
+      "id": "byethost",
+      "name": "Byet.host",
+      "type": "dynamic",
+      "category": "standard",
+      "logo": "fas fa-leaf",
+      "logoColor": "linear-gradient(135deg, #00d4aa, #00b894)",
+      "description": "Free hosting with VistaPanel control panel and generous resources.",
+      "features": [
+        "1GB storage",
+        "50GB bandwidth",
+        "PHP & MySQL",
+        "Website builder",
+        "Softaculous installer",
+        "Free subdomain"
+      ],
+      "url": "https://byet.host",
+      "pricing": {
+        "free": true,
+        "storage": "1GB",
+        "bandwidth": "50GB",
+        "customDomains": false,
+        "ssl": true
+      },
+      "tags": ["php", "mysql", "builder", "installer"]
+    },
+    {
+      "id": "freewebhostingarea",
+      "name": "FreeWebHostingArea",
+      "type": "dynamic",
+      "category": "standard",
+      "logo": "fas fa-globe-americas",
+      "logoColor": "linear-gradient(135deg, #667eea, #764ba2)",
+      "description": "Free hosting since 2005 with PHP, MySQL, and no forced ads.",
+      "features": [
+        "1.5GB storage",
+        "100GB bandwidth",
+        "PHP & MySQL",
+        "FTP access",
+        "Free subdomain",
+        "24/7 support"
+      ],
+      "url": "https://www.freewebhostingarea.com",
+      "pricing": {
+        "free": true,
+        "storage": "1.5GB",
+        "bandwidth": "100GB",
+        "customDomains": false,
+        "ssl": true
+      },
+      "tags": ["php", "mysql", "ftp", "support"]
+    },
+    {
+      "id": "freehostia",
+      "name": "FreeHostia",
+      "type": "dynamic",
+      "category": "standard",
+      "logo": "fas fa-star",
+      "logoColor": "linear-gradient(135deg, #ff6b6b, #ee5a52)",
+      "description": "Free hosting with Chocolate control panel and 1-click app installer.",
+      "features": [
+        "250MB storage",
+        "6GB bandwidth",
+        "PHP & MySQL",
+        "1-click installer",
+        "Website builder",
+        "Free subdomain"
+      ],
+      "url": "https://www.freehostia.com",
+      "pricing": {
+        "free": true,
+        "storage": "250MB",
+        "bandwidth": "6GB",
+        "customDomains": false,
+        "ssl": true
+      },
+      "tags": ["php", "mysql", "installer", "builder"]
+    },
+    {
+      "id": "x10hosting",
+      "name": "x10Hosting",
+      "type": "dynamic",
+      "category": "standard",
+      "logo": "fas fa-infinity",
+      "logoColor": "linear-gradient(135deg, #00d4aa, #00b894)",
+      "description": "Free hosting with cPanel and generous resource limits.",
+      "features": [
+        "2GB storage",
+        "50GB bandwidth",
+        "PHP & MySQL",
+        "Softaculous installer",
+        "Free SSL",
+        "Website builder"
+      ],
+      "url": "https://x10hosting.com",
+      "pricing": {
+        "free": true,
+        "storage": "2GB",
+        "bandwidth": "50GB",
+        "customDomains": true,
+        "ssl": true
+      },
+      "tags": ["cpanel", "php", "mysql", "ssl"]
+    },
+    {
+      "id": "heliohost",
+      "name": "HelioHost",
+      "type": "dynamic",
+      "category": "standard",
+      "logo": "fas fa-sun",
+      "logoColor": "linear-gradient(135deg, #667eea, #764ba2)",
+      "description": "Non-profit free hosting with cPanel and advanced features.",
+      "features": [
+        "1GB storage",
+        "50GB bandwidth",
+        "PHP, Python, Ruby",
+        "MySQL & PostgreSQL",
+        "SSH access",
+        "Cron jobs"
+      ],
+      "url": "https://heliohost.org",
+      "pricing": {
+        "free": true,
+        "storage": "1GB",
+        "bandwidth": "50GB",
+        "customDomains": true,
+        "ssl": true
+      },
+      "tags": ["nonprofit", "python", "ruby", "ssh"]
+    },
+    {
+      "id": "freenom",
+      "name": "FreeNom",
+      "type": "static",
+      "category": "standard",
+      "logo": "fas fa-globe",
+      "logoColor": "linear-gradient(135deg, #ff6b6b, #ee5a52)",
+      "description": "Free domain registration with DNS management and URL forwarding.",
+      "features": [
+        "Free .tk, .ml, .ga domains",
+        "DNS management",
+        "URL forwarding",
+        "Email forwarding",
+        "Domain parking",
+        "Mobile management"
+      ],
+      "url": "https://www.freenom.com",
+      "pricing": {
+        "free": true,
+        "storage": "Unlimited",
+        "bandwidth": "Unlimited",
+        "customDomains": true,
+        "ssl": true
+      },
+      "tags": ["domain", "dns", "forwarding", "mobile"]
+    },
+    {
+      "id": "github-gist",
+      "name": "GitHub Gist",
+      "type": "static",
+      "category": "standard",
+      "logo": "fab fa-github",
+      "logoColor": "linear-gradient(135deg, #333, #555)",
+      "description": "Simple code sharing with instant hosting for HTML, CSS, and JavaScript snippets.",
+      "features": [
+        "Unlimited public gists",
+        "Instant HTML preview",
+        "Version control",
+        "Embed support",
+        "Collaboration",
+        "Markdown support"
+      ],
+      "url": "https://gist.github.com",
+      "pricing": {
+        "free": true,
+        "storage": "Unlimited",
+        "bandwidth": "Unlimited",
+        "customDomains": false,
+        "ssl": true
+      },
+      "tags": ["github", "snippets", "embed", "markdown"]
+    },
+    {
+      "id": "codeberg",
+      "name": "Codeberg Pages",
+      "type": "static",
+      "category": "standard",
+      "logo": "fas fa-code-branch",
+      "logoColor": "linear-gradient(135deg, #2185d0, #1e70bf)",
+      "description": "Free static site hosting from Codeberg, the open-source Git platform.",
+      "features": [
+        "Unlimited repositories",
+        "Static site hosting",
+        "Custom domains",
+        "HTTPS certificates",
+        "Git integration",
+        "Open source"
+      ],
+      "url": "https://codeberg.org",
+      "pricing": {
+        "free": true,
+        "storage": "Unlimited",
+        "bandwidth": "Unlimited",
+        "customDomains": true,
+        "ssl": true
+      },
+      "tags": ["opensource", "git", "static", "https"]
+    },
+    {
+      "id": "sourcehut",
+      "name": "SourceHut Pages",
+      "type": "static",
+      "category": "standard",
+      "logo": "fas fa-leaf",
+      "logoColor": "linear-gradient(135deg, #000, #333)",
+      "description": "Minimalist static site hosting from the open-source SourceHut platform.",
+      "features": [
+        "1GB storage gratis",
+        "Custom domains",
+        "HTTPS certificates",
+        "Git integration",
+        "No JavaScript required",
+        "Privacy-focused"
+      ],
+      "url": "https://srht.site",
+      "pricing": {
+        "free": true,
+        "storage": "1GB",
+        "bandwidth": "Unlimited",
+        "customDomains": true,
+        "ssl": true
+      },
+      "tags": ["opensource", "minimalist", "privacy", "git"]
+    },
+    {
+      "id": "netlify-cms",
+      "name": "Netlify CMS",
+      "type": "static",
+      "category": "standard",
+      "logo": "fas fa-cms",
+      "logoColor": "linear-gradient(135deg, #00d084, #00b870)",
+      "description": "Open-source content management system for static site generators.",
+      "features": [
+        "Git-based CMS",
+        "Editor interface",
+        "Media library",
+        "Custom widgets",
+        "Multi-user support",
+        "Netlify integration"
+      ],
+      "url": "https://www.netlifycms.org",
+      "pricing": {
+        "free": true,
+        "storage": "Unlimited",
+        "bandwidth": "Unlimited",
+        "customDomains": true,
+        "ssl": true
+      },
+      "tags": ["cms", "git", "opensource", "media"]
+    },
+    {
+      "id": "decap-cms",
+      "name": "Decap CMS",
+      "type": "static",
+      "category": "standard",
+      "logo": "fas fa-cms",
+      "logoColor": "linear-gradient(135deg, #667eea, #764ba2)",
+      "description": "Fork of Netlify CMS with continued development and improvements.",
+      "features": [
+        "Git-based CMS",
+        "WYSIWYG editor",
+        "Media management",
+        "Custom fields",
+        "Multi-language support",
+        "Open source"
+      ],
+      "url": "https://decapcms.org",
+      "pricing": {
+        "free": true,
+        "storage": "Unlimited",
+        "bandwidth": "Unlimited",
+        "customDomains": true,
+        "ssl": true
+      },
+      "tags": ["cms", "git", "opensource", "wysiwyg"]
+    },
+    {
+      "id": "strapi-cloud",
+      "name": "Strapi Cloud",
+      "type": "dynamic",
+      "category": "standard",
+      "logo": "fas fa-cube",
+      "logoColor": "linear-gradient(135deg, #2e7d32, #1b5e20)",
+      "description": "Headless CMS hosting with Strapi and automatic deployment.",
+      "features": [
+        "1 project gratis",
+        "1GB database",
+        "10GB storage",
+        "Auto scaling",
+        "Custom domains",
+        "SSL certificates"
+      ],
+      "url": "https://strapi.io/cloud",
+      "pricing": {
+        "free": true,
+        "storage": "11GB",
+        "bandwidth": "Unlimited",
+        "customDomains": true,
+        "ssl": true
+      },
+      "tags": ["cms", "headless", "scaling", "ssl"]
+    },
+    {
+      "id": "contentful",
+      "name": "Contentful",
+      "type": "dynamic",
+      "category": "standard",
+      "logo": "fas fa-database",
+      "logoColor": "linear-gradient(135deg, #00d4aa, #00b894)",
+      "description": "Headless CMS with content infrastructure and API-first approach.",
+      "features": [
+        "5 content types",
+        "48,000 API requests/month",
+        "2 users",
+        "Webhooks",
+        "Media library",
+        "GraphQL API"
+      ],
+      "url": "https://www.contentful.com",
+      "pricing": {
+        "free": true,
+        "storage": "Unlimited",
+        "bandwidth": "48k requests",
+        "customDomains": true,
+        "ssl": true
+      },
+      "tags": ["cms", "headless", "api", "graphql"]
+    },
+    {
+      "id": "sanity",
+      "name": "Sanity",
+      "type": "dynamic",
+      "category": "standard",
+      "logo": "fas fa-brain",
+      "logoColor": "linear-gradient(135deg, #f03e2e, #d63031)",
+      "description": "Headless CMS with real-time collaboration and customizable content studio.",
+      "features": [
+        "1 project gratis",
+        "3 users",
+        "10GB bandwidth",
+        "Real-time API",
+        "Custom studio",
+        "GROQ query language"
+      ],
+      "url": "https://www.sanity.io",
+      "pricing": {
+        "free": true,
+        "storage": "Unlimited",
+        "bandwidth": "10GB",
+        "customDomains": true,
+        "ssl": true
+      },
+      "tags": ["cms", "headless", "realtime", "collaboration"]
+    },
+    {
+      "id": "prismic",
+      "name": "Prismic",
+      "type": "dynamic",
+      "category": "standard",
+      "logo": "fas fa-file-alt",
+      "logoColor": "linear-gradient(135deg, #667eea, #764ba2)",
+      "description": "Headless CMS with visual builder and slice components.",
+      "features": [
+        "2 custom types",
+        "5 documents",
+        "2 users",
+        "Visual builder",
+        "Slice machine",
+        "Webhooks"
+      ],
+      "url": "https://prismic.io",
+      "pricing": {
+        "free": true,
+        "storage": "Unlimited",
+        "bandwidth": "Unlimited",
+        "customDomains": true,
+        "ssl": true
+      },
+      "tags": ["cms", "headless", "visual", "slices"]
+    },
+    {
+      "id": "storyblok",
+      "name": "Storyblok",
+      "type": "dynamic",
+      "category": "standard",
+      "logo": "fas fa-cube",
+      "logoColor": "linear-gradient(135deg, #00d4aa, #00b894)",
+      "description": "Headless CMS with visual editor and component-based approach.",
+      "features": [
+        "1 space gratis",
+        "10,000 API requests/month",
+        "2 users",
+        "Visual editor",
+        "Component library",
+        "Asset management"
+      ],
+      "url": "https://www.storyblok.com",
+      "pricing": {
+        "free": true,
+        "storage": "Unlimited",
+        "bandwidth": "10k requests",
+        "customDomains": true,
+        "ssl": true
+      },
+      "tags": ["cms", "headless", "visual", "components"]
+    },
+    {
+      "id": "datocms",
+      "name": "DatoCMS",
+      "type": "dynamic",
+      "category": "standard",
+      "logo": "fas fa-database",
+      "logoColor": "linear-gradient(135deg, #ff6b6b, #ee5a52)",
+      "description": "Headless CMS with GraphQL API and real-time updates.",
+      "features": [
+        "1 project gratis",
+        "3 users",
+        "50,000 API requests/month",
+        "GraphQL API",
+        "Media library",
+        "Webhooks"
+      ],
+      "url": "https://www.datocms.com",
+      "pricing": {
+        "free": true,
+        "storage": "Unlimited",
+        "bandwidth": "50k requests",
+        "customDomains": true,
+        "ssl": true
+      },
+      "tags": ["cms", "headless", "graphql", "realtime"]
+    },
+    {
+      "id": "cosmic",
+      "name": "Cosmic",
+      "type": "dynamic",
+      "category": "standard",
+      "logo": "fas fa-rocket",
+      "logoColor": "linear-gradient(135deg, #667eea, #764ba2)",
+      "description": "Headless CMS with cloud functions and object storage.",
+      "features": [
+        "1 bucket gratis",
+        "5 objects",
+        "1GB media storage",
+        "Cloud functions",
+        "Webhooks",
+        "REST API"
+      ],
+      "url": "https://cosmicjs.com",
+      "pricing": {
+        "free": true,
+        "storage": "1GB",
+        "bandwidth": "Unlimited",
+        "customDomains": true,
+        "ssl": true
+      },
+      "tags": ["cms", "headless", "functions", "storage"]
+    },
+    {
+      "id": "buttercms",
+      "name": "ButterCMS",
+      "type": "dynamic",
+      "category": "standard",
+      "logo": "fas fa-butter",
+      "logoColor": "linear-gradient(135deg, #ff6b6b, #ee5a52)",
+      "description": "Headless CMS with blog engine and page types.",
+      "features": [
+        "1 content type",
+        "5 pages",
+        "2 users",
+        "Blog engine",
+        "Media library",
+        "Webhooks"
+      ],
+      "url": "https://buttercms.com",
+      "pricing": {
+        "free": true,
+        "storage": "Unlimited",
+        "bandwidth": "Unlimited",
+        "customDomains": true,
+        "ssl": true
+      },
+      "tags": ["cms", "headless", "blog", "pages"]
+    },
+    {
+      "id": "kontentai",
+      "name": "Kontent.ai",
+      "type": "dynamic",
+      "category": "standard",
+      "logo": "fas fa-cube",
+      "logoColor": "linear-gradient(135deg, #00d4aa, #00b894)",
+      "description": "Headless CMS with AI-powered content insights and workflow automation.",
+      "features": [
+        "1 project gratis",
+        "2 content types",
+        "2 users",
+        "AI insights",
+        "Workflow automation",
+        "GraphQL API"
+      ],
+      "url": "https://kontent.ai",
+      "pricing": {
+        "free": true,
+        "storage": "Unlimited",
+        "bandwidth": "Unlimited",
+        "customDomains": true,
+        "ssl": true
+      },
+      "tags": ["cms", "headless", "ai", "workflow"]
+    },
+    {
+      "id": "graphcms",
+      "name": "GraphCMS",
+      "type": "dynamic",
+      "category": "standard",
+      "logo": "fas fa-project-diagram",
+      "logoColor": "linear-gradient(135deg, #667eea, #764ba2)",
+      "description": "Headless CMS with GraphQL API and content modeling.",
+      "features": [
+        "1 project gratis",
+        "1M API requests/month",
+        "2 users",
+        "GraphQL API",
+        "Content modeling",
+        "Webhooks"
+      ],
+      "url": "https://graphcms.com",
+      "pricing": {
+        "free": true,
+        "storage": "Unlimited",
+        "bandwidth": "1M requests",
+        "customDomains": true,
+        "ssl": true
+      },
+      "tags": ["cms", "headless", "graphql", "modeling"]
+    },
+    {
+      "id": "strapi",
+      "name": "Strapi (Self-hosted)",
+      "type": "dynamic",
+      "category": "standard",
+      "logo": "fas fa-cube",
+      "logoColor": "linear-gradient(135deg, #2e7d32, #1b5e20)",
+      "description": "Open-source headless CMS that can be self-hosted on any platform.",
+      "features": [
+        "100% open source",
+        "Self-hostable",
+        "Node.js based",
+        "REST & GraphQL APIs",
+        "Admin panel",
+        "Plugin system"
+      ],
+      "url": "https://strapi.io",
+      "pricing": {
+        "free": true,
+        "storage": "Unlimited",
+        "bandwidth": "Unlimited",
+        "customDomains": true,
+        "ssl": true
+      },
+      "tags": ["cms", "opensource", "self-hosted", "nodejs"]
+    },
+    {
+      "id": "directus",
+      "name": "Directus",
+      "type": "dynamic",
+      "category": "standard",
+      "logo": "fas fa-database",
+      "logoColor": "linear-gradient(135deg, #667eea, #764ba2)",
+      "description": "Open-source headless CMS that wraps your SQL database with API.",
+      "features": [
+        "100% open source",
+        "Self-hostable",
+        "SQL database support",
+        "REST & GraphQL APIs",
+        "Real-time updates",
+        "App SDK"
+      ],
+      "url": "https://directus.io",
+      "pricing": {
+        "free": true,
+        "storage": "Unlimited",
+        "bandwidth": "Unlimited",
+        "customDomains": true,
+        "ssl": true
+      },
+      "tags": ["cms", "opensource", "sql", "realtime"]
+    },
+    {
+      "id": "payload-cms",
+      "name": "Payload CMS",
+      "type": "dynamic",
+      "category": "standard",
+      "logo": "fas fa-rocket",
+      "logoColor": "linear-gradient(135deg, #ff6b6b, #ee5a52)",
+      "description": "Open-source headless CMS built with TypeScript and React.",
+      "features": [
+        "100% open source",
+        "Self-hostable",
+        "TypeScript based",
+        "React admin panel",
+        "GraphQL & REST APIs",
+        "Local API"
+      ],
+      "url": "https://payloadcms.com",
+      "pricing": {
+        "free": true,
+        "storage": "Unlimited",
+        "bandwidth": "Unlimited",
+        "customDomains": true,
+        "ssl": true
+      },
+      "tags": ["cms", "opensource", "typescript", "react"]
+    },
+    {
+      "id": "ghost-pro",
+      "name": "Ghost (Pro)",
+      "type": "dynamic",
+      "category": "standard",
+      "logo": "fas fa-ghost",
+      "logoColor": "linear-gradient(135deg, #15171a, #2c3e50)",
+      "description": "Professional publishing platform with 14-day free trial for hosted version.",
+      "features": [
+        "14-day free trial",
+        "Professional themes",
+        "Email newsletter",
+        "Membership features",
+        "Analytics dashboard",
+        "SEO optimization"
+      ],
+      "url": "https://ghost.org",
+      "pricing": {
+        "free": false,
+        "storage": "Unlimited",
+        "bandwidth": "Unlimited",
+        "customDomains": true,
+        "ssl": true
+      },
+      "tags": ["blog", "newsletter", "membership", "seo"]
+    },
+    {
+      "id": "wordpresscom",
+      "name": "WordPress.com",
+      "type": "dynamic",
+      "category": "standard",
+      "logo": "fab fa-wordpress",
+      "logoColor": "linear-gradient(135deg, #0073aa, #005a87)",
+      "description": "Free WordPress hosting with subdomain and basic features.",
+      "features": [
+        "1 website gratis",
+        "3GB storage",
+        "WordPress subdomain",
+        "Free themes",
+        "Basic customization",
+        "Community support"
+      ],
+      "url": "https://wordpress.com",
+      "pricing": {
+        "free": true,
+        "storage": "3GB",
+        "bandwidth": "Unlimited",
+        "customDomains": false,
+        "ssl": true
+      },
+      "tags": ["wordpress", "blog", "themes", "subdomain"]
+    },
+    {
+      "id": "wix",
+      "name": "Wix",
+      "type": "dynamic",
+      "category": "standard",
+      "logo": "fas fa-w",
+      "logoColor": "linear-gradient(135deg, #0c6efd, #0a58ca)",
+      "description": "Website builder dengan drag-and-drop editor dan free hosting.",
+      "features": [
+        "1 website gratis",
+        "500MB storage",
+        "Wix subdomain",
+        "Drag & drop editor",
+        "Free templates",
+        "Mobile optimization"
+      ],
+      "url": "https://www.wix.com",
+      "pricing": {
+        "free": true,
+        "storage": "500MB",
+        "bandwidth": "Unlimited",
+        "customDomains": false,
+        "ssl": true
+      },
+      "tags": ["builder", "drag-drop", "templates", "mobile"]
+    },
+    {
+      "id": "weebly",
+      "name": "Weebly",
+      "type": "dynamic",
+      "category": "standard",
+      "logo": "fas fa-w",
+      "logoColor": "linear-gradient(135deg, #39c0ed, #2196f3)",
+      "description": "Website builder dengan e-commerce features dan free hosting.",
+      "features": [
+        "1 website gratis",
+        "500MB storage",
+        "Weebly subdomain",
+        "Drag & drop builder",
+        "Free templates",
+        "Basic SEO tools"
+      ],
+      "url": "https://www.weebly.com",
+      "pricing": {
+        "free": true,
+        "storage": "500MB",
+        "bandwidth": "Unlimited",
+        "customDomains": false,
+        "ssl": true
+      },
+      "tags": ["builder", "ecommerce", "templates", "seo"]
+    },
+    {
+      "id": "carrd",
+      "name": "Carrd",
+      "type": "static",
+      "category": "standard",
+      "logo": "fas fa-id-card",
+      "logoColor": "linear-gradient(135deg, #667eea, #764ba2)",
+      "description": "Simple one-page website builder dengan free tier untuk basic sites.",
+      "features": [
+        "1 site gratis",
+        "Carrd subdomain",
+        "Simple editor",
+        "Responsive design",
+        "Form integration",
+        "Analytics"
+      ],
+      "url": "https://carrd.co",
+      "pricing": {
+        "free": true,
+        "storage": "Unlimited",
+        "bandwidth": "Unlimited",
+        "customDomains": false,
+        "ssl": true
+      },
+      "tags": ["onepage", "simple", "responsive", "forms"]
+    },
+    {
+      "id": "webflow",
+      "name": "Webflow",
+      "type": "static",
+      "category": "standard",
+      "logo": "fas fa-code",
+      "logoColor": "linear-gradient(135deg, #4353ff, #3249ff)",
+      "description": "Visual web design platform dengan free starter sites.",
+      "features": [
+        "2 starter sites",
+        "Webflow subdomain",
+        "Visual designer",
+        "CMS functionality",
+        "Responsive design",
+        "SEO tools"
+      ],
+      "url": "https://webflow.com",
+      "pricing": {
+        "free": true,
+        "storage": "Unlimited",
+        "bandwidth": "Unlimited",
+        "customDomains": false,
+        "ssl": true
+      },
+      "tags": ["visual", "cms", "responsive", "seo"]
+    },
+    {
+      "id": "framer",
+      "name": "Framer",
+      "type": "static",
+      "category": "standard",
+      "logo": "fas fa-palette",
+      "logoColor": "linear-gradient(135deg, #000, #333)",
+      "description": "Design and publish websites with free tier for personal projects.",
+      "features": [
+        "1 site gratis",
+        "Framer subdomain",
+        "Visual editor",
+        "Interactive components",
+        "Responsive design",
+        "Analytics"
+      ],
+      "url": "https://www.framer.com",
+      "pricing": {
+        "free": true,
+        "storage": "Unlimited",
+        "bandwidth": "Unlimited",
+        "customDomains": false,
+        "ssl": true
+      },
+      "tags": ["design", "interactive", "responsive", "analytics"]
+    },
+    {
+      "id": "readymag",
+      "name": "Readymag",
+      "type": "static",
+      "category": "standard",
+      "logo": "fas fa-magic",
+      "logoColor": "linear-gradient(135deg, #ff6b6b, #ee5a52)",
+      "description": "Design tool for creating websites and digital publications.",
+      "features": [
+        "3 projects gratis",
+        "Readymag subdomain",
+        "Visual editor",
+        "Animation tools",
+        "Responsive design",
+        "Collaboration"
+      ],
+      "url": "https://readymag.com",
+      "pricing": {
+        "free": true,
+        "storage": "Unlimited",
+        "bandwidth": "Unlimited",
+        "customDomains": false,
+        "ssl": true
+      },
+      "tags": ["design", "animation", "collaboration", "responsive"]
+    },
+    {
+      "id": "tilda",
+      "name": "Tilda",
+      "type": "static",
+      "category": "standard",
+      "logo": "fas fa-layer-group",
+      "logoColor": "linear-gradient(135deg, #667eea, #764ba2)",
+      "description": "Website builder dengan block-based design dan free tier.",
+      "features": [
+        "1 site gratis",
+        "50 blocks",
+        "Tilda subdomain",
+        "Block library",
+        "Responsive design",
+        "Analytics"
+      ],
+      "url": "https://tilda.cc",
+      "pricing": {
+        "free": true,
+        "storage": "Unlimited",
+        "bandwidth": "Unlimited",
+        "customDomains": false,
+        "ssl": true
+      },
+      "tags": ["builder", "blocks", "responsive", "analytics"]
+    },
+    {
+      "id": "siter",
+      "name": "Siter.io",
+      "type": "static",
+      "category": "standard",
+      "logo": "fas fa-globe",
+      "logoColor": "linear-gradient(135deg, #00d4aa, #00b894)",
+      "description": "No-code website builder dengan free hosting dan custom domains.",
+      "features": [
+        "1 site gratis",
+        "1GB storage",
+        "Custom domain",
+        "Drag & drop editor",
+        "Responsive design",
+        "Analytics"
+      ],
+      "url": "https://siter.io",
+      "pricing": {
+        "free": true,
+        "storage": "1GB",
+        "bandwidth": "Unlimited",
+        "customDomains": true,
+        "ssl": true
+      },
+      "tags": ["nocode", "drag-drop", "responsive", "analytics"]
+    },
+    {
+      "id": "dorik",
+      "name": "Dorik",
+      "type": "static",
+      "category": "standard",
+      "logo": "fas fa-cube",
+      "logoColor": "linear-gradient(135deg, #ff6b6b, #ee5a52)",
+      "description": "No-code website builder dengan free tier dan AI assistance.",
+      "features": [
+        "1 site gratis",
+        "Dorik subdomain",
+        "AI website builder",
+        "Template library",
+        "Responsive design",
+        "Basic analytics"
+      ],
+      "url": "https://dorik.io",
+      "pricing": {
+        "free": true,
+        "storage": "Unlimited",
+        "bandwidth": "Unlimited",
+        "customDomains": false,
+        "ssl": true
+      },
+      "tags": ["nocode", "ai", "templates", "responsive"]
+    },
+    {
+      "id": "teleporthq",
+      "name": "TeleportHQ",
+      "type": "static",
+      "category": "standard",
+      "logo": "fas fa-rocket",
+      "logoColor": "linear-gradient(135deg, #667eea, #764ba2)",
+      "description": "Visual development platform dengan free hosting dan collaboration.",
+      "features": [
+        "1 project gratis",
+        "1GB storage",
+        "Custom domain",
+        "Visual editor",
+        "Component library",
+        "Team collaboration"
+      ],
+      "url": "https://teleporthq.io",
+      "pricing": {
+        "free": true,
+        "storage": "1GB",
+        "bandwidth": "Unlimited",
+        "customDomains": true,
+        "ssl": true
+      },
+      "tags": ["visual", "components", "collaboration", "responsive"]
+    },
+    {
+      "id": "plasmic",
+      "name": "Plasmic",
+      "type": "static",
+      "category": "standard",
+      "logo": "fas fa-dna",
+      "logoColor": "linear-gradient(135deg, #00d4aa, #00b894)",
+      "description": "Visual builder for React apps dengan free tier dan code export.",
+      "features": [
+        "2 projects gratis",
+        "Plasmic subdomain",
+        "Visual React builder",
+        "Code export",
+        "Component library",
+        "Integration with frameworks"
+      ],
+      "url": "https://plasmic.app",
+      "pricing": {
+        "free": true,
+        "storage": "Unlimited",
+        "bandwidth": "Unlimited",
+        "customDomains": false,
+        "ssl": true
+      },
+      "tags": ["react", "visual", "code-export", "components"]
+    },
+    {
+      "id": "builderio",
+      "name": "Builder.io",
+      "type": "static",
+      "category": "standard",
+      "logo": "fas fa-tools",
+      "logoColor": "linear-gradient(135deg, #667eea, #764ba2)",
+      "description": "Visual development platform dengan free tier untuk developers.",
+      "features": [
+        "Unlimited projects",
+        "Builder.io subdomain",
+        "Visual development platform",
+        "React component library",
+        "Drag & drop editor",
+        "Code export"
+      ],
+      "url": "https://builder.io",
+      "pricing": {
+        "free": true,
+        "storage": "Unlimited",
+        "bandwidth": "Unlimited",
+        "customDomains": false,
+        "ssl": true
+      },
+      "tags": ["visual", "react", "drag-drop", "code-export"]
+    },
+    {
+      "id": "wasmer",
+      "name": "Wasmer",
+      "type": "static",
+      "category": "standard",
+      "logo": "fas fa-cube",
+      "logoColor": "linear-gradient(135deg, #667eea, #764ba2)",
+      "description": "WebAssembly runtime platform dengan free static site hosting dan edge computing.",
+      "features": [
+        "Unlimited static sites",
+        "Custom domains",
+        "SSL certificates",
+        "Global CDN",
+        "Analytics included",
+        "WebAssembly support"
+      ],
+      "url": "https://wasmer.io",
+      "pricing": {
+        "free": true,
+        "storage": "Unlimited",
+        "bandwidth": "Unlimited",
+        "customDomains": true,
+        "ssl": true
+      },
+      "tags": ["webassembly", "cdn", "analytics", "edge"]
+    },
+    {
+      "id": "staticapp",
+      "name": "Static.app",
+      "type": "static",
+      "category": "standard",
+      "logo": "fas fa-file-code",
+      "logoColor": "linear-gradient(135deg, #00d4aa, #00b894)",
+      "description": "All-in-one static website hosting dengan simple deployment dan management.",
+      "features": [
+        "1 site gratis",
+        "100MB storage",
+        "Custom domain",
+        "SSL certificate",
+        "One-click deploy",
+        "Form handling"
+      ],
+      "url": "https://static.app",
+      "pricing": {
+        "free": true,
+        "storage": "100MB",
+        "bandwidth": "Unlimited",
+        "customDomains": true,
+        "ssl": true
+      },
+      "tags": ["simple", "oneclick", "forms", "ssl"]
+    },
+    {
+      "id": "kinsta-static",
+      "name": "Kinsta Static Site Hosting",
+      "type": "static",
+      "category": "enterprise",
+      "logo": "fas fa-leaf",
+      "logoColor": "linear-gradient(135deg, #00d4aa, #00b894)",
+      "description": "Enterprise-grade static site hosting dengan global CDN dan free tier.",
+      "features": [
+        "1 site gratis",
+        "100GB bandwidth",
+        "Global CDN",
+        "SSL certificates",
+        "Git integration",
+        "24/7 support"
+      ],
+      "url": "https://kinsta.com/static-site-hosting",
+      "pricing": {
+        "free": true,
+        "storage": "Unlimited",
+        "bandwidth": "100GB",
+        "customDomains": true,
+        "ssl": true
+      },
+      "tags": ["enterprise", "cdn", "git", "support"]
+    },
+    {
+      "id": "fleek",
+      "name": "Fleek",
+      "type": "static",
+      "category": "standard",
+      "logo": "fas fa-network-wired",
+      "logoColor": "linear-gradient(135deg, #667eea, #764ba2)",
+      "description": "Decentralized hosting platform dengan IPFS dan blockchain integration.",
+      "features": [
+        "Unlimited sites",
+        "IPFS hosting",
+        "Custom domains",
+        "SSL certificates",
+        "Blockchain integration",
+        "Continuous deployment"
+      ],
+      "url": "https://fleek.co",
+      "pricing": {
+        "free": true,
+        "storage": "Unlimited",
+        "bandwidth": "Unlimited",
+        "customDomains": true,
+        "ssl": true
+      },
+      "tags": ["ipfs", "blockchain", "decentralized", "cdn"]
+    }
+  ]
+}

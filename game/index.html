@@ -1,0 +1,1709 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Koleksi Game Jadul Worth It - Download Guide</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .header h1 {
+            color: #2c3e50;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .header p {
+            color: #7f8c8d;
+            font-size: 1.2em;
+        }
+
+        .search-container {
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .search-box {
+            width: 100%;
+            max-width: 400px;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 25px;
+            font-size: 16px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            outline: none;
+        }
+
+        .tabs {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            padding: 10px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .tab-button {
+            background: none;
+            border: none;
+            padding: 15px 25px;
+            cursor: pointer;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            color: #7f8c8d;
+            transition: all 0.3s ease;
+            margin: 0 5px;
+        }
+
+        .tab-button.active {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .tab-button:hover {
+            background: rgba(102, 126, 234, 0.1);
+            transform: translateY(-1px);
+        }
+
+        .tab-content {
+            display: none;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .game-section {
+            margin-bottom: 40px;
+        }
+
+        .game-section h2 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            font-size: 1.8em;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 10px;
+        }
+
+        .game-card {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-left: 4px solid #667eea;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .game-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .game-title {
+            font-size: 1.4em;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+
+        .game-title i {
+            margin-right: 10px;
+            color: #667eea;
+        }
+
+        .trailer-section {
+            margin: 15px 0;
+            text-align: center;
+        }
+
+        .trailer-thumbnail {
+            position: relative;
+            display: inline-block;
+            border-radius: 8px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .trailer-thumbnail:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .trailer-thumbnail img {
+            width: 320px;
+            height: 180px;
+            object-fit: cover;
+        }
+
+        .trailer-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .trailer-thumbnail:hover .trailer-overlay {
+            background: rgba(0, 0, 0, 0.5);
+        }
+
+        .play-button {
+            width: 60px;
+            height: 60px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: #667eea;
+            transition: all 0.3s ease;
+        }
+
+        .trailer-thumbnail:hover .play-button {
+            transform: scale(1.1);
+            background: white;
+        }
+
+        .platform-links {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .platform-item {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #e9ecef;
+        }
+
+        .platform-name {
+            font-weight: bold;
+            color: #495057;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+        }
+
+        .platform-name i {
+            margin-right: 8px;
+            width: 20px;
+        }
+
+        .download-link {
+            display: block;
+            color: #667eea;
+            text-decoration: none;
+            padding: 8px 12px;
+            background: rgba(102, 126, 234, 0.1);
+            border-radius: 6px;
+            transition: all 0.3s ease;
+            margin-bottom: 5px;
+        }
+
+        .download-link:hover {
+            background: #667eea;
+            color: white;
+            transform: translateX(5px);
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            margin: 30px 0;
+            flex-wrap: wrap;
+        }
+
+        .stat-item {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            border-radius: 12px;
+            margin: 10px;
+            min-width: 150px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .stat-number {
+            font-size: 2em;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .stat-label {
+            color: #7f8c8d;
+            font-weight: 600;
+        }
+
+        .filter-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+            justify-content: center;
+        }
+
+        .filter-tag {
+            background: rgba(255, 255, 255, 0.9);
+            border: 2px solid #667eea;
+            color: #667eea;
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        .filter-tag:hover,
+        .filter-tag.active {
+            background: #667eea;
+            color: white;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+
+            .header h1 {
+                font-size: 2em;
+            }
+
+            .tabs {
+                flex-direction: column;
+                gap: 5px;
+            }
+
+            .tab-button {
+                margin: 2px 0;
+            }
+
+            .platform-links {
+                grid-template-columns: 1fr;
+            }
+
+            .trailer-thumbnail img {
+                width: 280px;
+                height: 157px;
+            }
+
+            .stats {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+
+        .floating-action {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .floating-action:hover {
+            transform: scale(1.1);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal-content {
+            position: relative;
+            margin: 5% auto;
+            width: 80%;
+            max-width: 800px;
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .modal-header {
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .close {
+            color: white;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .close:hover {
+            transform: scale(1.1);
+        }
+
+        .modal-body {
+            padding: 20px;
+            text-align: center;
+        }
+
+        .modal-body iframe {
+            width: 100%;
+            height: 450px;
+            border: none;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1><i class="fas fa-gamepad"></i> Koleksi Game Jadul Worth It</h1>
+            <p>Temukan dan download game-game klasik yang sangat layak dimainkan!</p>
+            
+            <div class="search-container">
+                <input type="text" class="search-box" placeholder="Cari game favoritmu..." id="searchInput">
+            </div>
+
+            <div class="stats">
+                <div class="stat-item">
+                    <div class="stat-number">14</div>
+                    <div class="stat-label">Game Utama</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">25+</div>
+                    <div class="stat-label">Game Underrated</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">3</div>
+                    <div class="stat-label">Platform</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="tabs">
+            <button class="tab-button active" onclick="showTab('main')">
+                <i class="fas fa-star"></i> Game Utama
+            </button>
+            <button class="tab-button" onclick="showTab('windows')">
+                <i class="fab fa-windows"></i> Windows Classics
+            </button>
+            <button class="tab-button" onclick="showTab('android')">
+                <i class="fab fa-android"></i> Android Hidden Gems
+            </button>
+            <button class="tab-button" onclick="showTab('ios')">
+                <i class="fab fa-apple"></i> iOS Treasures
+            </button>
+        </div>
+
+        <div id="main" class="tab-content active">
+            <div class="filter-tags">
+                <div class="filter-tag active" onclick="filterGames('all')">Semua</div>
+                <div class="filter-tag" onclick="filterGames('rpg')">RPG</div>
+                <div class="filter-tag" onclick="filterGames('action')">Action</div>
+                <div class="filter-tag" onclick="filterGames('adventure')">Adventure</div>
+            </div>
+
+            <div class="game-section">
+                <h2><i class="fas fa-list"></i> Game-Game Wajib Coba</h2>
+                
+                <div class="game-card" data-category="rpg">
+                    <div class="game-title">
+                        <i class="fas fa-cat"></i> 1) Cat Quest
+                    </div>
+                    <div class="trailer-section">
+                        <div class="trailer-thumbnail" onclick="openTrailer('Cat Quest', 'https://www.youtube.com/embed/asDUOd5IZH0')">
+                            <img src="https://img.youtube.com/vi/asDUOd5IZH0/maxresdefault.jpg" alt="Cat Quest Trailer">
+                            <div class="trailer-overlay">
+                                <div class="play-button">
+                                    <i class="fab fa-youtube"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="platform-links">
+                        <div class="platform-item">
+                            <div class="platform-name">
+                                <i class="fab fa-android"></i> Android
+                            </div>
+                            <a href="https://play.google.com/store/apps/details?id=com.thegentlebros.catquest" class="download-link" target="_blank">
+                                <i class="fas fa-download"></i> Download di Google Play
+                            </a>
+                        </div>
+                        <div class="platform-item">
+                            <div class="platform-name">
+                                <i class="fab fa-apple"></i> iOS
+                            </div>
+                            <a href="https://apps.apple.com/us/app/cat-quest/id1148385289" class="download-link" target="_blank">
+                                <i class="fas fa-download"></i> Download di App Store
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="game-card" data-category="rpg">
+                    <div class="game-title">
+                        <i class="fas fa-vampire"></i> 2) Vampire's Fall Origins
+                    </div>
+                    <div class="trailer-section">
+                        <div class="trailer-thumbnail" onclick="openTrailer('Vampire\'s Fall Origins', 'https://www.youtube.com/embed/uQ4oCV0mCek')">
+                            <img src="https://img.youtube.com/vi/uQ4oCV0mCek/maxresdefault.jpg" alt="Vampire's Fall Origins Trailer">
+                            <div class="trailer-overlay">
+                                <div class="play-button">
+                                    <i class="fab fa-youtube"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="platform-links">
+                        <div class="platform-item">
+                            <div class="platform-name">
+                                <i class="fab fa-android"></i> Android
+                            </div>
+                            <a href="https://play.google.com/store/apps/details?id=com.earlymorningstudio.vampiresfall2" class="download-link" target="_blank">
+                                <i class="fas fa-download"></i> Download di Google Play
+                            </a>
+                        </div>
+                        <div class="platform-item">
+                            <div class="platform-name">
+                                <i class="fab fa-apple"></i> iOS
+                            </div>
+                            <a href="https://apps.apple.com/us/app/vampires-fall-origins-rpg/id1345626129" class="download-link" target="_blank">
+                                <i class="fas fa-download"></i> Download di App Store
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="game-card" data-category="rpg">
+                    <div class="game-title">
+                        <i class="fas fa-sun"></i> 3) The Shadow Sun
+                    </div>
+                    <div class="trailer-section">
+                        <div class="trailer-thumbnail" onclick="openTrailer('The Shadow Sun', 'https://www.youtube.com/embed/LyfmC_E_dLk')">
+                            <img src="https://img.youtube.com/vi/LyfmC_E_dLk/maxresdefault.jpg" alt="The Shadow Sun Trailer">
+                            <div class="trailer-overlay">
+                                <div class="play-button">
+                                    <i class="fab fa-youtube"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="platform-links">
+                        <div class="platform-item">
+                            <div class="platform-name">
+                                <i class="fab fa-android"></i> Android
+                            </div>
+                            <a href="https://play.google.com/store/apps/details?id=com.ossianstudios.theshadowsun" class="download-link" target="_blank">
+                                <i class="fas fa-download"></i> Download di Google Play
+                            </a>
+                        </div>
+                        <div class="platform-item">
+                            <div class="platform-name">
+                                <i class="fab fa-apple"></i> iOS
+                            </div>
+                            <a href="https://apps.apple.com/us/app/the-shadow-sun/id396269166" class="download-link" target="_blank">
+                                <i class="fas fa-download"></i> Download di App Store
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="game-card" data-category="rpg">
+                    <div class="game-title">
+                        <i class="fas fa-globe"></i> 4) Earth & Legends
+                    </div>
+                    <div class="trailer-section">
+                        <div class="trailer-thumbnail" onclick="openTrailer('Earth & Legends', 'https://www.youtube.com/embed/dhSlGm0QZZo')">
+                            <img src="https://img.youtube.com/vi/dhSlGm0QZZo/maxresdefault.jpg" alt="Earth & Legends Trailer">
+                            <div class="trailer-overlay">
+                                <div class="play-button">
+                                    <i class="fab fa-youtube"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="platform-links">
+                        <div class="platform-item">
+                            <div class="platform-name">
+                                <i class="fab fa-android"></i> Android
+                            </div>
+                            <a href="https://play.google.com/store/apps/details?id=com.dvidearts.earthandlegend" class="download-link" target="_blank">
+                                <i class="fas fa-download"></i> Download di Google Play
+                            </a>
+                        </div>
+                        <div class="platform-item">
+                            <div class="platform-name">
+                                <i class="fab fa-apple"></i> iOS
+                            </div>
+                            <a href="https://apps.apple.com/us/app/earth-and-legend/id462371700" class="download-link" target="_blank">
+                                <i class="fas fa-download"></i> Download di App Store
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="game-card" data-category="rpg">
+                    <div class="game-title">
+                        <i class="fas fa-crown"></i> 5) Exiled Kingdoms
+                    </div>
+                    <div class="trailer-section">
+                        <div class="trailer-thumbnail" onclick="openTrailer('Exiled Kingdoms', 'https://www.youtube.com/embed/pGlfQMY1Y3w')">
+                            <img src="https://img.youtube.com/vi/pGlfQMY1Y3w/maxresdefault.jpg" alt="Exiled Kingdoms Trailer">
+                            <div class="trailer-overlay">
+                                <div class="play-button">
+                                    <i class="fab fa-youtube"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="platform-links">
+                        <div class="platform-item">
+                            <div class="platform-name">
+                                <i class="fab fa-android"></i> Android
+                            </div>
+                            <a href="https://play.google.com/store/apps/details?id=net.fdgames.ek.android" class="download-link" target="_blank">
+                                <i class="fas fa-download"></i> Download di Google Play
+                            </a>
+                        </div>
+                        <div class="platform-item">
+                            <div class="platform-name">
+                                <i class="fab fa-apple"></i> iOS
+                            </div>
+                            <a href="https://apps.apple.com/my/app/exiled-kingdoms-rpg/id1091313127" class="download-link" target="_blank">
+                                <i class="fas fa-download"></i> Download di App Store
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="game-card" data-category="action">
+                    <div class="game-title">
+                        <i class="fas fa-dragon"></i> 6) Beast Quest
+                    </div>
+                    <div class="trailer-section">
+                        <div class="trailer-thumbnail" onclick="openTrailer('Beast Quest', 'https://www.youtube.com/embed/R71amTv7P2c')">
+                            <img src="https://img.youtube.com/vi/R71amTv7P2c/maxresdefault.jpg" alt="Beast Quest Trailer">
+                            <div class="trailer-overlay">
+                                <div class="play-button">
+                                    <i class="fab fa-youtube"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="platform-links">
+                        <div class="platform-item">
+                            <div class="platform-name">
+                                <i class="fab fa-android"></i> Android
+                            </div>
+                            <a href="https://play.google.com/store/apps/details?id=com.animocabrands.global.beastquest" class="download-link" target="_blank">
+                                <i class="fas fa-download"></i> Download di Google Play
+                            </a>
+                        </div>
+                        <div class="platform-item">
+                            <div class="platform-name">
+                                <i class="fab fa-apple"></i> iOS
+                            </div>
+                            <a href="https://apps.apple.com/us/app/beast-quest/id1355573467" class="download-link" target="_blank">
+                                <i class="fas fa-download"></i> Download di App Store
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="game-card" data-category="adventure">
+                    <div class="game-title">
+                        <i class="fas fa-portal-enter"></i> 7) Portal Knights
+                    </div>
+                    <div class="trailer-section">
+                        <div class="trailer-thumbnail" onclick="openTrailer('Portal Knights', 'https://www.youtube.com/embed/7hIoOdK5RVs')">
+                            <img src="https://img.youtube.com/vi/7hIoOdK5RVs/maxresdefault.jpg" alt="Portal Knights Trailer">
+                            <div class="trailer-overlay">
+                                <div class="play-button">
+                                    <i class="fab fa-youtube"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="platform-links">
+                        <div class="platform-item">
+                            <div class="platform-name">
+                                <i class="fab fa-android"></i> Android
+                            </div>
+                            <a href="https://play.google.com/store/apps/details?id=com.keengames.portalknights" class="download-link" target="_blank">
+                                <i class="fas fa-download"></i> Download di Google Play
+                            </a>
+                        </div>
+                        <div class="platform-item">
+                            <div class="platform-name">
+                                <i class="fab fa-apple"></i> iOS
+                            </div>
+                            <a href="https://apps.apple.com/us/app/portal-knights/id1246254967" class="download-link" target="_blank">
+                                <i class="fas fa-download"></i> Download di App Store
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="game-card" data-category="rpg">
+                    <div class="game-title">
+                        <i class="fas fa-moon"></i> 8) 9th Dawn II
+                    </div>
+                    <div class="trailer-section">
+                        <div class="trailer-thumbnail" onclick="openTrailer('9th Dawn II', 'https://www.youtube.com/embed/myoTTuS6JLU')">
+                            <img src="https://img.youtube.com/vi/myoTTuS6JLU/maxresdefault.jpg" alt="9th Dawn II Trailer">
+                            <div class="trailer-overlay">
+                                <div class="play-button">
+                                    <i class="fab fa-youtube"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="platform-links">
+                        <div class="platform-item">
+                            <div class="platform-name">
+                                <i class="fab fa-android"></i> Android
+                            </div>
+                            <a href="https://play.google.com/store/apps/details?id=com.valorware.ninthdawnii" class="download-link" target="_blank">
+                                <i class="fas fa-download"></i> Demo Version
+                            </a>
+                            <a href="https://play.google.com/store/apps/details?id=com.valorware.ninthdawniifull" class="download-link" target="_blank">
+                                <i class="fas fa-download"></i> Full Version
+                            </a>
+                        </div>
+                        <div class="platform-item">
+                            <div class="platform-name">
+                                <i class="fab fa-apple"></i> iOS
+                            </div>
+                            <a href="https://apps.apple.com/us/app/9th-dawn-ii/id1076717689" class="download-link" target="_blank">
+                                <i class="fas fa-download"></i> Download di App Store
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="game-card" data-category="rpg">
+                    <div class="game-title">
+                        <i class="fas fa-angel"></i> 9) Angel Sword
+                    </div>
+                    <div class="trailer-section">
+                        <div class="trailer-thumbnail" onclick="openTrailer('Angel Sword', 'https://www.youtube.com/embed/6VHS_jiJcuo')">
+                            <img src="https://img.youtube.com/vi/6VHS_jiJcuo/maxresdefault.jpg" alt="Angel Sword Trailer">
+                            <div class="trailer-overlay">
+                                <div class="play-button">
+                                    <i class="fab fa-youtube"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="platform-links">
+                        <div class="platform-item">
+                            <div class="platform-name">
+                                <i class="fab fa-android"></i> Android
+                            </div>
+                            <a href="https://play.google.com/store/apps/details?id=com.dvidearts.angelsword" class="download-link" target="_blank">
+                                <i class="fas fa-download"></i> Download di Google Play
+                            </a>
+                        </div>
+                        <div class="platform-item">
+                            <div class="platform-name">
+                                <i class="fab fa-apple"></i> iOS
+                            </div>
+                            <a href="https://apps.apple.com/us/app/angel-sword-3d-rpg/id996347110" class="download-link" target="_blank">
+                                <i class="fas fa-download"></i> Download di App Store
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="game-card" data-category="rpg">
+                    <div class="game-title">
+                        <i class="fas fa-dna"></i> 10) Evocreo
+                    </div>
+                    <div class="trailer-section">
+                        <div class="trailer-thumbnail" onclick="openTrailer('Evocreo', 'https://www.youtube.com/embed/BASw7bLZURo')">
+                            <img src="https://img.youtube.com/vi/BASw7bLZURo/maxresdefault.jpg" alt="Evocreo Trailer">
+                            <div class="trailer-overlay">
+                                <div class="play-button">
+                                    <i class="fab fa-youtube"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="platform-links">
+                        <div class="platform-item">
+                            <div class="platform-name">
+                                <i class="fab fa-android"></i> Android
+                            </div>
+                            <a href="https://play.google.com/store/apps/details?id=ilmfinity.evocreo.lite.android" class="download-link" target="_blank">
+                                <i class="fas fa-download"></i> Lite Version
+                            </a>
+                            <a href="https://play.google.com/store/apps/details?id=ilmfinity.evocreo.main.android" class="download-link" target="_blank">
+                                <i class="fas fa-download"></i> Full Paid
+                            </a>
+                        </div>
+                        <div class="platform-item">
+                            <div class="platform-name">
+                                <i class="fab fa-apple"></i> iOS
+                            </div>
+                            <a href="https://apps.apple.com/us/app/evocreo-pocket-monster-game/id918997182" class="download-link" target="_blank">
+                                <i class="fas fa-download"></i> Download di App Store
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="game-card" data-category="rpg">
+                    <div class="game-title">
+                        <i class="fas fa-feather"></i> 11) Ravensword Shadowlands
+                    </div>
+                    <div class="trailer-section">
+                        <div class="trailer-thumbnail" onclick="openTrailer('Ravensword Shadowlands', 'https://www.youtube.com/embed/pohAYqoMefw')">
+                            <img src="https://img.youtube.com/vi/pohAYqoMefw/maxresdefault.jpg" alt="Ravensword Shadowlands Trailer">
+                            <div class="trailer-overlay">
+                                <div class="play-button">
+                                    <i class="fab fa-youtube"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="platform-links">
+                        <div class="platform-item">
+                            <div class="platform-name">
+                                <i class="fab fa-android"></i> Android
+                            </div>
+                            <a href="https://play.google.com/store/apps/details?id=com.crescentmoongames.ravensword2" class="download-link" target="_blank">
+                                <i class="fas fa-download"></i> Download di Google Play
+                            </a>
+                        </div>
+                        <div class="platform-item">
+                            <div class="platform-name">
+                                <i class="fab fa-apple"></i> iOS
+                            </div>
+                            <a href="https://apps.apple.com/us/app/ravensword-shadowlands/id566839331" class="download-link" target="_blank">
+                                <i class="fas fa-download"></i> Download di App Store
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="game-card" data-category="adventure">
+                    <div class="game-title">
+                        <i class="fas fa-seedling"></i> 12) Stardew Valley
+                    </div>
+                    <div class="trailer-section">
+                        <div class="trailer-thumbnail" onclick="openTrailer('Stardew Valley', 'https://www.youtube.com/embed/ot7uXNQskhs')">
+                            <img src="https://img.youtube.com/vi/ot7uXNQskhs/maxresdefault.jpg" alt="Stardew Valley Trailer">
+                            <div class="trailer-overlay">
+                                <div class="play-button">
+                                    <i class="fab fa-youtube"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="platform-links">
+                        <div class="platform-item">
+                            <div class="platform-name">
+                                <i class="fab fa-android"></i> Android
+                            </div>
+                            <a href="https://play.google.com/store/apps/details?id=com.chucklefish.stardewvalley" class="download-link" target="_blank">
+                                <i class="fas fa-download"></i> Download di Google Play
+                            </a>
+                        </div>
+                        <div class="platform-item">
+                            <div class="platform-name">
+                                <i class="fab fa-apple"></i> iOS
+                            </div>
+                            <a href="https://apps.apple.com/us/app/stardew-valley/id1406710800" class="download-link" target="_blank">
+                                <i class="fas fa-download"></i> Download di App Store
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="game-card" data-category="action">
+                    <div class="game-title">
+                        <i class="fas fa-bolt"></i> 13) Titan Quest
+                    </div>
+                    <div class="trailer-section">
+                        <div class="trailer-thumbnail" onclick="openTrailer('Titan Quest', 'https://www.youtube.com/embed/8qFM8v8QZf0')">
+                            <img src="https://img.youtube.com/vi/8qFM8v8QZf0/maxresdefault.jpg" alt="Titan Quest Trailer">
+                            <div class="trailer-overlay">
+                                <div class="play-button">
+                                    <i class="fab fa-youtube"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="platform-links">
+                        <div class="platform-item">
+                            <div class="platform-name">
+                                <i class="fab fa-android"></i> Android
+                            </div>
+                            <a href="https://play.google.com/store/apps/details?id=com.dotemu.titanquest" class="download-link" target="_blank">
+                                <i class="fas fa-download"></i> Download di Google Play
+                            </a>
+                        </div>
+                        <div class="platform-item">
+                            <div class="platform-name">
+                                <i class="fab fa-apple"></i> iOS
+                            </div>
+                            <a href="https://apps.apple.com/us/app/titan-quest-legendary-edition/id1537060891" class="download-link" target="_blank">
+                                <i class="fas fa-download"></i> Download di App Store
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="game-card" data-category="rpg">
+                    <div class="game-title">
+                        <i class="fas fa-fire"></i> 14) Aralon Forge & Flame
+                    </div>
+                    <div class="trailer-section">
+                        <div class="trailer-thumbnail" onclick="openTrailer('Aralon Forge & Flame', 'https://www.youtube.com/embed/iKWCM8OFxzw')">
+                            <img src="https://img.youtube.com/vi/iKWCM8OFxzw/maxresdefault.jpg" alt="Aralon Forge & Flame Trailer">
+                            <div class="trailer-overlay">
+                                <div class="play-button">
+                                    <i class="fab fa-youtube"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="platform-links">
+                        <div class="platform-item">
+                            <div class="platform-name">
+                                <i class="fab fa-android"></i> Android
+                            </div>
+                            <a href="https://play.google.com/store/apps/details?id=com.crescentmoongames.aralon2" class="download-link" target="_blank">
+                                <i class="fas fa-download"></i> Download di Google Play
+                            </a>
+                        </div>
+                        <div class="platform-item">
+                            <div class="platform-name">
+                                <i class="fab fa-apple"></i> iOS
+                            </div>
+                            <a href="https://apps.apple.com/us/app/aralon-forge-and-flame/id996136866" class="download-link" target="_blank">
+                                <i class="fas fa-download"></i> Download di App Store
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="windows" class="tab-content">
+            <div class="game-section">
+                <h2><i class="fab fa-windows"></i> Windows Classic Underrated Games</h2>
+                
+                <div class="game-card">
+                    <div class="game-title">
+                        <i class="fas fa-skull"></i> Planescape: Torment
+                    </div>
+                    <div class="trailer-section">
+                        <div class="trailer-thumbnail" onclick="openTrailer('Planescape: Torment', 'https://www.youtube.com/embed/G2wXLCIpFRg')">
+                            <img src="https://img.youtube.com/vi/G2wXLCIpFRg/maxresdefault.jpg" alt="Planescape: Torment Trailer">
+                            <div class="trailer-overlay">
+                                <div class="play-button">
+                                    <i class="fab fa-youtube"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <p>Salah satu RPG terbaik dengan cerita mendalam dan gameplay unik. Dianggap sebagai mahakarya yang underrated.</p>
+                    <div class="platform-links">
+                        <div class="platform-item">
+                            <div class="platform-name">
+                                <i class="fab fa-steam"></i> Steam
+                            </div>
+                            <a href="https://store.steampowered.com/app/466300/Planescape_Torment_Enhanced_Edition/" class="download-link" target="_blank">
+                                <i class="fas fa-download"></i> Enhanced Edition
+                            </a>
+                        </div>
+                        <div class="platform-item">
+                            <div class="platform-name">
+                                <i class="fab fa-gog"></i> GOG
+                            </div>
+                            <a href="https://www.gog.com/game/planescape_torment_enhanced_edition" class="download-link" target="_blank">
+                                <i class="fas fa-download"></i> DRM-Free
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="game-card">
+                    <div class="game-title">
+                        <i class="fas fa-magic"></i> Arcanum: Of Steamworks and Magick Obscura
+                    </div>
+                    <div class="trailer-section">
+                        <div class="trailer-thumbnail" onclick="openTrailer('Arcanum', 'https://www.youtube.com/embed/OWemoWxqElE')">
+                            <img src="https://img.youtube.com/vi/OWemoWxqElE/maxresdefault.jpg" alt="Arcanum Trailer">
+                            <div class="trailer-overlay">
+                                <div class="play-button">
+                                    <i class="fab fa-youtube"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <p>RPG unik dengan setting steampunk vs magic. Memiliki sistem yang sangat dalam dan cerita menarik.</p>
+                    <div class="platform-links">
+                        <div class="platform-item">
+                            <div class="platform-name">
+                                <i class="fab fa-gog"></i> GOG
+                            </div>
+                            <a href="https://www.gog.com/game/arcanum_of_steamworks_and_magick_obscura" class="download-link" target="_blank">
+                                <i class="fas fa-download"></i> Download GOG
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="game-card">
+                    <div class="game-title">
+                        <i class="fas fa-rocket"></i> Freespace 2
+                    </div>
+                    <div class="trailer-section">
+                        <div class="trailer-thumbnail" onclick="openTrailer('Freespace 2', 'https://www.youtube.com/embed/ufViyhrXzTE')">
+                            <img src="https://img.youtube.com/vi/ufViyhrXzTE/maxresdefault.jpg" alt="Freespace 2 Trailer">
+                            <div class="trailer-overlay">
+                                <div class="play-button">
+                                    <i class="fab fa-youtube"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <p>Salah satu simulator ruang angkasa terbaik yang pernah dibuat. Grafis dan gameplaynya masih memukau hingga sekarang.</p>
+                    <div class="platform-links">
+                        <div class="platform-item">
+                            <div class="platform-name">
+                                <i class="fab fa-steam"></i> Steam
+                            </div>
+                            <a href="https://store.steampowered.com/app/273620/FreeSpace_2/" class="download-link" target="_blank">
+                                <i class="fas fa-download"></i> Download Steam
+                            </a>
+                        </div>
+                        <div class="platform-item">
+                            <div class="platform-name">
+                                <i class="fas fa-gift"></i> Free
+                            </div>
+                            <a href="https://www.hard-light.net/forums/index.php?board=13.0" class="download-link" target="_blank">
+                                <i class="fas fa-download"></i> Community Version
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="game-card">
+                    <div class="game-title">
+                        <i class="fas fa-eye"></i> System Shock 2
+                    </div>
+                    <div class="trailer-section">
+                        <div class="trailer-thumbnail" onclick="openTrailer('System Shock 2', 'https://www.youtube.com/embed/a3__6BknDHc')">
+                            <img src="https://img.youtube.com/vi/a3__6BknDHc/maxresdefault.jpg" alt="System Shock 2 Trailer">
+                            <div class="trailer-overlay">
+                                <div class="play-button">
+                                    <i class="fab fa-youtube"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <p>Horror FPS/RPG yang menginspirasi banyak game modern. Atmosfer mencekam dan gameplay inovatif.</p>
+                    <div class="platform-links">
+                        <div class="platform-item">
+                            <div class="platform-name">
+                                <i class="fab fa-steam"></i> Steam
+                            </div>
+                            <a href="https://store.steampowered.com/app/238210/System_Shock_2/" class="download-link" target="_blank">
+                                <i class="fas fa-download"></i> Download Steam
+                            </a>
+                        </div>
+                        <div class="platform-item">
+                            <div class="platform-name">
+                                <i class="fab fa-gog"></i> GOG
+                            </div>
+                            <a href="https://www.gog.com/game/system_shock_2" class="download-link" target="_blank">
+                                <i class="fas fa-download"></i> Download GOG
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="game-card">
+                    <div class="game-title">
+                        <i class="fas fa-dice"></i> Temple of Elemental Evil
+                    </div>
+                    <div class="trailer-section">
+                        <div class="trailer-thumbnail" onclick="openTrailer('Temple of Elemental Evil', 'https://www.youtube.com/embed/ZtPIgImGDHw')">
+                            <img src="https://img.youtube.com/vi/ZtPIgImGDHw/maxresdefault.jpg" alt="Temple of Elemental Evil Trailer">
+                            <div class="trailer-overlay">
+                                <div class="play-button">
+                                    <i class="fab fa-youtube"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <p>RPG berbasis D&D dengan tactical combat yang sangat baik. Implementasi ruleset D&D yang paling akurat.</p>
+                    <div class="platform-links">
+                        <div class="platform-item">
+                            <div class="platform-name">
+                                <i class="fab fa-gog"></i> GOG
+                            </div>
+                            <a href="https://www.gog.com/game/the_temple_of_elemental_evil" class="download-link" target="_blank">
+                                <i class="fas fa-download"></i> Download GOG
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="game-card">
+                    <div class="game-title">
+                        <i class="fas fa-user-secret"></i> Vampire: The Masquerade - Bloodlines
+                    </div>
+                    <div class="trailer-section">
+                        <div class="trailer-thumbnail" onclick="openTrailer('Vampire Bloodlines', 'https://www.youtube.com/embed/yRNZWZ9Y0L0')">
+                            <img src="https://img.youtube.com/vi/yRNZWZ9Y0L0/maxresdefault.jpg" alt="Vampire Bloodlines Trailer">
+                            <div class="trailer-overlay">
+                                <div class="play-button">
+                                    <i class="fab fa-youtube"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <p>RPG dengan setting vampire yang luar biasa. Cerita dan karakternya sangat memorable.</p>
+                    <div class="platform-links">
+                        <div class="platform-item">
+                            <div class="platform-name">
+                                <i class="fab fa-steam"></i> Steam
+                            </div>
+                            <a href="https://store.steampowered.com/app/2600/Vampire_The_Masquerade_Bloodlines/" class="download-link" target="_blank">
+                                <i class="fas fa-download"></i> Download Steam
+                            </a>
+                        </div>
+                        <div class="platform-item">
+                            <div class="platform-name">
+                                <i class="fas fa-tools"></i> Unofficial Patch
+                            </div>
+                            <a href="http://www.patches-scrolls.de/vampire_bloodlines.php" class="download-link" target="_blank">
+                                <i class="fas fa-download"></i> Community Patch
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="android" class="tab-content">
+            <div class="game-section">
+                <h2><i class="fab fa-android"></i> Android Hidden Gems</h2>
+                
+                <div class="game-card">
+                    <div class="game-title">
+                        <i class="fas fa-mountain"></i> Caves of Lore
+                    </div>
+                    <div class="trailer-section">
+                        <div class="trailer-thumbnail" onclick="openTrailer('Caves of Lore', 'https://www.youtube.com/embed/Hs031MN5qi0')">
+                            <img src="https://img.youtube.com/vi/Hs031MN5qi0/maxresdefault.jpg" alt="Caves of Lore Trailer">
+                            <div class="trailer-overlay">
+                                <div class="play-button">
+                                    <i class="fab fa-youtube"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <p>RPG retro-style dengan grid-based movement dan turn-based combat. Sangat dalam dan addictive.</p>
+                    <div class="platform-links">
+                        <div class="platform-item">
+                            <div class="platform-name">
+                                <i class="fab fa-android"></i> Android
+                            </div>
+                            <a href="https://play.google.com/store/apps/details?id=com.cavesoflore.android" class="download-link" target="_blank">
+                                <i class="fas fa-download"></i> Google Play
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="game-card">
+                    <div class="game-title">
+                        <i class="fas fa-hat-wizard"></i> Quest of Dungeons
+                    </div>
+                    <div class="trailer-section">
+                        <div class="trailer-thumbnail" onclick="openTrailer('Quest of Dungeons', 'https://www.youtube.com/embed/2PSnXkMcnSA')">
+                            <img src="https://img.youtube.com/vi/2PSnXkMcnSA/maxresdefault.jpg" alt="Quest of Dungeons Trailer">
+                            <div class="trailer-overlay">
+                                <div class="play-button">
+                                    <i class="fab fa-youtube"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <p>Roguelike RPG dengan pixel art yang bagus dan gameplay yang menantang.</p>
+                    <div class="platform-links">
+                        <div class="platform-item">
+                            <div class="platform-name">
+                                <i class="fab fa-android"></i> Android
+                            </div>
+                            <a href="https://play.google.com/store/apps/details?id=com.uprightquest.questofdungeons" class="download-link" target="_blank">
+                                <i class="fas fa-download"></i> Google Play
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="game-card">
+                    <div class="game-title">
+                        <i class="fas fa-dragon"></i> Battle for Wesnoth
+                    </div>
+                    <div class="trailer-section">
+                        <div class="trailer-thumbnail" onclick="openTrailer('Battle for Wesnoth', 'https://www.youtube.com/embed/w3P39lppcH4')">
+                            <img src="https://img.youtube.com/vi/w3P39lppcH4/maxresdefault.jpg" alt="Battle for Wesnoth Trailer">
+                            <div class="trailer-overlay">
+                                <div class="play-button">
+                                    <i class="fab fa-youtube"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <p>Turn-based strategy game open source dengan campaign yang sangat panjang dan mod support.</p>
+                    <div class="platform-links">
+                        <div class="platform-item">
+                            <div class="platform-name">
+                                <i class="fab fa-android"></i> Android
+                            </div>
+                            <a href="https://play.google.com/store/apps/details?id=org.wesnoth.wesnoth" class="download-link" target="_blank">
+                                <i class="fas fa-download"></i> Google Play
+                            </a>
+                        </div>
+                        <div class="platform-item">
+                            <div class="platform-name">
+                                <i class="fas fa-globe"></i> Website
+                            </div>
+                            <a href="https://www.wesnoth.org/" class="download-link" target="_blank">
+                                <i class="fas fa-download"></i> Official Site
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="game-card">
+                    <div class="game-title">
+                        <i class="fas fa-book"></i> Sword and Poker
+                    </div>
+                    <div class="trailer-section">
+                        <div class="trailer-thumbnail" onclick="openTrailer('Sword and Poker', 'https://www.youtube.com/embed/7ecbwRIh7nA')">
+                            <img src="https://img.youtube.com/vi/7ecbwRIh7nA/maxresdefault.jpg" alt="Sword and Poker Trailer">
+                            <div class="trailer-overlay">
+                                <div class="play-button">
+                                    <i class="fab fa-youtube"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <p>Unik! Kombinasi RPG dan poker mechanics. Sangat addictive dan original.</p>
+                    <div class="platform-links">
+                        <div class="platform-item">
+                            <div class="platform-name">
+                                <i class="fab fa-android"></i> Android
+                            </div>
+                            <a href="https://play.google.com/store/apps/details?id=com.gaia.swordandpoker" class="download-link" target="_blank">
+                                <i class="fas fa-download"></i> Google Play
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="game-card">
+                    <div class="game-title">
+                        <i class="fas fa-chess"></i> Hoplite
+                    </div>
+                    <div class="trailer-section">
+                        <div class="trailer-thumbnail" onclick="openTrailer('Hoplite', 'https://www.youtube.com/embed/w3FALZ38NFQ')">
+                            <img src="https://img.youtube.com/vi/w3FALZ38NFQ/maxresdefault.jpg" alt="Hoplite Trailer">
+                            <div class="trailer-overlay">
+                                <div class="play-button">
+                                    <i class="fab fa-youtube"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <p>Roguelike tactical dengan simple rules tapi deep strategy. Sangat addictive untuk mobile gaming.</p>
+                    <div class="platform-links">
+                        <div class="platform-item">
+                            <div class="platform-name">
+                                <i class="fab fa-android"></i> Android
+                            </div>
+                            <a href="https://play.google.com/store/apps/details?id=com.comprehensive.hoplite" class="download-link" target="_blank">
+                                <i class="fas fa-download"></i> Google Play
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="game-card">
+                    <div class="game-title">
+                        <i class="fas fa-meteor"></i> Pixel Dungeon
+                    </div>
+                    <div class="trailer-section">
+                        <div class="trailer-thumbnail" onclick="openTrailer('Pixel Dungeon', 'https://www.youtube.com/embed/3IKJIKBUT78')">
+                            <img src="https://img.youtube.com/vi/3IKJIKBUT78/maxresdefault.jpg" alt="Pixel Dungeon Trailer">
+                            <div class="trailer-overlay">
+                                <div class="play-button">
+                                    <i class="fab fa-youtube"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <p>Roguelike klasik dengan open source code. Banyak mod dan variasi yang tersedia.</p>
+                    <div class="platform-links">
+                        <div class="platform-item">
+                            <div class="platform-name">
+                                <i class="fab fa-android"></i> Android
+                            </div>
+                            <a href="https://play.google.com/store/apps/details?id=com.watabou.pixeldungeon" class="download-link" target="_blank">
+                                <i class="fas fa-download"></i> Original
+                            </a>
+                            <a href="https://play.google.com/store/apps/details?id=com.shatteredpixel.shatteredpixeldungeon" class="download-link" target="_blank">
+                                <i class="fas fa-download"></i> Shattered Pixel
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="ios" class="tab-content">
+            <div class="game-section">
+                <h2><i class="fab fa-apple"></i> iOS Hidden Treasures</h2>
+                
+                <div class="game-card">
+                    <div class="game-title">
+                        <i class="fas fa-passport"></i> Papers, Please
+                    </div>
+                    <div class="trailer-section">
+                        <div class="trailer-thumbnail" onclick="openTrailer('Papers Please', 'https://www.youtube.com/embed/_QP5X6fcukM')">
+                            <img src="https://img.youtube.com/vi/_QP5X6fcukM/maxresdefault.jpg" alt="Papers Please Trailer">
+                            <div class="trailer-overlay">
+                                <div class="play-button">
+                                    <i class="fab fa-youtube"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <p>Game unik tentang border control dengan moral choices yang menantang. Sangat thought-provoking.</p>
+                    <div class="platform-links">
+                        <div class="platform-item">
+                            <div class="platform-name">
+                                <i class="fab fa-apple"></i> iOS
+                            </div>
+                            <a href="https://apps.apple.com/us/app/papers-please/id801209038" class="download-link" target="_blank">
+                                <i class="fas fa-download"></i> App Store
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="game-card">
+                    <div class="game-title">
+                        <i class="fas fa-cards"></i> Slay the Spire
+                    </div>
+                    <div class="trailer-section">
+                        <div class="trailer-thumbnail" onclick="openTrailer('Slay the Spire', 'https://www.youtube.com/embed/9SZUtyYSOjQ')">
+                            <img src="https://img.youtube.com/vi/9SZUtyYSOjQ/maxresdefault.jpg" alt="Slay the Spire Trailer">
+                            <div class="trailer-overlay">
+                                <div class="play-button">
+                                    <i class="fab fa-youtube"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <p>Deck-building roguelike yang sangat addictive. Kombinasi card game dan RPG yang sempurna.</p>
+                    <div class="platform-links">
+                        <div class="platform-item">
+                            <div class="platform-name">
+                                <i class="fab fa-apple"></i> iOS
+                            </div>
+                            <a href="https://apps.apple.com/us/app/slay-the-spire/id1375371997" class="download-link" target="_blank">
+                                <i class="fas fa-download"></i> App Store
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="game-card">
+                    <div class="game-title">
+                        <i class="fas fa-skull-crossbones"></i> Dead Cells
+                    </div>
+                    <div class="trailer-section">
+                        <div class="trailer-thumbnail" onclick="openTrailer('Dead Cells', 'https://www.youtube.com/embed/RvGaSPTcTxc')">
+                            <img src="https://img.youtube.com/vi/RvGaSPTcTxc/maxresdefault.jpg" alt="Dead Cells Trailer">
+                            <div class="trailer-overlay">
+                                <div class="play-button">
+                                    <i class="fab fa-youtube"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <p>Action platformer roguelike dengan combat yang fluid dan visual yang memukau.</p>
+                    <div class="platform-links">
+                        <div class="platform-item">
+                            <div class="platform-name">
+                                <i class="fab fa-apple"></i> iOS
+                            </div>
+                            <a href="https://apps.apple.com/us/app/dead-cells/id1375371997" class="download-link" target="_blank">
+                                <i class="fas fa-download"></i> App Store
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="game-card">
+                    <div class="game-title">
+                        <i class="fas fa-chess-knight"></i> Final Fantasy Tactics
+                    </div>
+                    <div class="trailer-section">
+                        <div class="trailer-thumbnail" onclick="openTrailer('Final Fantasy Tactics', 'https://www.youtube.com/embed/wVCaeyucLTE')">
+                            <img src="https://img.youtube.com/vi/wVCaeyucLTE/maxresdefault.jpg" alt="Final Fantasy Tactics Trailer">
+                            <div class="trailer-overlay">
+                                <div class="play-button">
+                                    <i class="fab fa-youtube"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <p>Salah satu tactical RPG terbaik yang pernah dibuat. Story dan gameplaynya timeless.</p>
+                    <div class="platform-links">
+                        <div class="platform-item">
+                            <div class="platform-name">
+                                <i class="fab fa-apple"></i> iOS
+                            </div>
+                            <a href="https://apps.apple.com/us/app/final-fantasy-tactics-war-of-the-lions/id493883847" class="download-link" target="_blank">
+                                <i class="fas fa-download"></i> App Store
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="game-card">
+                    <div class="game-title">
+                        <i class="fas fa-sun"></i> Crying Suns
+                    </div>
+                    <div class="trailer-section">
+                        <div class="trailer-thumbnail" onclick="openTrailer('Crying Suns', 'https://www.youtube.com/embed/cmwFRlxMhW0')">
+                            <img src="https://img.youtube.com/vi/cmwFRlxMhW0/maxresdefault.jpg" alt="Crying Suns Trailer">
+                            <div class="trailer-overlay">
+                                <div class="play-button">
+                                    <i class="fab fa-youtube"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <p>Space tactical roguelike dengan story yang epik dan gameplay yang deep.</p>
+                    <div class="platform-links">
+                        <div class="platform-item">
+                            <div class="platform-name">
+                                <i class="fab fa-apple"></i> iOS
+                            </div>
+                            <a href="https://apps.apple.com/us/app/crying-suns/id1456448395" class="download-link" target="_blank">
+                                <i class="fas fa-download"></i> App Store
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="game-card">
+                    <div class="game-title">
+                        <i class="fas fa-mountain"></i> Grand Mountain Adventure
+                    </div>
+                    <div class="trailer-section">
+                        <div class="trailer-thumbnail" onclick="openTrailer('Grand Mountain Adventure', 'https://www.youtube.com/embed/dNxdsrKQe7w')">
+                            <img src="https://img.youtube.com/vi/dNxdsrKQe7w/maxresdefault.jpg" alt="Grand Mountain Adventure Trailer">
+                            <div class="trailer-overlay">
+                                <div class="play-button">
+                                    <i class="fab fa-youtube"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <p>Skiing simulator dengan visual yang beautiful dan gameplay yang relaxing tapi challenging.</p>
+                    <div class="platform-links">
+                        <div class="platform-item">
+                            <div class="platform-name">
+                                <i class="fab fa-apple"></i> iOS
+                            </div>
+                            <a href="https://apps.apple.com/us/app/grand-mountain-adventure/id1446123112" class="download-link" target="_blank">
+                                <i class="fas fa-download"></i> App Store
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="game-card">
+                    <div class="game-title">
+                        <i class="fas fa-robot"></i> Out There
+                    </div>
+                    <div class="trailer-section">
+                        <div class="trailer-thumbnail" onclick="openTrailer('Out There', 'https://www.youtube.com/embed/n0dtgJAvxH0')">
+                            <img src="https://img.youtube.com/vi/n0dtgJAvxH0/maxresdefault.jpg" alt="Out There Trailer">
+                            <div class="trailer-overlay">
+                                <div class="play-button">
+                                    <i class="fab fa-youtube"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <p>Space exploration game dengan atmosfer yang lonely dan decision making yang berat.</p>
+                    <div class="platform-links">
+                        <div class="platform-item">
+                            <div class="platform-name">
+                                <i class="fab fa-apple"></i> iOS
+                            </div>
+                            <a href="https://apps.apple.com/us/app/out-there/id711687333" class="download-link" target="_blank">
+                                <i class="fas fa-download"></i> App Store
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for YouTube Trailer -->
+    <div id="trailerModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalTitle">Game Trailer</h3>
+                <span class="close" onclick="closeTrailer()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <iframe id="trailerFrame" src="" frameborder="0" allowfullscreen></iframe>
+            </div>
+        </div>
+    </div>
+
+    <button class="floating-action" onclick="scrollToTop()">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <script>
+        function showTab(tabName) {
+            // Hide all tab contents
+            const tabContents = document.querySelectorAll('.tab-content');
+            tabContents.forEach(content => {
+                content.classList.remove('active');
+            });
+
+            // Remove active class from all tab buttons
+            const tabButtons = document.querySelectorAll('.tab-button');
+            tabButtons.forEach(button => {
+                button.classList.remove('active');
+            });
+
+            // Show selected tab content
+            document.getElementById(tabName).classList.add('active');
+
+            // Add active class to clicked button
+            event.target.classList.add('active');
+        }
+
+        function filterGames(category) {
+            const gameCards = document.querySelectorAll('#main .game-card');
+            const filterTags = document.querySelectorAll('.filter-tag');
+
+            // Update active filter tag
+            filterTags.forEach(tag => {
+                tag.classList.remove('active');
+            });
+            event.target.classList.add('active');
+
+            // Show/hide game cards based on category
+            gameCards.forEach(card => {
+                if (category === 'all' || card.dataset.category === category) {
+                    card.style.display = 'block';
+                    setTimeout(() => {
+                        card.style.opacity = '1';
+                        card.style.transform = 'translateY(0)';
+                    }, 100);
+                } else {
+                    card.style.opacity = '0';
+                    card.style.transform = 'translateY(20px)';
+                    setTimeout(() => {
+                        card.style.display = 'none';
+                    }, 300);
+                }
+            });
+        }
+
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+
+        function openTrailer(gameTitle, trailerUrl) {
+            const modal = document.getElementById('trailerModal');
+            const modalTitle = document.getElementById('modalTitle');
+            const trailerFrame = document.getElementById('trailerFrame');
+            
+            modalTitle.textContent = gameTitle + ' - Trailer';
+            trailerFrame.src = trailerUrl;
+            modal.style.display = 'block';
+            
+            // Prevent body scroll when modal is open
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeTrailer() {
+            const modal = document.getElementById('trailerModal');
+            const trailerFrame = document.getElementById('trailerFrame');
+            
+            modal.style.display = 'none';
+            trailerFrame.src = '';
+            
+            // Restore body scroll
+            document.body.style.overflow = 'auto';
+        }
+
+        // Close modal when clicking outside of it
+        window.onclick = function(event) {
+            const modal = document.getElementById('trailerModal');
+            if (event.target === modal) {
+                closeTrailer();
+            }
+        }
+
+        // Close modal with Escape key
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                closeTrailer();
+            }
+        });
+
+        // Search functionality
+        document.getElementById('searchInput').addEventListener('input', function(e) {
+            const searchTerm = e.target.value.toLowerCase();
+            const gameCards = document.querySelectorAll('.game-card');
+
+            gameCards.forEach(card => {
+                const title = card.querySelector('.game-title').textContent.toLowerCase();
+                if (title.includes(searchTerm)) {
+                    card.style.display = 'block';
+                    setTimeout(() => {
+                        card.style.opacity = '1';
+                        card.style.transform = 'translateY(0)';
+                    }, 100);
+                } else {
+                    card.style.opacity = '0';
+                    card.style.transform = 'translateY(20px)';
+                    setTimeout(() => {
+                        card.style.display = 'none';
+                    }, 300);
+                }
+            });
+        });
+
+        // Add smooth scrolling for all internal links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // Add some interactive animations
+        document.addEventListener('DOMContentLoaded', function() {
+            const gameCards = document.querySelectorAll('.game-card');
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            });
+
+            gameCards.forEach(card => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(20px)';
+                card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                observer.observe(card);
+            });
+        });
+    </script>
+</body>
+</html>

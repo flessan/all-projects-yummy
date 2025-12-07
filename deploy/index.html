@@ -1,0 +1,5020 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deploy-Your-Things - List Platform Deployment Terlengkap</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.css" rel="stylesheet">
+    <style>
+        /* Modern CSS Reset and Variables */
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            /* GitHub Dark Mode Theme */
+            --bg-primary: #0d1117;
+            --bg-secondary: #161b22;
+            --bg-tertiary: #21262d;
+            --bg-hover: #30363d;
+            --bg-card: #1c2128;
+            --text-primary: #c9d1d9;
+            --text-secondary: #8b949e;
+            --text-muted: #656d76;
+            --border-primary: #30363d;
+            --border-secondary: #21262d;
+            --accent-primary: #58a6ff;
+            --accent-secondary: #1f6feb;
+            --accent-success: #3fb950;
+            --accent-warning: #d29922;
+            --accent-danger: #f85149;
+            --accent-purple: #bc8cff;
+            --accent-pink: #f778ba;
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.2);
+            --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.3);
+            --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.4);
+            --radius-sm: 6px;
+            --radius-md: 8px;
+            --radius-lg: 12px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Light Theme */
+        [data-theme="light"] {
+            --bg-primary: #ffffff;
+            --bg-secondary: #f6f8fa;
+            --bg-tertiary: #f3f4f6;
+            --bg-hover: #e1e4e8;
+            --bg-card: #ffffff;
+            --text-primary: #24292f;
+            --text-secondary: #57606a;
+            --text-muted: #6e7781;
+            --border-primary: #d1d9e0;
+            --border-secondary: #e1e4e8;
+            --accent-primary: #0969da;
+            --accent-secondary: #0860ca;
+            --accent-success: #1a7f37;
+            --accent-warning: #9a6700;
+            --accent-danger: #d1242f;
+            --accent-purple: #8250df;
+            --accent-pink: #bc4c00;
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
+            --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--text-primary);
+            background: var(--bg-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+            transition: var(--transition);
+        }
+
+        /* Container */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        /* Header */
+        .header {
+            background: var(--bg-secondary);
+            backdrop-filter: blur(12px);
+            padding: 1rem 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid var(--border-primary);
+            transition: var(--transition);
+        }
+
+        .header.scrolled {
+            box-shadow: var(--shadow-md);
+        }
+
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--accent-primary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .logo:hover {
+            transform: translateY(-2px);
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 1.5rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-primary);
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius-md);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-links a::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -1%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(120deg, transparent, rgba(88, 166, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .nav-links a:hover::before {
+            left: -20%;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent-primary);
+            background: rgba(88, 166, 255, 0.1);
+        }
+
+        .nav-links .nav-favorites {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-primary);
+        }
+
+        .nav-links .nav-favorites:hover {
+            background: var(--accent-secondary);
+            border-color: var(--accent-secondary);
+            color: white;
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .theme-toggle, .lang-toggle {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-primary);
+            color: var(--text-primary);
+            width: 36px;
+            height: 36px;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .theme-toggle:hover, .lang-toggle:hover {
+            background: var(--bg-hover);
+            border-color: var(--accent-primary);
+            color: var(--accent-primary);
+        }
+
+        .user-menu {
+            position: relative;
+        }
+
+        .user-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: var(--accent-primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .user-avatar:hover {
+            transform: scale(1.05);
+        }
+
+        .user-dropdown {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            margin-top: 0.5rem;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-primary);
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-lg);
+            min-width: 200px;
+            z-index: 1001;
+            display: none;
+        }
+
+        .user-dropdown.active {
+            display: block;
+        }
+
+        .user-dropdown a {
+            display: block;
+            padding: 0.75rem 1rem;
+            color: var(--text-primary);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .user-dropdown a:hover {
+            background: var(--bg-hover);
+            color: var(--accent-primary);
+        }
+
+        .user-dropdown-divider {
+            height: 1px;
+            background: var(--border-primary);
+            margin: 0.5rem 0;
+        }
+
+        /* Mobile Menu */
+        .mobile-menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: var(--radius-md);
+            transition: var(--transition);
+        }
+
+        .mobile-menu-toggle:hover {
+            background: var(--bg-hover);
+        }
+
+        /* Breadcrumb */
+        .breadcrumb {
+            background: var(--bg-secondary);
+            padding: 1rem 0;
+            margin-top: 70px;
+            border-bottom: 1px solid var(--border-primary);
+        }
+
+        .breadcrumb-list {
+            display: flex;
+            list-style: none;
+            gap: 0.5rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .breadcrumb-item {
+            color: var(--text-secondary);
+        }
+
+        .breadcrumb-item a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .breadcrumb-item a:hover {
+            color: var(--accent-primary);
+        }
+
+        .breadcrumb-separator {
+            color: var(--text-muted);
+        }
+
+        .breadcrumb-item.active {
+            color: var(--text-primary);
+        }
+
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            padding: 4rem 0;
+            background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(88, 166, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(188, 140, 255, 0.1) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero h1 {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        .hero p {
+            font-size: clamp(1rem, 2vw, 1.25rem);
+            margin-bottom: 2rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            animation: fadeInUp 0.8s ease-out 0.2s both;
+        }
+
+        /* Stats */
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin: 2rem auto;
+            max-width: 600px;
+            animation: fadeInUp 0.8s ease-out 0.4s both;
+        }
+
+        .stat-item {
+            background: var(--bg-tertiary);
+            padding: 1.5rem;
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border-primary);
+            transition: var(--transition);
+        }
+
+        .stat-item:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-md);
+            border-color: var(--accent-primary);
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            display: block;
+            color: var(--accent-primary);
+        }
+
+        .stat-label {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        /* Search Container */
+        .search-container {
+            max-width: 800px;
+            margin: 0 auto 2rem;
+            position: relative;
+            animation: fadeInUp 0.8s ease-out 0.6s both;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 1rem 3rem 1rem 1.5rem;
+            border: 2px solid var(--border-primary);
+            border-radius: var(--radius-lg);
+            font-size: 1rem;
+            outline: none;
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+            transition: var(--transition);
+        }
+
+        .search-input:focus {
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 0 3px rgba(88, 166, 255, 0.1);
+        }
+
+        .search-icon {
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-secondary);
+            font-size: 1.2rem;
+        }
+
+        .advanced-search-toggle {
+            position: absolute;
+            right: 3.5rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-secondary);
+            font-size: 1rem;
+            cursor: pointer;
+            padding: 0.25rem;
+            border-radius: var(--radius-sm);
+            transition: var(--transition);
+        }
+
+        .advanced-search-toggle:hover {
+            color: var(--accent-primary);
+            background: rgba(88, 166, 255, 0.1);
+        }
+
+        .advanced-search-panel {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-primary);
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            margin-top: 1rem;
+            display: none;
+            animation: slideDown 0.3s ease-out;
+        }
+
+        .advanced-search-panel.active {
+            display: block;
+        }
+
+        .advanced-search-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--border-primary);
+            border-radius: var(--radius-md);
+            background: var(--bg-card);
+            color: var(--text-primary);
+            font-size: 0.875rem;
+            transition: var(--transition);
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 0 3px rgba(88, 166, 255, 0.1);
+        }
+
+        .checkbox-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 0.75rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border-primary);
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .checkbox-item:hover {
+            border-color: var(--accent-primary);
+        }
+
+        .checkbox-item input {
+            margin: 0;
+        }
+
+        .advanced-search-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: var(--radius-md);
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.875rem;
+        }
+
+        .btn-primary {
+            background: var(--accent-primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--accent-secondary);
+        }
+
+        .btn-secondary {
+            background: var(--bg-hover);
+            color: var(--text-primary);
+            border: 1px solid var(--border-primary);
+        }
+
+        .btn-secondary:hover {
+            background: var(--bg-tertiary);
+        }
+
+        /* Filter Container */
+        .filter-container {
+            display: flex;
+            justify-content: center;
+            gap: 0.75rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            animation: fadeInUp 0.8s ease-out 0.8s both;
+        }
+
+        .filter-btn {
+            padding: 0.75rem 1.5rem;
+            border: 1px solid var(--border-primary);
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 500;
+            font-size: 0.875rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .filter-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(88, 166, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .filter-btn:hover::before {
+            left: 100%;
+        }
+
+        .filter-btn:hover {
+            background: var(--bg-hover);
+            border-color: var(--accent-primary);
+            color: var(--accent-primary);
+            transform: translateY(-2px);
+        }
+
+        .filter-btn.active {
+            background: var(--accent-secondary);
+            border-color: var(--accent-secondary);
+            color: white;
+        }
+
+        /* Action Buttons */
+        .action-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 0.75rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            animation: fadeInUp 0.8s ease-out 1s both;
+        }
+
+        .action-btn {
+            padding: 0.75rem 1.25rem;
+            border: 1px solid var(--border-primary);
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 0.875rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .action-btn:hover {
+            background: var(--bg-hover);
+            border-color: var(--accent-primary);
+            color: var(--accent-primary);
+            transform: translateY(-2px);
+        }
+
+        .action-btn.active {
+            background: var(--accent-secondary);
+            border-color: var(--accent-secondary);
+            color: white;
+        }
+
+        /* Main Content */
+        .main-content {
+            background: var(--bg-secondary);
+            padding: 3rem 0;
+            margin-top: 0;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: clamp(1.75rem, 4vw, 2.5rem);
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        .section-subtitle {
+            text-align: center;
+            font-size: 1rem;
+            color: var(--text-secondary);
+            margin-bottom: 3rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Stats Panel */
+        .stats-panel {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-primary);
+            border-radius: var(--radius-lg);
+            padding: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .stat-box {
+            text-align: center;
+            padding: 1.5rem;
+            background: var(--bg-card);
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-primary);
+            transition: var(--transition);
+        }
+
+        .stat-box:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-md);
+            border-color: var(--accent-primary);
+        }
+
+        .stat-box h4 {
+            color: var(--accent-primary);
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-box p {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+
+        /* Chart Container */
+        .chart-container {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-primary);
+            border-radius: var(--radius-lg);
+            padding: 2rem;
+            margin-bottom: 3rem;
+            height: 300px;
+            position: relative;
+        }
+
+        /* Tag Cloud */
+        .tag-cloud {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-primary);
+            border-radius: var(--radius-lg);
+            padding: 2rem;
+            margin-bottom: 3rem;
+            text-align: center;
+        }
+
+        .tag-cloud h3 {
+            margin-bottom: 1.5rem;
+            color: var(--text-primary);
+        }
+
+        .tag-cloud-items {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0.75rem;
+        }
+
+        .tag-cloud-item {
+            padding: 0.5rem 1rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border-primary);
+            border-radius: var(--radius-md);
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: var(--transition);
+            font-size: 0.875rem;
+        }
+
+        .tag-cloud-item:hover {
+            background: var(--accent-primary);
+            color: white;
+            border-color: var(--accent-primary);
+            transform: translateY(-3px);
+        }
+
+        .tag-cloud-item.size-1 { font-size: 0.75rem; }
+        .tag-cloud-item.size-2 { font-size: 0.875rem; }
+        .tag-cloud-item.size-3 { font-size: 1rem; }
+        .tag-cloud-item.size-4 { font-size: 1.125rem; }
+        .tag-cloud-item.size-5 { font-size: 1.25rem; }
+
+        /* Recently Viewed */
+        .recently-viewed {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-primary);
+            border-radius: var(--radius-lg);
+            padding: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .recently-viewed h3 {
+            margin-bottom: 1.5rem;
+            color: var(--text-primary);
+        }
+
+        .recently-viewed-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .recently-viewed-item {
+            background: var(--bg-card);
+            border: 1px solid var(--border-primary);
+            border-radius: var(--radius-md);
+            padding: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            transition: var(--transition);
+            cursor: pointer;
+        }
+
+        .recently-viewed-item:hover {
+            border-color: var(--accent-primary);
+            transform: translateY(-3px);
+        }
+
+        .recently-viewed-logo {
+            width: 40px;
+            height: 40px;
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        .recently-viewed-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .recently-viewed-info h4 {
+            font-size: 0.875rem;
+            margin-bottom: 0.25rem;
+            color: var(--text-primary);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .recently-viewed-info p {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* Recommendations */
+        .recommendations {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-primary);
+            border-radius: var(--radius-lg);
+            padding: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .recommendations h3 {
+            margin-bottom: 1.5rem;
+            color: var(--text-primary);
+        }
+
+        .recommendations-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .recommendation-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-primary);
+            border-radius: var(--radius-md);
+            padding: 1.5rem;
+            transition: var(--transition);
+            cursor: pointer;
+        }
+
+        .recommendation-card:hover {
+            border-color: var(--accent-primary);
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .recommendation-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .recommendation-logo {
+            width: 50px;
+            height: 50px;
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        .recommendation-info h4 {
+            font-size: 1rem;
+            margin-bottom: 0.25rem;
+            color: var(--text-primary);
+        }
+
+        .recommendation-info p {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+
+        .recommendation-match {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            color: var(--accent-success);
+            font-size: 0.875rem;
+        }
+
+        /* Platform Grid */
+        .platforms-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .platform-card {
+            background: var(--bg-card);
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            border: 1px solid var(--border-primary);
+            position: relative;
+            overflow: hidden;
+            transition: var(--transition);
+            cursor: pointer;
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        .platform-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--accent-primary);
+        }
+
+        .platform-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent-primary), var(--accent-purple));
+            transform: scaleX(0);
+            transition: transform 0.3s;
+        }
+
+        .platform-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .platform-card.favorited {
+            border-color: var(--accent-warning);
+        }
+
+        .platform-card.favorited::before {
+            background: linear-gradient(90deg, var(--accent-warning), var(--accent-pink));
+            transform: scaleX(1);
+        }
+
+        .favorite-btn {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-primary);
+            color: var(--text-muted);
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+        }
+
+        .favorite-btn:hover {
+            background: var(--bg-hover);
+            border-color: var(--accent-warning);
+            color: var(--accent-warning);
+            transform: scale(1.1);
+        }
+
+        .favorite-btn.active {
+            background: var(--accent-warning);
+            border-color: var(--accent-warning);
+            color: white;
+        }
+
+        .popular-badge {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            background: linear-gradient(135deg, var(--accent-warning), #b08800);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: var(--radius-md);
+            font-size: 0.75rem;
+            font-weight: 600;
+            box-shadow: var(--shadow-sm);
+            z-index: 5;
+        }
+
+        .platform-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+            gap: 1rem;
+        }
+
+        .platform-logo {
+            width: 60px;
+            height: 60px;
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: white;
+            font-weight: bold;
+            flex-shrink: 0;
+            background: var(--accent-primary);
+        }
+
+        .platform-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .platform-info h3 {
+            font-size: 1.25rem;
+            margin-bottom: 0.25rem;
+            color: var(--text-primary);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .platform-type {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: var(--radius-md);
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .type-static {
+            background: rgba(88, 166, 255, 0.1);
+            color: var(--accent-primary);
+            border: 1px solid rgba(88, 166, 255, 0.3);
+        }
+
+        .type-dynamic {
+            background: rgba(188, 140, 255, 0.1);
+            color: var(--accent-purple);
+            border: 1px solid rgba(188, 140, 255, 0.3);
+        }
+
+        .type-both {
+            background: rgba(63, 185, 80, 0.1);
+            color: var(--accent-success);
+            border: 1px solid rgba(63, 185, 80, 0.3);
+        }
+
+        .platform-description {
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+            line-height: 1.6;
+            font-size: 0.875rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .platform-features {
+            list-style: none;
+            margin-bottom: 1.5rem;
+        }
+
+        .platform-features li {
+            padding: 0.25rem 0;
+            color: var(--text-secondary);
+            position: relative;
+            padding-left: 1.5rem;
+            font-size: 0.875rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 1;
+            line-clamp: 1;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .platform-features li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--accent-success);
+            font-weight: bold;
+        }
+
+        .platform-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 1rem;
+            gap: 1rem;
+        }
+
+        .free-badge {
+            background: linear-gradient(135deg, var(--accent-success), #2da44e);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius-md);
+            font-size: 0.75rem;
+            font-weight: 600;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .trial-badge {
+            background: linear-gradient(135deg, var(--accent-warning), #b08800);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius-md);
+            font-size: 0.75rem;
+            font-weight: 600;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .deploy-btn {
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            color: white;
+            padding: 0.75rem 1.25rem;
+            border: none;
+            border-radius: var(--radius-md);
+            text-decoration: none;
+            font-weight: 600;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.875rem;
+            box-shadow: var(--shadow-sm);
+            white-space: nowrap;
+        }
+
+        .deploy-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        /* Tags */
+        .platform-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .tag {
+            background: var(--bg-hover);
+            color: var(--text-secondary);
+            padding: 0.25rem 0.75rem;
+            border-radius: var(--radius-md);
+            font-size: 0.75rem;
+            border: 1px solid var(--border-primary);
+            transition: var(--transition);
+        }
+
+        .tag:hover {
+            background: var(--accent-primary);
+            color: white;
+            border-color: var(--accent-primary);
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(5px);
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .modal-content {
+            background: var(--bg-tertiary);
+            margin: 5% auto;
+            padding: 2rem;
+            border-radius: var(--radius-lg);
+            width: 90%;
+            max-width: 800px;
+            max-height: 80vh;
+            overflow-y: auto;
+            border: 1px solid var(--border-primary);
+            position: relative;
+            animation: slideUp 0.3s ease-out;
+        }
+
+        .close {
+            position: absolute;
+            right: 1.5rem;
+            top: 1.5rem;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: var(--transition);
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: var(--radius-md);
+        }
+
+        .close:hover {
+            color: var(--accent-danger);
+            background: var(--bg-hover);
+        }
+
+        .modal h2 {
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+            font-size: 1.75rem;
+        }
+
+        .modal-features {
+            list-style: none;
+            margin-bottom: 2rem;
+        }
+
+        .modal-features li {
+            padding: 0.75rem 0;
+            color: var(--text-secondary);
+            border-bottom: 1px solid var(--border-primary);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .modal-features li:last-child {
+            border-bottom: none;
+        }
+
+        .modal-features li i {
+            color: var(--accent-success);
+            flex-shrink: 0;
+        }
+
+        .modal-tabs {
+            display: flex;
+            border-bottom: 1px solid var(--border-primary);
+            margin-bottom: 1.5rem;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .modal-tab {
+            padding: 0.75rem 1.5rem;
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            position: relative;
+            white-space: nowrap;
+        }
+
+        .modal-tab:hover {
+            color: var(--text-primary);
+        }
+
+        .modal-tab.active {
+            color: var(--accent-primary);
+        }
+
+        .modal-tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--accent-primary);
+        }
+
+        .modal-tab-content {
+            display: none;
+        }
+
+        .modal-tab-content.active {
+            display: block;
+        }
+
+        /* Personal Notes Section */
+        .notes-section {
+            margin-top: 2rem;
+        }
+
+        .notes-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .notes-list {
+            margin-bottom: 1.5rem;
+        }
+
+        .note-item {
+            background: var(--bg-card);
+            border-radius: var(--radius-md);
+            padding: 1rem;
+            margin-bottom: 1rem;
+            position: relative;
+        }
+
+        .note-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.75rem;
+        }
+
+        .note-date {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .note-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .note-action {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: var(--transition);
+            width: 28px;
+            height: 28px;
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .note-action:hover {
+            color: var(--accent-primary);
+            background: var(--bg-hover);
+        }
+
+        .note-action.delete:hover {
+            color: var(--accent-danger);
+        }
+
+        .note-content {
+            color: var(--text-secondary);
+            line-height: 1.5;
+            white-space: pre-wrap;
+        }
+
+        .add-note {
+            margin-top: 1.5rem;
+        }
+
+        .add-note h4 {
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        .note-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .note-textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .empty-notes {
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-secondary);
+        }
+
+        .empty-notes i {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: var(--text-muted);
+        }
+
+        /* Rich Share Section */
+        .share-section {
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border-primary);
+        }
+
+        .share-section h4 {
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        .share-message {
+            margin-bottom: 1rem;
+        }
+
+        .share-message textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--border-primary);
+            border-radius: var(--radius-md);
+            background: var(--bg-card);
+            color: var(--text-primary);
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .share-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+
+        .share-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .share-btn:hover {
+            transform: translateY(-3px);
+        }
+
+        .share-btn.facebook { background: #1877f2; }
+        .share-btn.twitter { background: #1da1f2; }
+        .share-btn.linkedin { background: #0077b5; }
+        .share-btn.whatsapp { background: #25d366; }
+        .share-btn.telegram { background: #0088cc; }
+        .share-btn.email { background: #ea4335; }
+        .share-btn.copy { background: var(--text-secondary); }
+
+        .share-btn.tooltip {
+            position: relative;
+        }
+
+        .share-btn.tooltip::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            padding: 0.25rem 0.5rem;
+            border-radius: var(--radius-sm);
+            font-size: 0.75rem;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+        }
+
+        .share-btn.tooltip:hover::after {
+            opacity: 1;
+        }
+
+        .share-link {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .share-link input {
+            flex: 1;
+            padding: 0.75rem;
+            border: 1px solid var(--border-primary);
+            border-radius: var(--radius-md);
+            background: var(--bg-card);
+            color: var(--text-primary);
+            font-size: 0.875rem;
+        }
+
+        /* Comparison Modal */
+        .comparison-modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(5px);
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .comparison-content {
+            background: var(--bg-tertiary);
+            margin: 3% auto;
+            padding: 2rem;
+            border-radius: var(--radius-lg);
+            width: 95%;
+            max-width: 1200px;
+            max-height: 90vh;
+            overflow-y: auto;
+            border: 1px solid var(--border-primary);
+            position: relative;
+            animation: slideUp 0.3s ease-out;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1.5rem;
+            overflow-x: auto;
+            display: block;
+            white-space: nowrap;
+        }
+
+        .comparison-table thead,
+        .comparison-table tbody {
+            display: table;
+            width: 100%;
+            table-layout: fixed;
+        }
+
+        .comparison-table th,
+        .comparison-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border-primary);
+            vertical-align: top;
+        }
+
+        .comparison-table th {
+            background: var(--bg-card);
+            color: var(--text-primary);
+            font-weight: 600;
+            position: sticky;
+            top: 0;
+        }
+
+        .comparison-table tr:hover {
+            background: var(--bg-hover);
+        }
+
+        .comparison-platform {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .comparison-logo {
+            width: 40px;
+            height: 40px;
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        .comparison-remove {
+            background: var(--accent-danger);
+            color: white;
+            border: none;
+            border-radius: var(--radius-sm);
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            margin-left: auto;
+            transition: var(--transition);
+        }
+
+        .comparison-remove:hover {
+            background: #da3633;
+        }
+
+        .comparison-check {
+            color: var(--accent-success);
+        }
+
+        .comparison-cross {
+            color: var(--accent-danger);
+        }
+
+        .add-to-comparison {
+            background: var(--bg-card);
+            border: 1px solid var(--border-primary);
+            border-radius: var(--radius-md);
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .add-to-comparison h4 {
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        .comparison-search {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .comparison-search input {
+            flex: 1;
+            padding: 0.75rem;
+            border: 1px solid var(--border-primary);
+            border-radius: var(--radius-md);
+            background: var(--bg-primary);
+            color: var(--text-primary);
+        }
+
+        .comparison-results {
+            max-height: 200px;
+            overflow-y: auto;
+            text-align: left;
+        }
+
+        .comparison-result-item {
+            padding: 0.75rem;
+            border-bottom: 1px solid var(--border-primary);
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .comparison-result-item:hover {
+            background: var(--bg-hover);
+        }
+
+        .comparison-result-item:last-child {
+            border-bottom: none;
+        }
+
+        .comparison-result-logo {
+            width: 30px;
+            height: 30px;
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            text-align: center;
+            padding: 3rem 0;
+            margin-top: 4rem;
+            border-top: 1px solid var(--border-primary);
+        }
+
+        .footer-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .footer h3 {
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+            color: var(--accent-primary);
+        }
+
+        .footer p {
+            margin-bottom: 1rem;
+            color: var(--text-secondary);
+            line-height: 1.8;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .footer-links a:hover {
+            color: var(--accent-primary);
+        }
+
+        .newsletter {
+            background: var(--bg-tertiary);
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            margin-top: 2rem;
+            text-align: left;
+        }
+
+        .newsletter h4 {
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        .newsletter-form {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .newsletter-input {
+            flex: 1;
+            padding: 0.75rem;
+            border: 1px solid var(--border-primary);
+            border-radius: var(--radius-md);
+            background: var(--bg-card);
+            color: var(--text-primary);
+        }
+
+        /* Toast Notification */
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+            padding: 1rem 1.5rem;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-primary);
+            box-shadow: var(--shadow-lg);
+            transform: translateX(400px);
+            transition: transform 0.3s ease-out;
+            z-index: 3000;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            max-width: 400px;
+        }
+
+        .toast.show {
+            transform: translateX(0);
+        }
+
+        .toast.success {
+            border-color: var(--accent-success);
+            background: rgba(63, 185, 80, 0.1);
+        }
+
+        .toast.error {
+            border-color: var(--accent-danger);
+            background: rgba(248, 81, 73, 0.1);
+        }
+
+        .toast.info {
+            border-color: var(--accent-primary);
+            background: rgba(88, 166, 255, 0.1);
+        }
+
+        /* Loading Animation */
+        .loading {
+            text-align: center;
+            padding: 3rem;
+            color: var(--accent-primary);
+        }
+
+        .loading i {
+            animation: spin 1s linear infinite;
+            margin-right: 0.5rem;
+            font-size: 2rem;
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: var(--text-secondary);
+        }
+
+        .empty-state i {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            color: var(--text-muted);
+        }
+
+        .empty-state h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        /* Scroll to top button */
+        .scroll-top {
+            position: fixed;
+            bottom: 2rem;
+            left: 2rem;
+            background: var(--accent-primary);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+            z-index: 1000;
+            box-shadow: var(--shadow-md);
+        }
+
+        .scroll-top.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .scroll-top:hover {
+            background: var(--accent-secondary);
+            transform: translateY(-5px);
+        }
+
+        /* Data Actions */
+        .data-actions {
+            position: fixed;
+            top: 80px;
+            right: 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            z-index: 999;
+        }
+
+        .data-btn {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-primary);
+            color: var(--text-primary);
+            width: 40px;
+            height: 40px;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .data-btn:hover {
+            background: var(--bg-hover);
+            border-color: var(--accent-primary);
+            color: var(--accent-primary);
+            transform: translateY(-2px);
+        }
+
+        /* Hidden file input for import */
+        #fileInput {
+            display: none;
+        }
+
+        /* Help Button */
+        .help-button {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: var(--accent-purple);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            z-index: 1000;
+            box-shadow: var(--shadow-md);
+            transition: var(--transition);
+        }
+
+        .help-button:hover {
+            background: var(--accent-pink);
+            transform: translateY(-5px);
+        }
+
+        /* Help Modal */
+        .help-modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(5px);
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .help-content {
+            background: var(--bg-tertiary);
+            margin: 5% auto;
+            padding: 2rem;
+            border-radius: var(--radius-lg);
+            width: 90%;
+            max-width: 800px;
+            max-height: 80vh;
+            overflow-y: auto;
+            border: 1px solid var(--border-primary);
+            position: relative;
+            animation: slideUp 0.3s ease-out;
+        }
+
+        .help-section {
+            margin-bottom: 2rem;
+        }
+
+        .help-section h3 {
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+            font-size: 1.25rem;
+        }
+
+        .help-section p {
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+
+        .keyboard-shortcuts {
+            background: var(--bg-card);
+            border-radius: var(--radius-md);
+            padding: 1.5rem;
+        }
+
+        .shortcut-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid var(--border-primary);
+        }
+
+        .shortcut-item:last-child {
+            border-bottom: none;
+        }
+
+        .shortcut-key {
+            background: var(--bg-hover);
+            color: var(--text-primary);
+            padding: 0.25rem 0.5rem;
+            border-radius: var(--radius-sm);
+            font-family: monospace;
+            font-size: 0.875rem;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .mobile-menu-toggle {
+                display: block;
+            }
+
+            .hero {
+                padding: 6rem 0 3rem;
+            }
+
+            .stats {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 0.75rem;
+            }
+
+            .stat-item {
+                padding: 1rem;
+            }
+
+            .stat-number {
+                font-size: 1.5rem;
+            }
+
+            .filter-container {
+                gap: 0.5rem;
+            }
+
+            .filter-btn {
+                padding: 0.5rem 1rem;
+                font-size: 0.75rem;
+            }
+
+            .action-buttons {
+                gap: 0.5rem;
+            }
+
+            .action-btn {
+                padding: 0.5rem 1rem;
+                font-size: 0.75rem;
+            }
+
+            .platforms-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .platform-card {
+                padding: 1rem;
+            }
+
+            .platform-header {
+                flex-direction: column;
+                text-align: center;
+                gap: 0.5rem;
+            }
+
+            .platform-footer {
+                flex-direction: column;
+                gap: 0.75rem;
+            }
+
+            .modal-content {
+                width: 95%;
+                margin: 10% auto;
+                padding: 1.5rem;
+            }
+
+            .comparison-content {
+                width: 95%;
+                margin: 10% auto;
+                padding: 1.5rem;
+            }
+
+            .comparison-table {
+                font-size: 0.875rem;
+            }
+
+            .comparison-table th,
+            .comparison-table td {
+                padding: 0.5rem;
+            }
+
+            .toast {
+                right: 1rem;
+                left: 1rem;
+                bottom: 1rem;
+                max-width: none;
+            }
+
+            .data-actions {
+                top: auto;
+                bottom: 5rem;
+                right: 1rem;
+                flex-direction: row;
+            }
+
+            .scroll-top {
+                bottom: 1rem;
+                left: 1rem;
+                width: 45px;
+                height: 45px;
+            }
+
+            .help-button {
+                bottom: 1rem;
+                right: 1rem;
+                width: 45px;
+                height: 45px;
+            }
+
+            .newsletter-form {
+                flex-direction: column;
+            }
+
+            .advanced-search-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .modal-tabs {
+                padding-bottom: 0.5rem;
+            }
+
+            .modal-tab {
+                padding: 0.5rem 1rem;
+                font-size: 0.875rem;
+            }
+
+            .share-buttons {
+                justify-content: center;
+            }
+
+            .share-link {
+                flex-direction: column;
+            }
+
+            .share-link input {
+                margin-bottom: 0.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 0 0.75rem;
+            }
+
+            .hero h1 {
+                font-size: 1.75rem;
+            }
+
+            .hero p {
+                font-size: 1rem;
+            }
+
+            .stats {
+                grid-template-columns: 1fr;
+            }
+
+            .section-title {
+                font-size: 1.5rem;
+            }
+
+            .platform-logo {
+                width: 50px;
+                height: 50px;
+                font-size: 1.25rem;
+            }
+
+            .platform-info h3 {
+                font-size: 1.1rem;
+            }
+
+            .comparison-table {
+                display: block;
+                overflow-x: auto;
+                white-space: nowrap;
+            }
+
+            .comparison-table thead,
+            .comparison-table tbody {
+                display: table;
+                width: 100%;
+                table-layout: auto;
+            }
+
+            .comparison-table th,
+            .comparison-table td {
+                min-width: 120px;
+            }
+
+            .share-buttons {
+                gap: 0.5rem;
+            }
+
+            .share-btn {
+                width: 36px;
+                height: 36px;
+            }
+        }
+
+        /* Print Styles */
+        @media print {
+            .header,
+            .hero,
+            .breadcrumb,
+            .filter-container,
+            .action-buttons,
+            .data-actions,
+            .scroll-top,
+            .toast,
+            .help-button,
+            .footer {
+                display: none !important;
+            }
+
+            .main-content {
+                margin-top: 0;
+                padding: 0;
+            }
+
+            .platform-card {
+                break-inside: avoid;
+                border: 1px solid #ccc;
+            }
+        }
+
+        /* High Contrast Mode */
+        @media (prefers-contrast: high) {
+            :root {
+                --border-primary: #fff;
+                --text-secondary: #fff;
+            }
+        }
+
+        /* Reduced Motion */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header" id="header">
+        <nav class="nav container">
+            <a href="#" class="logo">
+                <i class="fas fa-rocket"></i> Deploy-Your-Things
+            </a>
+            <ul class="nav-links">
+                <li><a href="#home">Beranda</a></li>
+                <li><a href="#platforms">Platform</a></li>
+                <li><a href="#favorites" class="nav-favorites">Favorit (<span id="favCount">0</span>)</a></li>
+                <li><a href="#about">Tentang</a></li>
+                <li><a href="#contact">Kontak</a></li>
+            </ul>
+            <div class="nav-actions">
+                <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">
+                    <i class="fas fa-moon" id="themeIcon"></i>
+                </button>
+                <button class="lang-toggle" onclick="toggleLanguage()" aria-label="Toggle language">
+                    <i class="fas fa-language"></i>
+                </button>
+                <div class="user-menu">
+                    <div class="user-avatar" onclick="toggleUserMenu()" aria-label="User menu">
+                        <span id="userInitial">F</span>
+                    </div>
+                    <div class="user-dropdown" id="userDropdown">
+                        <a href="#" onclick="showProfile()"><i class="fas fa-user"></i> Profil Saya</a>
+                        <a href="#" onclick="showPreferences()"><i class="fas fa-cog"></i> Preferensi</a>
+                        <a href="#" onclick="showHistory()"><i class="fas fa-history"></i> Riwayat</a>
+                        <div class="user-dropdown-divider"></div>
+                        <a href="#" onclick="exportUserData()"><i class="fas fa-download"></i> Export Data</a>
+                        <a href="#" onclick="importUserData()"><i class="fas fa-upload"></i> Import Data</a>
+                        <div class="user-dropdown-divider"></div>
+                        <a href="#" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Keluar</a>
+                    </div>
+                </div>
+            </div>
+            <button class="mobile-menu-toggle" onclick="toggleMobileMenu()" aria-label="Toggle mobile menu">
+                <i class="fas fa-bars"></i>
+            </button>
+        </nav>
+    </header>
+
+    <!-- Breadcrumb -->
+    <div class="breadcrumb">
+        <div class="container">
+            <ul class="breadcrumb-list">
+                <li class="breadcrumb-item"><a href="#home">Beranda</a></li>
+                <li class="breadcrumb-separator"><i class="fas fa-chevron-right"></i></li>
+                <li class="breadcrumb-item active">Platform Deployment</li>
+            </ul>
+            <section id="home"></section>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1>Platform Deployment Gratis</h1>
+                <p>Koleksi terlengkap platform deployment untuk project Anda - Static, Dynamic, dan Enterprise</p>
+                
+                <div class="stats">
+                    <div class="stat-item">
+                        <span class="stat-number" id="totalPlatforms">0</span>
+                        <span class="stat-label">Platform</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">97%</span>
+                        <span class="stat-label">Gratis</span>
+                    </div>
+                </div>
+
+                <div class="search-container">
+                    <input type="text" class="search-input" placeholder="Cari platform deployment..." id="searchInput" aria-label="Search platforms">
+                    <i class="fas fa-search search-icon" aria-hidden="true"></i>
+                    <span class="advanced-search-toggle" onclick="toggleAdvancedSearch()" aria-label="Advanced search">
+                        <i class="fas fa-filter"></i>
+                    </span>
+                    <div class="advanced-search-panel" id="advancedSearchPanel">
+                        <div class="advanced-search-grid">
+                            <div class="form-group">
+                                <label for="storageFilter">Storage Minimum</label>
+                                <select class="form-control" id="storageFilter">
+                                    <option value="">Semua</option>
+                                    <option value="100MB">100MB+</option>
+                                    <option value="1GB">1GB+</option>
+                                    <option value="5GB">5GB+</option>
+                                    <option value="10GB">10GB+</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="bandwidthFilter">Bandwidth Minimum</label>
+                                <select class="form-control" id="bandwidthFilter">
+                                    <option value="">Semua</option>
+                                    <option value="1GB">1GB+</option>
+                                    <option value="10GB">10GB+</option>
+                                    <option value="100GB">100GB+</option>
+                                    <option value="Unlimited">Tak Terbatas</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="regionFilter">Region</label>
+                                <select class="form-control" id="regionFilter">
+                                    <option value="">Semua</option>
+                                    <option value="global">Global</option>
+                                    <option value="asia">Asia</option>
+                                    <option value="europe">Eropa</option>
+                                    <option value="america">Amerika</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Fitur</label>
+                                <div class="checkbox-group">
+                                    <div class="checkbox-item">
+                                        <input type="checkbox" id="sslFilter" value="ssl">
+                                        <label for="sslFilter">SSL</label>
+                                    </div>
+                                    <div class="checkbox-item">
+                                        <input type="checkbox" id="customDomainFilter" value="customDomain">
+                                        <label for="customDomainFilter">Domain Kustom</label>
+                                    </div>
+                                    <div class="checkbox-item">
+                                        <input type="checkbox" id="cdnFilter" value="cdn">
+                                        <label for="cdnFilter">CDN</label>
+                                    </div>
+                                    <div class="checkbox-item">
+                                        <input type="checkbox" id="apiFilter" value="api">
+                                        <label for="apiFilter">API</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="advanced-search-actions">
+                            <button class="btn btn-secondary" onclick="resetAdvancedFilters()">Reset</button>
+                            <button class="btn btn-primary" onclick="applyAdvancedFilters()">Terapkan</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="filter-container">
+                    <button class="filter-btn active" data-filter="all">Semua</button>
+                    <button class="filter-btn" data-filter="static">Static</button>
+                    <button class="filter-btn" data-filter="dynamic">Dynamic</button>
+                    <button class="filter-btn" data-filter="both">Keduanya</button>
+                    <button class="filter-btn" data-filter="enterprise">Enterprise</button>
+                    <button class="filter-btn" data-filter="popular">Populer</button>
+                </div>
+
+                <div class="action-buttons">
+                    <button class="action-btn" onclick="showOnlyFavorites()" aria-label="Show favorites">
+                        <i class="fas fa-star"></i> Favorit Saya
+                    </button>
+                    <button class="action-btn" onclick="sortByPopularity()" aria-label="Sort by popularity">
+                        <i class="fas fa-fire"></i> Terpopuler
+                    </button>
+                    <button class="action-btn" onclick="sortByNewest()" aria-label="Sort by newest">
+                        <i class="fas fa-clock"></i> Terbaru
+                    </button>
+                    <button class="action-btn" onclick="sortByRating()" aria-label="Sort by rating">
+                        <i class="fas fa-star"></i> Rating Tertinggi
+                    </button>
+                    <button class="action-btn" onclick="showComparison()" aria-label="Compare platforms">
+                        <i class="fas fa-balance-scale"></i> Bandingkan
+                    </button>
+                    <button class="action-btn" onclick="resetFilters()" aria-label="Reset filters">
+                        <i class="fas fa-refresh"></i> Reset
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="main-content" id="platforms">
+        <div class="container">
+            <!-- Stats Panel -->
+            <div class="stats-panel">
+                <div class="stats-grid">
+                    <div class="stat-box">
+                        <h4 id="staticCount">0</h4>
+                        <p>Static Sites</p>
+                    </div>
+                    <div class="stat-box">
+                        <h4 id="dynamicCount">0</h4>
+                        <p>Dynamic Sites</p>
+                    </div>
+                    <div class="stat-box">
+                        <h4 id="bothCount">0</h4>
+                        <p>Keduanya</p>
+                    </div>
+                    <div class="stat-box">
+                        <h4 id="enterpriseCount">0</h4>
+                        <p>Enterprise</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Chart Container -->
+            <div class="chart-container">
+                <canvas id="platformChart"></canvas>
+            </div>
+
+            <!-- Tag Cloud -->
+            <div class="tag-cloud">
+                <h3>Tag Populer</h3>
+                <div class="tag-cloud-items" id="tagCloud">
+                    <!-- Tags will be populated by JavaScript -->
+                </div>
+            </div>
+
+            <!-- Recently Viewed -->
+            <div class="recently-viewed" id="recentlyViewedSection" style="display: none;">
+                <h3>Baru Dilihat</h3>
+                <div class="recently-viewed-grid" id="recentlyViewedGrid">
+                    <!-- Recently viewed items will be populated by JavaScript -->
+                </div>
+            </div>
+
+            <!-- Recommendations -->
+            <div class="recommendations">
+                <h3>Rekomendasi Untuk Anda</h3>
+                <div class="recommendations-grid" id="recommendationsGrid">
+                    <!-- Recommendations will be populated by JavaScript -->
+                </div>
+            </div>
+
+            <h2 class="section-title">Platform Deployment Terlengkap di Dunia</h2>
+            <p class="section-subtitle">Semua platform di bawah ini menawarkan layanan gratis untuk memulai project Anda</p>
+
+            <div class="platforms-grid" id="platformsGrid">
+                <div class="loading" aria-label="Loading platforms">
+                    <i class="fas fa-spinner"></i> Memuat platform...
+                </div>
+            </div>
+
+            <div class="empty-state" id="emptyState" style="display: none;" aria-hidden="true">
+                <i class="fas fa-search"></i>
+                <h3>Tidak ada platform ditemukan</h3>
+                <p>Coba gunakan kata kunci lain atau reset filter Anda</p>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <h3><i class="fas fa-rocket"></i> Deploy-Your-Things</h3>
+            <p>Platform terlengkap untuk menemukan layanan deployment gratis di seluruh dunia. Kami mengumpulkan dan mengkurasi platform-platform terbaik untuk memudahkan Anda dalam memulai project tanpa biaya.</p>
+            
+            <div class="footer-links">
+                <a href="#about">Tentang Kami</a>
+                <a href="#privacy">Kebijakan Privasi</a>
+                <a href="#terms">Syarat & Ketentuan</a>
+                <a href="#contact">Hubungi Kami</a>
+                <a href="#contribute">Kontribusi</a>
+            </div>
+            
+            <div class="newsletter">
+                <h4>Newsletter</h4>
+                <p>Dapatkan update platform deployment terbaru langsung di inbox Anda</p>
+                <form class="newsletter-form" onsubmit="subscribeNewsletter(event)">
+                    <input type="email" class="newsletter-input" placeholder="Email Anda" required>
+                    <button type="submit" class="btn btn-primary">Berlangganan</button>
+                </form>
+            </div>
+            
+            <p>&copy; 2025 Deploy-Your-Things. Dibuat dengan <i class="fas fa-heart" style="color: var(--accent-danger);"></i> untuk seluruh developer di dunia.</p>
+        </div>
+    </footer>
+
+    <!-- Platform Modal -->
+    <div id="platformModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+        <div class="modal-content">
+            <button class="close" onclick="closeModal()" aria-label="Close modal">&times;</button>
+            <div id="modalContent">
+                <!-- Modal content will be inserted here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Comparison Modal -->
+    <div id="comparisonModal" class="comparison-modal" role="dialog" aria-modal="true" aria-labelledby="comparisonTitle">
+        <div class="comparison-content">
+            <button class="close" onclick="closeComparisonModal()" aria-label="Close comparison modal">&times;</button>
+            <h2 id="comparisonTitle">Bandingkan Platform</h2>
+            
+            <div class="add-to-comparison">
+                <h4>Tambah Platform untuk Dibandingkan</h4>
+                <div class="comparison-search">
+                    <input type="text" class="form-control" placeholder="Cari platform..." id="comparisonSearch" oninput="searchComparisonPlatforms(event)">
+                </div>
+                <div class="comparison-results" id="comparisonResults">
+                    <!-- Comparison search results will be populated here -->
+                </div>
+            </div>
+            
+            <div class="comparison-table-container">
+                <table class="comparison-table" id="comparisonTable">
+                    <thead>
+                        <tr>
+                            <th>Fitur</th>
+                            <!-- Comparison platforms will be added here -->
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Tipe</td>
+                            <!-- Comparison data will be added here -->
+                        </tr>
+                        <tr>
+                            <td>Gratis</td>
+                            <!-- Comparison data will be added here -->
+                        </tr>
+                        <tr>
+                            <td>Storage</td>
+                            <!-- Comparison data will be added here -->
+                        </tr>
+                        <tr>
+                            <td>Bandwidth</td>
+                            <!-- Comparison data will be added here -->
+                        </tr>
+                        <tr>
+                            <td>Custom Domain</td>
+                            <!-- Comparison data will be added here -->
+                        </tr>
+                        <tr>
+                            <td>SSL</td>
+                            <!-- Comparison data will be added here -->
+                        </tr>
+                        <tr>
+                            <td>CDN</td>
+                            <!-- Comparison data will be added here -->
+                        </tr>
+                        <tr>
+                            <td>API</td>
+                            <!-- Comparison data will be added here -->
+                        </tr>
+                        <tr>
+                            <td>Rating</td>
+                            <!-- Comparison data will be added here -->
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Help Modal -->
+    <div id="helpModal" class="help-modal" role="dialog" aria-modal="true" aria-labelledby="helpTitle">
+        <div class="help-content">
+            <button class="close" onclick="closeHelpModal()" aria-label="Close help modal">&times;</button>
+            <h2 id="helpTitle">Pusat Bantuan</h2>
+            
+            <div class="help-section">
+                <h3>Tentang Deploy-Your-Things</h3>
+                <p>Deploy-Your-Things adalah platform yang mengumpulkan dan mengkurasi layanan deployment gratis dari seluruh dunia. Kami membantu developer menemukan platform yang tepat untuk project mereka tanpa biaya.</p>
+            </div>
+            
+            <div class="help-section">
+                <h3>Cara Menggunakan</h3>
+                <p>1. Gunakan fitur pencarian untuk menemukan platform berdasarkan nama atau fitur</p>
+                <p>2. Filter platform berdasarkan tipe (static, dynamic, atau keduanya)</p>
+                <p>3. Tandai platform favorit Anda dengan mengeklik ikon bintang</p>
+                <p>4. Klik pada platform untuk melihat detail lengkap</p>
+                <p>5. Bandingkan beberapa platform untuk memilih yang terbaik</p>
+            </div>
+            
+            <div class="help-section">
+                <h3>Pintasan Keyboard</h3>
+                <div class="keyboard-shortcuts">
+                    <div class="shortcut-item">
+                        <span>Fokus Pencarian</span>
+                        <span class="shortcut-key">Ctrl/Cmd + K</span>
+                    </div>
+                    <div class="shortcut-item">
+                        <span>Tutup Modal</span>
+                        <span class="shortcut-key">Esc</span>
+                    </div>
+                    <div class="shortcut-item">
+                        <span>Ganti Tema</span>
+                        <span class="shortcut-key">Ctrl/Cmd + T</span>
+                    </div>
+                    <div class="shortcut-item">
+                        <span>Favorit</span>
+                        <span class="shortcut-key">Ctrl/Cmd + F</span>
+                    </div>
+                    <div class="shortcut-item">
+                        <span>Bandingkan</span>
+                        <span class="shortcut-key">Ctrl/Cmd + B</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Profile Modal -->
+    <div id="profileModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="profileTitle">
+        <div class="modal-content">
+            <button class="close" onclick="closeProfileModal()" aria-label="Close modal">&times;</button>
+            <h2 id="profileTitle">Profil Pengguna</h2>
+            <div class="profile-content">
+                <div class="profile-avatar">
+                    <div class="user-avatar" style="width: 100px; height: 100px; font-size: 2rem;">
+                        <span id="profileInitial">F</span>
+                    </div>
+                </div>
+                <div class="profile-info">
+                    <h3 id="profileName">Pengguna</h3>
+                    <p id="profileEmail">user@example.com</p>
+                </div>
+                <div class="profile-stats">
+                    <div class="stat-box">
+                        <h4 id="profileFavoritesCount">0</h4>
+                        <p>Favorit</p>
+                    </div>
+                    <div class="stat-box">
+                        <h4 id="profileViewedCount">0</h4>
+                        <p>Dilihat</p>
+                    </div>
+                </div>
+                <div class="profile-actions">
+                    <button class="btn btn-primary" onclick="editProfile()">Edit Profil</button>
+                    <button class="btn btn-secondary" onclick="closeProfileModal()">Tutup</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Preferences Modal -->
+    <div id="preferencesModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="preferencesTitle">
+        <div class="modal-content">
+            <button class="close" onclick="closePreferencesModal()" aria-label="Close modal">&times;</button>
+            <h2 id="preferencesTitle">Preferensi</h2>
+            <div class="preferences-content">
+                <div class="form-group">
+                    <label for="prefTheme">Tema</label>
+                    <select class="form-control" id="prefTheme" onchange="updateThemePreference()">
+                        <option value="dark">Gelap</option>
+                        <option value="light">Terang</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="prefLanguage">Bahasa</label>
+                    <select class="form-control" id="prefLanguage" onchange="updateLanguagePreference()">
+                        <option value="id">Bahasa Indonesia</option>
+                        <option value="en">English</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" id="prefRecommendations" onchange="updateRecommendationsPreference()">
+                        Tampilkan Rekomendasi
+                    </label>
+                </div>
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" id="prefAnimations" onchange="updateAnimationsPreference()">
+                        Aktifkan Animasi
+                    </label>
+                </div>
+                <div class="preferences-actions">
+                    <button class="btn btn-primary" onclick="savePreferences()">Simpan</button>
+                    <button class="btn btn-secondary" onclick="closePreferencesModal()">Batal</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- History Modal -->
+    <div id="historyModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="historyTitle">
+        <div class="modal-content">
+            <button class="close" onclick="closeHistoryModal()" aria-label="Close modal">&times;</button>
+            <h2 id="historyTitle">Riwayat Penelusuran</h2>
+            <div class="history-content">
+                <div class="history-list" id="historyList">
+                    <!-- History items will be populated here -->
+                </div>
+                <div class="history-actions">
+                    <button class="btn btn-secondary" onclick="clearHistory()">Hapus Riwayat</button>
+                    <button class="btn btn-primary" onclick="exportHistory()">Export Riwayat</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Platform Submission Modal -->
+    <div id="submissionModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="submissionTitle">
+        <div class="modal-content">
+            <button class="close" onclick="closeSubmissionModal()" aria-label="Close modal">&times;</button>
+            <h2 id="submissionTitle">Ajukan Platform Baru</h2>
+            <div class="submission-content">
+                <form class="submission-form" onsubmit="submitPlatform(event)">
+                    <div class="form-group">
+                        <label for="platformName">Nama Platform *</label>
+                        <input type="text" class="form-control" id="platformName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="platformUrl">URL *</label>
+                        <input type="url" class="form-control" id="platformUrl" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="platformType">Tipe *</label>
+                        <select class="form-control" id="platformType" required>
+                            <option value="">Pilih Tipe</option>
+                            <option value="static">Static</option>
+                            <option value="dynamic">Dynamic</option>
+                            <option value="both">Keduanya</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="platformDescription">Deskripsi *</label>
+                        <textarea class="form-control" id="platformDescription" rows="4" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="platformFeatures">Fitur (pisahkan dengan koma)</label>
+                        <input type="text" class="form-control" id="platformFeatures">
+                    </div>
+                    <div class="form-group">
+                        <label for="platformTags">Tag (pisahkan dengan koma)</label>
+                        <input type="text" class="form-control" id="platformTags">
+                    </div>
+                    <div class="form-group">
+                        <label>
+                            <input type="checkbox" id="platformFree"> Paket Gratis Tersedia
+                        </label>
+                    </div>
+                    <div class="form-group">
+                        <label for="platformStorage">Kapasitas Penyimpanan</label>
+                        <input type="text" class="form-control" id="platformStorage">
+                    </div>
+                    <div class="form-group">
+                        <label for="platformBandwidth">Bandwidth</label>
+                        <input type="text" class="form-control" id="platformBandwidth">
+                    </div>
+                    <div class="form-group">
+                        <label>
+                            <input type="checkbox" id="platformCustomDomain"> Domain Kustom
+                        </label>
+                    </div>
+                    <div class="form-group">
+                        <label>
+                            <input type="checkbox" id="platformSSL"> SSL
+                        </label>
+                    </div>
+                    <div class="form-group">
+                        <label for="platformRegion">Wilayah</label>
+                        <select class="form-control" id="platformRegion">
+                            <option value="global">Global</option>
+                            <option value="asia">Asia</option>
+                            <option value="europe">Eropa</option>
+                            <option value="america">Amerika</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="submitterEmail">Email Anda</label>
+                        <input type="email" class="form-control" id="submitterEmail">
+                    </div>
+                    <div class="form-group">
+                        <label for="submitterNotes">Catatan Tambahan</label>
+                        <textarea class="form-control" id="submitterNotes" rows="3"></textarea>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">Kirim</button>
+                        <button type="button" class="btn btn-secondary" onclick="closeSubmissionModal()">Batal</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Feedback Modal -->
+    <div id="feedbackModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="feedbackTitle">
+        <div class="modal-content">
+            <button class="close" onclick="closeFeedbackModal()" aria-label="Close modal">&times;</button>
+            <h2 id="feedbackTitle">Kirim Masukan</h2>
+            <div class="feedback-content">
+                <form class="feedback-form" onsubmit="submitFeedback(event)">
+                    <div class="form-group">
+                        <label for="feedbackType">Jenis Masukan</label>
+                        <select class="form-control" id="feedbackType">
+                            <option value="general">Umum</option>
+                            <option value="bug">Laporan Bug</option>
+                            <option value="feature">Permintaan Fitur</option>
+                            <option value="platform">Saran Platform</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="feedbackEmail">Email Anda</label>
+                        <input type="email" class="form-control" id="feedbackEmail">
+                    </div>
+                    <div class="form-group">
+                        <label for="feedbackMessage">Pesan *</label>
+                        <textarea class="form-control" id="feedbackMessage" rows="5" required></textarea>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">Kirim Masukan</button>
+                        <button type="button" class="btn btn-secondary" onclick="closeFeedbackModal()">Batal</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast" role="alert" aria-live="polite">
+        <i class="fas fa-check-circle" aria-hidden="true"></i>
+        <span id="toastMessage">Notification</span>
+    </div>
+
+    <!-- Scroll to top button -->
+    <button class="scroll-top" id="scrollTop" onclick="scrollToTop()" aria-label="Scroll to top">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <!-- Help Button -->
+    <button class="help-button" onclick="openHelpModal()" aria-label="Help">
+        <i class="fas fa-question"></i>
+    </button>
+
+    <!-- Data Actions -->
+    <div class="data-actions">
+        <button class="data-btn" onclick="exportFavorites()" title="Export Favorit" aria-label="Export favorites">
+            <i class="fas fa-download"></i>
+        </button>
+        <button class="data-btn" onclick="importFavorites()" title="Import Favorit" aria-label="Import favorites">
+            <i class="fas fa-upload"></i>
+        </button>
+        <button class="data-btn" onclick="exportAllData()" title="Export Semua Data" aria-label="Export all data">
+            <i class="fas fa-file-export"></i>
+        </button>
+        <button class="data-btn" onclick="saveSearch()" title="Simpan Pencarian" aria-label="Save search">
+            <i class="fas fa-save"></i>
+        </button>
+    </div>
+
+    <!-- Hidden file input for import -->
+    <input type="file" id="fileInput" accept=".json" aria-label="Import file input">
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+    <script>
+        // Global variables
+        let platforms = [];
+        let favorites = JSON.parse(localStorage.getItem('deploygratis_favorites')) || [];
+        let recentlyViewed = JSON.parse(localStorage.getItem('deploygratis_recently_viewed')) || [];
+        let userPreferences = JSON.parse(localStorage.getItem('deploygratis_preferences')) || {
+            theme: 'dark',
+            language: 'id',
+            recommendations: true,
+            animations: true
+        };
+        let savedSearches = JSON.parse(localStorage.getItem('deploygratis_saved_searches')) || [];
+        let currentFilter = 'all';
+        let currentSearch = '';
+        let showFavoritesOnly = false;
+        let comparisonPlatforms = [];
+        let platformChart = null;
+        let currentLanguage = 'id';
+        let personalNotes = JSON.parse(localStorage.getItem('deploygratis_personal_notes')) || {};
+        let userData = JSON.parse(localStorage.getItem('deploygratis_user_data')) || {
+            name: 'Pengguna',
+            email: 'user@example.com',
+            joinDate: new Date().toISOString()
+        };
+        
+        // Translations
+        const translations = {
+            id: {
+                // Indonesian translations
+                heroTitle: "Platform Deployment Gratis",
+                heroSubtitle: "Koleksi terlengkap platform deployment untuk project Anda - Static, Dynamic, dan Enterprise",
+                statPlatform: "Platform",
+                statFree: "Gratis",
+                statProject: "Project",
+                searchPlaceholder: "Cari platform deployment...",
+                filterAll: "Semua",
+                filterStatic: "Static",
+                filterDynamic: "Dynamic",
+                filterBoth: "Keduanya",
+                filterEnterprise: "Enterprise",
+                filterPopular: "Populer",
+                actionFavorites: "Favorit Saya",
+                actionPopular: "Terpopuler",
+                actionNewest: "Terbaru",
+                actionRating: "Rating Tertinggi",
+                actionCompare: "Bandingkan",
+                actionReset: "Reset",
+                sectionTitle: "Platform Deployment Terlengkap di Dunia",
+                sectionSubtitle: "Semua platform di bawah ini menawarkan layanan gratis untuk memulai project Anda",
+                emptyTitle: "Tidak ada platform ditemukan",
+                emptySubtitle: "Coba gunakan kata kunci lain atau reset filter Anda",
+                footerTitle: "Deploy-Your-Things",
+                footerText: "Platform terlengkap untuk menemukan layanan deployment gratis di seluruh dunia. Kami mengumpulkan dan mengkurasi platform-platform terbaik untuk memudahkan Anda dalam memulai project tanpa biaya.",
+                footerCopyright: "© 2025 Deploy-Your-Things. Dibuat dengan ♥ untuk developer Indonesia.",
+                newsletterTitle: "Newsletter",
+                newsletterText: "Dapatkan update platform deployment terbaru langsung di inbox Anda",
+                newsletterPlaceholder: "Email Anda",
+                newsletterButton: "Berlangganan",
+                modalFeatures: "Fitur Lengkap:",
+                modalPricing: "Informasi Harga:",
+                pricingFree: "Gratis",
+                pricingStorage: "Storage",
+                pricingBandwidth: "Bandwidth",
+                pricingCustomDomain: "Custom Domain",
+                pricingSsl: "SSL",
+                visitButton: "Kunjungi",
+                addToComparison: "Tambah ke Perbandingan",
+                comparisonTitle: "Bandingkan Platform",
+                comparisonAdd: "Tambah Platform untuk Dibandingkan",
+                comparisonSearch: "Cari platform...",
+                featureType: "Tipe",
+                featureFree: "Gratis",
+                featureStorage: "Storage",
+                featureBandwidth: "Bandwidth",
+                featureCustomDomain: "Custom Domain",
+                featureSsl: "SSL",
+                featureCdn: "CDN",
+                featureApi: "API",
+                featureRating: "Rating",
+                helpTitle: "Pusat Bantuan",
+                helpAbout: "Tentang Deploy-Your-Things",
+                helpAboutText: "Deploy-Your-Things adalah platform yang mengumpulkan dan mengkurasi layanan deployment gratis dari seluruh dunia. Kami membantu developer menemukan platform yang tepat untuk project mereka tanpa biaya.",
+                helpHowTo: "Cara Menggunakan",
+                helpHowTo1: "Gunakan fitur pencarian untuk menemukan platform berdasarkan nama atau fitur",
+                helpHowTo2: "Filter platform berdasarkan tipe (static, dynamic, atau keduanya)",
+                helpHowTo3: "Tandai platform favorit Anda dengan mengeklik ikon bintang",
+                helpHowTo4: "Klik pada platform untuk melihat detail lengkap",
+                helpHowTo5: "Bandingkan beberapa platform untuk memilih yang terbaik",
+                helpShortcuts: "Pintasan Keyboard",
+                shortcutSearch: "Fokus Pencarian",
+                shortcutClose: "Tutup Modal",
+                shortcutTheme: "Ganti Tema",
+                shortcutFavorites: "Favorit",
+                shortcutCompare: "Bandingkan",
+                toastAddedToFavorites: "Ditambahkan ke favorit",
+                toastRemovedFromFavorites: "Dihapus dari favorit",
+                toastExportedFavorites: "Favorit berhasil diekspor",
+                toastImportedFavorites: "Favorit berhasil diimpor",
+                toastExportedData: "Semua data berhasil diekspor",
+                toastSavedSearch: "Pencarian berhasil disimpan",
+                toastSubscribed: "Berhasil berlangganan newsletter",
+                toastThemeChanged: "Tema berhasil diubah",
+                toastLanguageChanged: "Bahasa berhasil diubah",
+                toastNoteAdded: "Catatan berhasil ditambahkan",
+                toastNoteDeleted: "Catatan berhasil dihapus",
+                toastNoteUpdated: "Catatan berhasil diperbarui",
+                toastCopied: "Tautan berhasil disalin",
+                toastShared: "Berhasil dibagikan",
+                toastPlatformSubmitted: "Platform berhasil diajukan",
+                toastFeedbackSubmitted: "Masukan berhasil dikirim",
+                toastHistoryCleared: "Riwayat berhasil dihapus",
+                toastHistoryExported: "Riwayat berhasil diekspor",
+                typeStatic: "Static Site",
+                typeDynamic: "Dynamic Site",
+                typeBoth: "Static & Dynamic",
+                popularBadge: "POPULER",
+                freeBadge: "100% Gratis",
+                trialBadge: "Free Trial",
+                recentlyViewed: "Baru Dilihat",
+                recommendations: "Rekomendasi Untuk Anda",
+                match: "Cocok",
+                personalNotes: "Catatan Pribadi",
+                addNote: "Tambah Catatan",
+                yourNote: "Catatan Anda",
+                saveNote: "Simpan Catatan",
+                editNote: "Edit Catatan",
+                deleteNote: "Hapus Catatan",
+                emptyNotes: "Belum ada catatan untuk platform ini",
+                shareTitle: "Bagikan Platform",
+                shareMessage: "Pesan kustom (opsional)",
+                shareFacebook: "Facebook",
+                shareTwitter: "Twitter",
+                shareLinkedIn: "LinkedIn",
+                shareWhatsApp: "WhatsApp",
+                shareTelegram: "Telegram",
+                shareEmail: "Email",
+                shareCopy: "Salin Tautan",
+                aboutLink: "Tentang Kami",
+                privacyLink: "Kebijakan Privasi",
+                termsLink: "Syarat & Ketentuan",
+                contactLink: "Hubungi Kami",
+                contributeLink: "Kontribusi",
+                profileTitle: "Profil Pengguna",
+                preferencesTitle: "Preferensi",
+                historyTitle: "Riwayat Penelusuran",
+                submissionTitle: "Ajukan Platform Baru",
+                feedbackTitle: "Kirim Masukan"
+            },
+            en: {
+                // English translations
+                heroTitle: "Free Deployment Platforms",
+                heroSubtitle: "The most complete collection of deployment platforms for your projects - Static, Dynamic, and Enterprise",
+                statPlatform: "Platforms",
+                statFree: "Free",
+                statProject: "Projects",
+                searchPlaceholder: "Search deployment platforms...",
+                filterAll: "All",
+                filterStatic: "Static",
+                filterDynamic: "Dynamic",
+                filterBoth: "Both",
+                filterEnterprise: "Enterprise",
+                filterPopular: "Popular",
+                actionFavorites: "My Favorites",
+                actionPopular: "Most Popular",
+                actionNewest: "Newest",
+                actionRating: "Highest Rated",
+                actionCompare: "Compare",
+                actionReset: "Reset",
+                sectionTitle: "The Most Complete Deployment Platforms in the World",
+                sectionSubtitle: "All platforms below offer free services to start your project",
+                emptyTitle: "No platforms found",
+                emptySubtitle: "Try using different keywords or reset your filters",
+                footerTitle: "Deploy-Your-Things",
+                footerText: "The most complete platform to find free deployment services around the world. We collect and curate the best platforms to make it easier for you to start projects without cost.",
+                footerCopyright: "© 2025 Deploy-Your-Things. Made with ♥ for all developers.",
+                newsletterTitle: "Newsletter",
+                newsletterText: "Get the latest deployment platform updates directly in your inbox",
+                newsletterPlaceholder: "Your Email",
+                newsletterButton: "Subscribe",
+                modalFeatures: "Complete Features:",
+                modalPricing: "Pricing Information:",
+                pricingFree: "Free",
+                pricingStorage: "Storage",
+                pricingBandwidth: "Bandwidth",
+                pricingCustomDomain: "Custom Domain",
+                pricingSsl: "SSL",
+                visitButton: "Visit",
+                addToComparison: "Add to Comparison",
+                comparisonTitle: "Compare Platforms",
+                comparisonAdd: "Add Platforms to Compare",
+                comparisonSearch: "Search platforms...",
+                featureType: "Type",
+                featureFree: "Free",
+                featureStorage: "Storage",
+                featureBandwidth: "Bandwidth",
+                featureCustomDomain: "Custom Domain",
+                featureSsl: "SSL",
+                featureCdn: "CDN",
+                featureApi: "API",
+                featureRating: "Rating",
+                helpTitle: "Help Center",
+                helpAbout: "About Deploy-Your-Things",
+                helpAboutText: "Deploy-Your-Things is a platform that collects and curates free deployment services from around the world. We help developers find the right platform for their projects without cost.",
+                helpHowTo: "How to Use",
+                helpHowTo1: "Use the search feature to find platforms by name or feature",
+                helpHowTo2: "Filter platforms by type (static, dynamic, or both)",
+                helpHowTo3: "Mark your favorite platforms by clicking the star icon",
+                helpHowTo4: "Click on a platform to see complete details",
+                helpHowTo5: "Compare multiple platforms to choose the best one",
+                helpShortcuts: "Keyboard Shortcuts",
+                shortcutSearch: "Focus Search",
+                shortcutClose: "Close Modal",
+                shortcutTheme: "Toggle Theme",
+                shortcutFavorites: "Favorites",
+                shortcutCompare: "Compare",
+                toastAddedToFavorites: "Added to favorites",
+                toastRemovedFromFavorites: "Removed from favorites",
+                toastExportedFavorites: "Favorites successfully exported",
+                toastImportedFavorites: "Favorites successfully imported",
+                toastExportedData: "All data successfully exported",
+                toastSavedSearch: "Search successfully saved",
+                toastSubscribed: "Successfully subscribed to newsletter",
+                toastThemeChanged: "Theme successfully changed",
+                toastLanguageChanged: "Language successfully changed",
+                toastNoteAdded: "Note added successfully",
+                toastNoteDeleted: "Note deleted successfully",
+                toastNoteUpdated: "Note updated successfully",
+                toastCopied: "Link copied successfully",
+                toastShared: "Shared successfully",
+                toastPlatformSubmitted: "Platform submitted successfully",
+                toastFeedbackSubmitted: "Feedback submitted successfully",
+                toastHistoryCleared: "History cleared successfully",
+                toastHistoryExported: "History exported successfully",
+                typeStatic: "Static Site",
+                typeDynamic: "Dynamic Site",
+                typeBoth: "Static & Dynamic",
+                popularBadge: "POPULAR",
+                freeBadge: "100% Free",
+                trialBadge: "Free Trial",
+                recentlyViewed: "Recently Viewed",
+                recommendations: "Recommendations For You",
+                match: "Match",
+                personalNotes: "Personal Notes",
+                addNote: "Add Note",
+                yourNote: "Your Note",
+                saveNote: "Save Note",
+                editNote: "Edit Note",
+                deleteNote: "Delete Note",
+                emptyNotes: "No notes yet for this platform",
+                shareTitle: "Share Platform",
+                shareMessage: "Custom message (optional)",
+                shareFacebook: "Facebook",
+                shareTwitter: "Twitter",
+                shareLinkedIn: "LinkedIn",
+                shareWhatsApp: "WhatsApp",
+                shareTelegram: "Telegram",
+                shareEmail: "Email",
+                shareCopy: "Copy Link",
+                aboutLink: "About Us",
+                privacyLink: "Privacy Policy",
+                termsLink: "Terms & Conditions",
+                contactLink: "Contact Us",
+                contributeLink: "Contribute",
+                profileTitle: "User Profile",
+                preferencesTitle: "Preferences",
+                historyTitle: "Browsing History",
+                submissionTitle: "Submit New Platform",
+                feedbackTitle: "Send Feedback"
+            }
+        };
+
+        // Initialize the app
+        document.addEventListener('DOMContentLoaded', function() {
+            loadPlatforms();
+            updateFavoriteCount();
+            setupEventListeners();
+            updateStats();
+            setupScrollEffects();
+            applyUserPreferences();
+            updateRecentlyViewed();
+            generateRecommendations();
+            renderTagCloud();
+            initializeChart();
+            updateUserData();
+        });
+
+        // Load platforms from JSON
+        async function loadPlatforms() {
+            try {
+                const response = await fetch('./deploy/platforms.json');
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const data = await response.json();
+                platforms = data.platforms;
+                
+                // Add missing properties that might not be in the JSON but are needed by our app
+                platforms = platforms.map(platform => ({
+                    ...platform,
+                    free: platform.pricing ? platform.pricing.free : true,
+                    storage: platform.pricing ? platform.pricing.storage : "Unlimited",
+                    bandwidth: platform.pricing ? platform.pricing.bandwidth : "Unlimited",
+                    customDomain: platform.pricing ? platform.pricing.customDomains : true,
+                    ssl: platform.pricing ? platform.pricing.ssl : true,
+                    cdn: platform.features ? platform.features.includes('CDN') : false,
+                    api: platform.features ? platform.features.includes('API') : false,
+                    rating: platform.rating || 4.0,
+                    region: platform.region || 'global'
+                }));
+                
+                renderPlatforms();
+                updateStats();
+                updateChart();
+                renderTagCloud();
+            } catch (error) {
+                console.error('Error loading platforms:', error);
+                showToast('Gagal memuat data platform', 'error');
+                document.getElementById('platformsGrid').innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <h3>Gagal Memuat Data</h3>
+                        <p>Silakan periksa koneksi internet Anda dan coba lagi</p>
+                    </div>
+                `;
+            }
+        }
+
+        // Render platforms
+        function renderPlatforms() {
+            const grid = document.getElementById('platformsGrid');
+            const emptyState = document.getElementById('emptyState');
+            
+            let filteredPlatforms = filterPlatforms();
+            
+            if (filteredPlatforms.length === 0) {
+                grid.style.display = 'none';
+                emptyState.style.display = 'block';
+                return;
+            }
+            
+            grid.style.display = 'grid';
+            emptyState.style.display = 'none';
+            
+            grid.innerHTML = filteredPlatforms.map((platform, index) => `
+                <div class="platform-card" data-id="${platform.id}" data-type="${platform.type}" data-category="${platform.category}" style="animation-delay: ${index * 0.05}s" onclick="openPlatformModal('${platform.id}')">
+                    ${platform.category === 'popular' ? `<div class="popular-badge">${translations[currentLanguage].popularBadge}</div>` : ''}
+                    <button class="favorite-btn ${favorites.includes(platform.id) ? 'active' : ''}" onclick="toggleFavorite('${platform.id}', event)" aria-label="${favorites.includes(platform.id) ? 'Remove from favorites' : 'Add to favorites'}">
+                        <i class="fas fa-star"></i>
+                    </button>
+                    <div class="platform-header">
+                        <div class="platform-logo" style="background: ${platform.logoColor};" aria-hidden="true">
+                            <i class="${platform.logo}"></i>
+                        </div>
+                        <div class="platform-info">
+                            <h3>${platform.name}</h3>
+                            <span class="platform-type type-${platform.type}">${getTypeLabel(platform.type)}</span>
+                        </div>
+                    </div>
+                    <p class="platform-description">${platform.description}</p>
+                    <div class="platform-tags">
+                        ${platform.tags.slice(0, 3).map(tag => `<span class="tag">${tag}</span>`).join('')}
+                        ${platform.tags.length > 3 ? `<span class="tag">+${platform.tags.length - 3}</span>` : ''}
+                    </div>
+                    <div class="platform-footer">
+                        ${platform.free ? 
+                            `<span class="free-badge">${translations[currentLanguage].freeBadge}</span>` : 
+                            `<span class="trial-badge">${translations[currentLanguage].trialBadge}</span>`
+                        }
+                        <a href="${platform.url}" target="_blank" rel="noopener noreferrer" class="deploy-btn" onclick="event.stopPropagation(); viewPlatform('${platform.id}')">
+                            <i class="fas fa-rocket"></i> ${translations[currentLanguage].visitButton}
+                        </a>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Filter platforms based on current filter and search
+        function filterPlatforms() {
+            let filtered = [...platforms];
+            
+            // Apply filter
+            if (currentFilter !== 'all') {
+                if (currentFilter === 'popular') {
+                    filtered = filtered.filter(p => p.category === 'popular');
+                } else {
+                    filtered = filtered.filter(p => p.type === currentFilter);
+                }
+            }
+            
+            // Apply search
+            if (currentSearch) {
+                const searchLower = currentSearch.toLowerCase();
+                filtered = filtered.filter(p => 
+                    p.name.toLowerCase().includes(searchLower) || 
+                    p.description.toLowerCase().includes(searchLower) ||
+                    p.tags.some(tag => tag.toLowerCase().includes(searchLower))
+                );
+            }
+            
+            // Apply favorites filter
+            if (showFavoritesOnly) {
+                filtered = filtered.filter(p => favorites.includes(p.id));
+            }
+            
+            // Apply advanced filters
+            const storageFilter = document.getElementById('storageFilter').value;
+            const bandwidthFilter = document.getElementById('bandwidthFilter').value;
+            const regionFilter = document.getElementById('regionFilter').value;
+            const sslFilter = document.getElementById('sslFilter').checked;
+            const customDomainFilter = document.getElementById('customDomainFilter').checked;
+            const cdnFilter = document.getElementById('cdnFilter').checked;
+            const apiFilter = document.getElementById('apiFilter').checked;
+            
+            if (storageFilter) {
+                filtered = filtered.filter(p => p.storage && p.storage >= storageFilter);
+            }
+            
+            if (bandwidthFilter) {
+                filtered = filtered.filter(p => p.bandwidth && p.bandwidth >= bandwidthFilter);
+            }
+            
+            if (regionFilter) {
+                filtered = filtered.filter(p => p.region === regionFilter);
+            }
+            
+            if (sslFilter) {
+                filtered = filtered.filter(p => p.ssl);
+            }
+            
+            if (customDomainFilter) {
+                filtered = filtered.filter(p => p.customDomain);
+            }
+            
+            if (cdnFilter) {
+                filtered = filtered.filter(p => p.cdn);
+            }
+            
+            if (apiFilter) {
+                filtered = filtered.filter(p => p.api);
+            }
+            
+            return filtered;
+        }
+
+        // Get type label based on language
+        function getTypeLabel(type) {
+            switch(type) {
+                case 'static': return translations[currentLanguage].typeStatic;
+                case 'dynamic': return translations[currentLanguage].typeDynamic;
+                case 'both': return translations[currentLanguage].typeBoth;
+                default: return type;
+            }
+        }
+
+        // Toggle favorite status
+        function toggleFavorite(platformId, event) {
+            event.stopPropagation();
+            
+            const index = favorites.indexOf(platformId);
+            if (index === -1) {
+                favorites.push(platformId);
+                showToast(translations[currentLanguage].toastAddedToFavorites, 'success');
+            } else {
+                favorites.splice(index, 1);
+                showToast(translations[currentLanguage].toastRemovedFromFavorites, 'info');
+            }
+            
+            localStorage.setItem('deploygratis_favorites', JSON.stringify(favorites));
+            updateFavoriteCount();
+            renderPlatforms();
+        }
+
+        // Update favorite count in navigation
+        function updateFavoriteCount() {
+            document.getElementById('favCount').textContent = favorites.length;
+        }
+
+        // View platform details
+        function viewPlatform(platformId) {
+            const platform = platforms.find(p => p.id === platformId);
+            if (!platform) return;
+            
+            // Add to recently viewed
+            if (!recentlyViewed.includes(platformId)) {
+                recentlyViewed.unshift(platformId);
+                if (recentlyViewed.length > 5) {
+                    recentlyViewed.pop();
+                }
+                localStorage.setItem('deploygratis_recently_viewed', JSON.stringify(recentlyViewed));
+                updateRecentlyViewed();
+            }
+            
+            // Open modal with platform details
+            openPlatformModal(platform);
+        }
+
+        // Open platform modal
+        function openPlatformModal(platformId) {
+            const platform = platforms.find(p => p.id === platformId);
+            if (!platform) return;
+            
+            const modal = document.getElementById('platformModal');
+            const modalContent = document.getElementById('modalContent');
+            
+            const isFavorite = favorites.includes(platform.id);
+            const notes = personalNotes[platform.id] || [];
+            
+            modalContent.innerHTML = `
+                <h2 id="modalTitle">${platform.name}</h2>
+                
+                <div class="modal-tabs">
+                    <button class="modal-tab active" onclick="switchTab('overview')">Overview</button>
+                    <button class="modal-tab" onclick="switchTab('features')">Features</button>
+                    <button class="modal-tab" onclick="switchTab('pricing')">Pricing</button>
+                    <button class="modal-tab" onclick="switchTab('notes')">Notes</button>
+                    <button class="modal-tab" onclick="switchTab('share')">Share</button>
+                </div>
+                
+                <div class="modal-tab-content active" id="overview-tab">
+                    <div class="platform-header">
+                        <div class="platform-logo" style="background: ${platform.logoColor}; width: 80px; height: 80px; font-size: 2rem;">
+                            <i class="${platform.logo}"></i>
+                        </div>
+                        <div class="platform-info">
+                            <h3>${platform.name}</h3>
+                            <span class="platform-type type-${platform.type}">${getTypeLabel(platform.type)}</span>
+                        </div>
+                    </div>
+                    
+                    <p>${platform.description}</p>
+                    
+                    <div class="platform-tags">
+                        ${platform.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
+                    </div>
+                    
+                    <div class="modal-actions" style="margin-top: 1.5rem; display: flex; gap: 1rem;">
+                        <button class="btn btn-primary" onclick="window.open('${platform.url}', '_blank')">
+                            <i class="fas fa-rocket"></i> ${translations[currentLanguage].visitButton}
+                        </button>
+                        <button class="btn btn-secondary" onclick="toggleFavoriteInModal('${platform.id}')">
+                            <i class="fas fa-star"></i> ${isFavorite ? 'Remove from Favorites' : 'Add to Favorites'}
+                        </button>
+                        <button class="btn btn-secondary" onclick="addToComparison('${platform.id}')">
+                            <i class="fas fa-balance-scale"></i> ${translations[currentLanguage].addToComparison}
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="modal-tab-content" id="features-tab">
+                    <h3>${translations[currentLanguage].modalFeatures}</h3>
+                    <ul class="modal-features">
+                        ${platform.features.map(feature => `
+                            <li><i class="fas fa-check-circle"></i> ${feature}</li>
+                        `).join('')}
+                    </ul>
+                </div>
+                
+                <div class="modal-tab-content" id="pricing-tab">
+                    <h3>${translations[currentLanguage].modalPricing}</h3>
+                    <div class="pricing-info">
+                        <div class="pricing-item">
+                            <h4>${translations[currentLanguage].pricingFree}</h4>
+                            <p>${platform.free ? 'Yes' : 'No'}</p>
+                        </div>
+                        <div class="pricing-item">
+                            <h4>${translations[currentLanguage].pricingStorage}</h4>
+                            <p>${platform.storage || 'Not specified'}</p>
+                        </div>
+                        <div class="pricing-item">
+                            <h4>${translations[currentLanguage].pricingBandwidth}</h4>
+                            <p>${platform.bandwidth || 'Not specified'}</p>
+                        </div>
+                        <div class="pricing-item">
+                            <h4>${translations[currentLanguage].pricingCustomDomain}</h4>
+                            <p>${platform.customDomain ? 'Yes' : 'No'}</p>
+                        </div>
+                        <div class="pricing-item">
+                            <h4>${translations[currentLanguage].pricingSsl}</h4>
+                            <p>${platform.ssl ? 'Yes' : 'No'}</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="modal-tab-content" id="notes-tab">
+                    <div class="notes-section">
+                        <div class="notes-header">
+                            <h3>${translations[currentLanguage].personalNotes}</h3>
+                            <button class="btn btn-primary" onclick="showAddNoteForm('${platform.id}')">
+                                <i class="fas fa-plus"></i> ${translations[currentLanguage].addNote}
+                            </button>
+                        </div>
+                        
+                        <div class="notes-list" id="notes-list-${platform.id}">
+                            ${notes.length > 0 ? notes.map(note => `
+                                <div class="note-item">
+                                    <div class="note-header">
+                                        <span class="note-date">${new Date(note.date).toLocaleDateString()}</span>
+                                        <div class="note-actions">
+                                            <button class="note-action" onclick="editNote('${platform.id}', '${note.id}')">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                            <button class="note-action delete" onclick="deleteNote('${platform.id}', '${note.id}')">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="note-content">${note.content}</div>
+                                </div>
+                            `).join('') : `
+                                <div class="empty-notes">
+                                    <i class="fas fa-sticky-note"></i>
+                                    <p>${translations[currentLanguage].emptyNotes}</p>
+                                </div>
+                            `}
+                        </div>
+                        
+                        <div class="add-note" id="add-note-${platform.id}" style="display: none;">
+                            <h4>${translations[currentLanguage].addNote}</h4>
+                            <form class="note-form" onsubmit="saveNote(event, '${platform.id}')">
+                                <textarea class="form-control note-textarea" placeholder="${translations[currentLanguage].yourNote}" required></textarea>
+                                <div style="display: flex; gap: 1rem;">
+                                    <button type="submit" class="btn btn-primary">${translations[currentLanguage].saveNote}</button>
+                                    <button type="button" class="btn btn-secondary" onclick="hideAddNoteForm('${platform.id}')">Cancel</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="modal-tab-content" id="share-tab">
+                    <div class="share-section">
+                        <h3>${translations[currentLanguage].shareTitle}</h3>
+                        <div class="share-message">
+                            <textarea class="form-control" placeholder="${translations[currentLanguage].shareMessage}">${platform.name} - ${platform.description}</textarea>
+                        </div>
+                        <div class="share-buttons">
+                            <button class="share-btn facebook" onclick="shareOnSocial('facebook', '${platform.url}')" data-tooltip="${translations[currentLanguage].shareFacebook}">
+                                <i class="fab fa-facebook-f"></i>
+                            </button>
+                            <button class="share-btn twitter" onclick="shareOnSocial('twitter', '${platform.url}')" data-tooltip="${translations[currentLanguage].shareTwitter}">
+                                <i class="fab fa-twitter"></i>
+                            </button>
+                            <button class="share-btn linkedin" onclick="shareOnSocial('linkedin', '${platform.url}')" data-tooltip="${translations[currentLanguage].shareLinkedIn}">
+                                <i class="fab fa-linkedin-in"></i>
+                            </button>
+                            <button class="share-btn whatsapp" onclick="shareOnSocial('whatsapp', '${platform.url}')" data-tooltip="${translations[currentLanguage].shareWhatsApp}">
+                                <i class="fab fa-whatsapp"></i>
+                            </button>
+                            <button class="share-btn telegram" onclick="shareOnSocial('telegram', '${platform.url}')" data-tooltip="${translations[currentLanguage].shareTelegram}">
+                                <i class="fab fa-telegram-plane"></i>
+                            </button>
+                            <button class="share-btn email" onclick="shareOnSocial('email', '${platform.url}')" data-tooltip="${translations[currentLanguage].shareEmail}">
+                                <i class="fas fa-envelope"></i>
+                            </button>
+                            <button class="share-btn copy tooltip" onclick="copyToClipboard('${platform.url}')" data-tooltip="${translations[currentLanguage].shareCopy}">
+                                <i class="fas fa-link"></i>
+                            </button>
+                        </div>
+                        <div class="share-link">
+                            <input type="text" value="${platform.url}" readonly>
+                            <button class="btn btn-secondary" onclick="copyToClipboard('${platform.url}')">
+                                <i class="fas fa-copy"></i> Copy
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            modal.style.display = 'block';
+        }
+
+        // Switch between tabs in modal
+        function switchTab(tabName) {
+            // Remove active class from all tabs and tab contents
+            document.querySelectorAll('.modal-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelectorAll('.modal-tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            
+            // Add active class to selected tab and tab content
+            document.querySelector(`.modal-tab:nth-child(${getTabIndex(tabName)})`).classList.add('active');
+            document.getElementById(`${tabName}-tab`).classList.add('active');
+        }
+
+        // Get tab index by tab name
+        function getTabIndex(tabName) {
+            const tabs = ['overview', 'features', 'pricing', 'notes', 'share'];
+            return tabs.indexOf(tabName) + 1;
+        }
+
+        // Toggle favorite in modal
+        function toggleFavoriteInModal(platformId) {
+            toggleFavorite(platformId, { stopPropagation: () => {} });
+            
+            const modalContent = document.getElementById('modalContent');
+            const isFavorite = favorites.includes(platformId);
+            
+            // Update the button text
+            const button = modalContent.querySelector('.btn-secondary');
+            button.innerHTML = `<i class="fas fa-star"></i> ${isFavorite ? 'Remove from Favorites' : 'Add to Favorites'}`;
+        }
+
+        // Add platform to comparison
+        function addToComparison(platformId) {
+            if (comparisonPlatforms.includes(platformId)) {
+                showToast('Platform already in comparison', 'info');
+                return;
+            }
+            
+            if (comparisonPlatforms.length >= 3) {
+                showToast('You can compare up to 3 platforms at a time', 'warning');
+                return;
+            }
+            
+            comparisonPlatforms.push(platformId);
+            updateComparisonTable();
+            showToast('Platform added to comparison', 'success');
+        }
+
+        // Update comparison table
+        function updateComparisonTable() {
+            const table = document.getElementById('comparisonTable');
+            const thead = table.querySelector('thead tr');
+            const tbody = table.querySelector('tbody');
+            
+            // Clear existing platform columns (keep the first column for features)
+            while (thead.children.length > 1) {
+                thead.removeChild(thead.lastChild);
+            }
+            
+            // Clear existing data cells
+            tbody.querySelectorAll('tr').forEach(row => {
+                while (row.children.length > 1) {
+                    row.removeChild(row.lastChild);
+                }
+            });
+            
+            // Add platform columns
+            comparisonPlatforms.forEach(platformId => {
+                const platform = platforms.find(p => p.id === platformId);
+                if (!platform) return;
+                
+                // Add header
+                const th = document.createElement('th');
+                th.innerHTML = `
+                    <div class="comparison-platform">
+                        <div class="comparison-logo" style="background: ${platform.logoColor};">
+                            <i class="${platform.logo}"></i>
+                        </div>
+                        <span>${platform.name}</span>
+                        <button class="comparison-remove" onclick="removeFromComparison('${platformId}')">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                `;
+                thead.appendChild(th);
+                
+                // Add data cells for each feature row
+                const rows = tbody.querySelectorAll('tr');
+                rows.forEach(row => {
+                    const td = document.createElement('td');
+                    const feature = row.querySelector('td').textContent;
+                    
+                    switch(feature) {
+                        case 'Tipe':
+                        case 'Type':
+                            td.textContent = getTypeLabel(platform.type);
+                            break;
+                        case 'Gratis':
+                        case 'Free':
+                            td.innerHTML = platform.free ? '<i class="fas fa-check comparison-check"></i>' : '<i class="fas fa-times comparison-cross"></i>';
+                            break;
+                        case 'Storage':
+                            td.textContent = platform.storage || 'Not specified';
+                            break;
+                        case 'Bandwidth':
+                            td.textContent = platform.bandwidth || 'Not specified';
+                            break;
+                        case 'Custom Domain':
+                            td.innerHTML = platform.customDomain ? '<i class="fas fa-check comparison-check"></i>' : '<i class="fas fa-times comparison-cross"></i>';
+                            break;
+                        case 'SSL':
+                            td.innerHTML = platform.ssl ? '<i class="fas fa-check comparison-check"></i>' : '<i class="fas fa-times comparison-cross"></i>';
+                            break;
+                        case 'CDN':
+                            td.innerHTML = platform.cdn ? '<i class="fas fa-check comparison-check"></i>' : '<i class="fas fa-times comparison-cross"></i>';
+                            break;
+                        case 'API':
+                            td.innerHTML = platform.api ? '<i class="fas fa-check comparison-check"></i>' : '<i class="fas fa-times comparison-cross"></i>';
+                            break;
+                        case 'Rating':
+                            td.innerHTML = `
+                                <div class="stars">
+                                    ${generateStars(platform.rating)}
+                                </div>
+                                <span class="rating-value">${platform.rating}</span>
+                            `;
+                            break;
+                        default:
+                            td.textContent = 'N/A';
+                    }
+                    
+                    row.appendChild(td);
+                });
+            });
+        }
+
+        // Remove platform from comparison
+        function removeFromComparison(platformId) {
+            const index = comparisonPlatforms.indexOf(platformId);
+            if (index !== -1) {
+                comparisonPlatforms.splice(index, 1);
+                updateComparisonTable();
+            }
+        }
+
+        // Show add note form
+        function showAddNoteForm(platformId) {
+            document.getElementById(`add-note-${platformId}`).style.display = 'block';
+        }
+
+        // Hide add note form
+        function hideAddNoteForm(platformId) {
+            document.getElementById(`add-note-${platformId}`).style.display = 'none';
+        }
+
+        // Save note
+        function saveNote(event, platformId) {
+            event.preventDefault();
+            
+            const textarea = event.target.querySelector('.note-textarea');
+            const content = textarea.value.trim();
+            
+            if (!content) return;
+            
+            if (!personalNotes[platformId]) {
+                personalNotes[platformId] = [];
+            }
+            
+            const note = {
+                id: Date.now().toString(),
+                content: content,
+                date: new Date().toISOString()
+            };
+            
+            personalNotes[platformId].push(note);
+            localStorage.setItem('deploygratis_personal_notes', JSON.stringify(personalNotes));
+            
+            // Refresh the notes list
+            openPlatformModal(platformId);
+            
+            showToast(translations[currentLanguage].toastNoteAdded, 'success');
+        }
+
+        // Edit note
+        function editNote(platformId, noteId) {
+            const notes = personalNotes[platformId] || [];
+            const note = notes.find(n => n.id === noteId);
+            
+            if (!note) return;
+            
+            const content = prompt(translations[currentLanguage].editNote, note.content);
+            if (content === null) return;
+            
+            if (content.trim() === '') {
+                deleteNote(platformId, noteId);
+                return;
+            }
+            
+            note.content = content.trim();
+            note.date = new Date().toISOString();
+            
+            localStorage.setItem('deploygratis_personal_notes', JSON.stringify(personalNotes));
+            
+            // Refresh the notes list
+            openPlatformModal(platformId);
+            
+            showToast(translations[currentLanguage].toastNoteUpdated, 'success');
+        }
+
+        // Delete note
+        function deleteNote(platformId, noteId) {
+            if (!confirm(translations[currentLanguage].deleteNote)) return;
+            
+            if (!personalNotes[platformId]) return;
+            
+            const index = personalNotes[platformId].findIndex(n => n.id === noteId);
+            if (index !== -1) {
+                personalNotes[platformId].splice(index, 1);
+                localStorage.setItem('deploygratis_personal_notes', JSON.stringify(personalNotes));
+                
+                // Refresh the notes list
+                openPlatformModal(platformId);
+                
+                showToast(translations[currentLanguage].toastNoteDeleted, 'success');
+            }
+        }
+
+        // Share on social media
+        function shareOnSocial(platform, url) {
+            const shareUrl = encodeURIComponent(url);
+            const shareText = encodeURIComponent(document.querySelector('.share-message textarea').value);
+            
+            let shareLink = '';
+            
+            switch(platform) {
+                case 'facebook':
+                    shareLink = `https://www.facebook.com/sharer/sharer.php?u=${shareUrl}`;
+                    break;
+                case 'twitter':
+                    shareLink = `https://twitter.com/intent/tweet?text=${shareText}&url=${shareUrl}`;
+                    break;
+                case 'linkedin':
+                    shareLink = `https://www.linkedin.com/sharing/share-offsite/?url=${shareUrl}`;
+                    break;
+                case 'whatsapp':
+                    shareLink = `https://wa.me/?text=${shareText}%20${shareUrl}`;
+                    break;
+                case 'telegram':
+                    shareLink = `https://t.me/share/url?url=${shareUrl}&text=${shareText}`;
+                    break;
+                case 'email':
+                    shareLink = `mailto:?subject=${shareText}&body=${shareUrl}`;
+                    break;
+            }
+            
+            if (shareLink) {
+                window.open(shareLink, '_blank');
+                showToast(translations[currentLanguage].toastShared, 'success');
+            }
+        }
+
+        // Copy to clipboard
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                showToast(translations[currentLanguage].toastCopied, 'success');
+            }).catch(err => {
+                console.error('Failed to copy: ', err);
+                showToast('Failed to copy to clipboard', 'error');
+            });
+        }
+
+        // Close modal
+        function closeModal() {
+            document.getElementById('platformModal').style.display = 'none';
+        }
+
+        // Show comparison modal
+        function showComparison() {
+            document.getElementById('comparisonModal').style.display = 'block';
+            updateComparisonTable();
+            searchComparisonPlatforms();
+        }
+
+        // Close comparison modal
+        function closeComparisonModal() {
+            document.getElementById('comparisonModal').style.display = 'none';
+        }
+
+        // Search platforms for comparison
+        function searchComparisonPlatforms(event) {
+            const searchTerm = document.getElementById('comparisonSearch').value.toLowerCase();
+            const resultsContainer = document.getElementById('comparisonResults');
+            
+            if (!searchTerm) {
+                resultsContainer.innerHTML = '';
+                return;
+            }
+            
+            const results = platforms.filter(platform => {
+                return !comparisonPlatforms.includes(platform.id) && 
+                       (platform.name.toLowerCase().includes(searchTerm) || 
+                        platform.description.toLowerCase().includes(searchTerm) ||
+                        platform.tags.some(tag => tag.toLowerCase().includes(searchTerm)));
+            });
+            
+            resultsContainer.innerHTML = results.map(platform => `
+                <div class="comparison-result-item" onclick="addToComparisonFromSearch('${platform.id}')">
+                    <div class="comparison-result-logo" style="background: ${platform.logoColor};">
+                        <i class="${platform.logo}"></i>
+                    </div>
+                    <div>
+                        <h4>${platform.name}</h4>
+                        <p>${platform.description.substring(0, 50)}...</p>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Add platform to comparison from search results
+        function addToComparisonFromSearch(platformId) {
+            if (comparisonPlatforms.includes(platformId)) {
+                showToast('Platform already in comparison', 'info');
+                return;
+            }
+            
+            if (comparisonPlatforms.length >= 3) {
+                showToast('You can compare up to 3 platforms at a time', 'warning');
+                return;
+            }
+            
+            comparisonPlatforms.push(platformId);
+            updateComparisonTable();
+            document.getElementById('comparisonSearch').value = '';
+            document.getElementById('comparisonResults').innerHTML = '';
+            showToast('Platform added to comparison', 'success');
+        }
+
+        // Update recently viewed section
+        function updateRecentlyViewed() {
+            const section = document.getElementById('recentlyViewedSection');
+            const grid = document.getElementById('recentlyViewedGrid');
+            
+            if (recentlyViewed.length === 0) {
+                section.style.display = 'none';
+                return;
+            }
+            
+            section.style.display = 'block';
+            
+            grid.innerHTML = recentlyViewed.map(platformId => {
+                const platform = platforms.find(p => p.id === platformId);
+                if (!platform) return '';
+                
+                return `
+                    <div class="recently-viewed-item" onclick="openPlatformModal('${platform.id}')">
+                        <div class="recently-viewed-logo" style="background: ${platform.logoColor};">
+                            <i class="${platform.logo}"></i>
+                        </div>
+                        <div class="recently-viewed-info">
+                            <h4>${platform.name}</h4>
+                            <p>${getTypeLabel(platform.type)}</p>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Generate recommendations
+        function generateRecommendations() {
+            const grid = document.getElementById('recommendationsGrid');
+            
+            // Simple recommendation algorithm: platforms that are popular or have high rating
+            // and are not in favorites or recently viewed
+            const recommendations = platforms
+                .filter(p => !favorites.includes(p.id) && !recentlyViewed.includes(p.id))
+                .sort((a, b) => {
+                    // Prioritize popular platforms
+                    if (a.category === 'popular' && b.category !== 'popular') return -1;
+                    if (b.category === 'popular' && a.category !== 'popular') return 1;
+                    
+                    // Then by rating
+                    return b.rating - a.rating;
+                })
+                .slice(0, 4);
+            
+            grid.innerHTML = recommendations.map(platform => `
+                <div class="recommendation-card" onclick="openPlatformModal('${platform.id}')">
+                    <div class="recommendation-header">
+                        <div class="recommendation-logo" style="background: ${platform.logoColor};">
+                            <i class="${platform.logo}"></i>
+                        </div>
+                        <div class="recommendation-info">
+                            <h4>${platform.name}</h4>
+                            <p>${getTypeLabel(platform.type)}</p>
+                        </div>
+                    </div>
+                    <p>${platform.description.substring(0, 100)}...</p>
+                    <div class="recommendation-match">
+                        <i class="fas fa-check-circle"></i>
+                        <span>${Math.floor(Math.random() * 30 + 70)}% ${translations[currentLanguage].match}</span>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Render tag cloud
+        function renderTagCloud() {
+            const container = document.getElementById('tagCloud');
+            
+            // Count tag frequency
+            const tagCounts = {};
+            platforms.forEach(platform => {
+                platform.tags.forEach(tag => {
+                    tagCounts[tag] = (tagCounts[tag] || 0) + 1;
+                });
+            });
+            
+            // Sort tags by frequency
+            const sortedTags = Object.entries(tagCounts)
+                .sort((a, b) => b[1] - a[1])
+                .slice(0, 20); // Take top 20 tags
+            
+            // Calculate size classes (1-5, where 5 is most frequent)
+            const maxCount = sortedTags[0][1];
+            const minCount = sortedTags[sortedTags.length - 1][1];
+            const range = maxCount - minCount || 1;
+            
+            container.innerHTML = sortedTags.map(([tag, count]) => {
+                const sizeClass = Math.ceil(((count - minCount) / range) * 4) + 1;
+                return `<a href="#" class="tag-cloud-item size-${sizeClass}" onclick="filterByTag('${tag}')">${tag}</a>`;
+            }).join('');
+        }
+
+        // Filter by tag
+        function filterByTag(tag) {
+            document.getElementById('searchInput').value = tag;
+            currentSearch = tag;
+            renderPlatforms();
+            window.scrollTo({ top: document.getElementById('platforms').offsetTop - 100, behavior: 'smooth' });
+        }
+
+        // Initialize chart
+        function initializeChart() {
+            const ctx = document.getElementById('platformChart').getContext('2d');
+            
+            // Count platforms by type
+            const typeCounts = {
+                static: platforms.filter(p => p.type === 'static').length,
+                dynamic: platforms.filter(p => p.type === 'dynamic').length,
+                both: platforms.filter(p => p.type === 'both').length
+            };
+            
+            platformChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: [
+                        translations[currentLanguage].typeStatic,
+                        translations[currentLanguage].typeDynamic,
+                        translations[currentLanguage].typeBoth
+                    ],
+                    datasets: [{
+                        data: [typeCounts.static, typeCounts.dynamic, typeCounts.both],
+                        backgroundColor: [
+                            'rgba(88, 166, 255, 0.8)',
+                            'rgba(188, 140, 255, 0.8)',
+                            'rgba(63, 185, 80, 0.8)'
+                        ],
+                        borderColor: [
+                            'rgba(88, 166, 255, 1)',
+                            'rgba(188, 140, 255, 1)',
+                            'rgba(63, 185, 80, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                color: getComputedStyle(document.documentElement).getPropertyValue('--text-primary'),
+                                padding: 20,
+                                font: {
+                                    size: 14
+                                }
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const label = context.label || '';
+                                    const value = context.raw || 0;
+                                    const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                    const percentage = Math.round((value / total) * 100);
+                                    return `${label}: ${value} (${percentage}%)`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Update chart
+        function updateChart() {
+            if (!platformChart) return;
+            
+            // Count platforms by type
+            const typeCounts = {
+                static: platforms.filter(p => p.type === 'static').length,
+                dynamic: platforms.filter(p => p.type === 'dynamic').length,
+                both: platforms.filter(p => p.type === 'both').length
+            };
+            
+            platformChart.data.datasets[0].data = [typeCounts.static, typeCounts.dynamic, typeCounts.both];
+            platformChart.data.labels = [
+                translations[currentLanguage].typeStatic,
+                translations[currentLanguage].typeDynamic,
+                translations[currentLanguage].typeBoth
+            ];
+            platformChart.options.plugins.legend.labels.color = getComputedStyle(document.documentElement).getPropertyValue('--text-primary');
+            platformChart.update();
+        }
+
+        // Update stats
+        function updateStats() {
+            document.getElementById('totalPlatforms').textContent = platforms.length;
+            document.getElementById('staticCount').textContent = platforms.filter(p => p.type === 'static').length;
+            document.getElementById('dynamicCount').textContent = platforms.filter(p => p.type === 'dynamic').length;
+            document.getElementById('bothCount').textContent = platforms.filter(p => p.type === 'both').length;
+            document.getElementById('enterpriseCount').textContent = platforms.filter(p => p.category === 'enterprise').length;
+        }
+
+        // Setup event listeners
+        function setupEventListeners() {
+            // Search input
+            document.getElementById('searchInput').addEventListener('input', function(e) {
+                currentSearch = e.target.value;
+                renderPlatforms();
+            });
+            
+            // Filter buttons
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    currentFilter = this.dataset.filter;
+                    renderPlatforms();
+                });
+            });
+            
+            // Action buttons
+            document.querySelectorAll('.action-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    document.querySelectorAll('.action-btn').forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+            
+            // Scroll effects
+            window.addEventListener('scroll', function() {
+                const header = document.getElementById('header');
+                if (window.scrollY > 50) {
+                    header.classList.add('scrolled');
+                } else {
+                    header.classList.remove('scrolled');
+                }
+                
+                // Show/hide scroll to top button
+                const scrollTop = document.getElementById('scrollTop');
+                if (window.scrollY > 300) {
+                    scrollTop.classList.add('show');
+                } else {
+                    scrollTop.classList.remove('show');
+                }
+            });
+            
+            // Close modals when clicking outside
+            window.addEventListener('click', function(event) {
+                const platformModal = document.getElementById('platformModal');
+                const comparisonModal = document.getElementById('comparisonModal');
+                const helpModal = document.getElementById('helpModal');
+                const profileModal = document.getElementById('profileModal');
+                const preferencesModal = document.getElementById('preferencesModal');
+                const historyModal = document.getElementById('historyModal');
+                const submissionModal = document.getElementById('submissionModal');
+                const feedbackModal = document.getElementById('feedbackModal');
+                
+                if (event.target === platformModal) {
+                    closeModal();
+                }
+                
+                if (event.target === comparisonModal) {
+                    closeComparisonModal();
+                }
+                
+                if (event.target === helpModal) {
+                    closeHelpModal();
+                }
+                
+                if (event.target === profileModal) {
+                    closeProfileModal();
+                }
+                
+                if (event.target === preferencesModal) {
+                    closePreferencesModal();
+                }
+                
+                if (event.target === historyModal) {
+                    closeHistoryModal();
+                }
+                
+                if (event.target === submissionModal) {
+                    closeSubmissionModal();
+                }
+                
+                if (event.target === feedbackModal) {
+                    closeFeedbackModal();
+                }
+            });
+            
+            // Keyboard shortcuts
+            document.addEventListener('keydown', function(event) {
+                // Ctrl/Cmd + K: Focus search
+                if ((event.ctrlKey || event.metaKey) && event.key === 'k') {
+                    event.preventDefault();
+                    document.getElementById('searchInput').focus();
+                }
+                
+                // Ctrl/Cmd + T: Toggle theme
+                if ((event.ctrlKey || event.metaKey) && event.key === 't') {
+                    event.preventDefault();
+                    toggleTheme();
+                }
+                
+                // Ctrl/Cmd + F: Show favorites
+                if ((event.ctrlKey || event.metaKey) && event.key === 'f') {
+                    event.preventDefault();
+                    showOnlyFavorites();
+                }
+                
+                // Ctrl/Cmd + B: Show comparison
+                if ((event.ctrlKey || event.metaKey) && event.key === 'b') {
+                    event.preventDefault();
+                    showComparison();
+                }
+                
+                // Esc: Close modals
+                if (event.key === 'Escape') {
+                    closeModal();
+                    closeComparisonModal();
+                    closeHelpModal();
+                    closeProfileModal();
+                    closePreferencesModal();
+                    closeHistoryModal();
+                    closeSubmissionModal();
+                    closeFeedbackModal();
+                }
+            });
+            
+            // File input for import
+            document.getElementById('fileInput').addEventListener('change', handleFileImport);
+        }
+
+        // Setup scroll effects
+        function setupScrollEffects() {
+            // Already handled in setupEventListeners
+        }
+
+        // Apply user preferences
+        function applyUserPreferences() {
+            // Apply theme
+            if (userPreferences.theme === 'light') {
+                document.documentElement.setAttribute('data-theme', 'light');
+                document.getElementById('themeIcon').className = 'fas fa-sun';
+            } else {
+                document.documentElement.removeAttribute('data-theme');
+                document.getElementById('themeIcon').className = 'fas fa-moon';
+            }
+            
+            // Apply language
+            currentLanguage = userPreferences.language || 'id';
+            updateLanguage();
+            
+            // Apply animations preference
+            if (!userPreferences.animations) {
+                document.documentElement.style.setProperty('--transition', 'none');
+            }
+        }
+
+        // Toggle theme
+        function toggleTheme() {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            
+            document.documentElement.setAttribute('data-theme', newTheme);
+            document.getElementById('themeIcon').className = newTheme === 'light' ? 'fas fa-sun' : 'fas fa-moon';
+            
+            userPreferences.theme = newTheme;
+            localStorage.setItem('deploygratis_preferences', JSON.stringify(userPreferences));
+            
+            // Update chart colors
+            updateChart();
+            
+            showToast(translations[currentLanguage].toastThemeChanged, 'success');
+        }
+
+        // Toggle language
+        function toggleLanguage() {
+            currentLanguage = currentLanguage === 'id' ? 'en' : 'id';
+            userPreferences.language = currentLanguage;
+            localStorage.setItem('deploygratis_preferences', JSON.stringify(userPreferences));
+            
+            updateLanguage();
+            showToast(translations[currentLanguage].toastLanguageChanged, 'success');
+        }
+
+        // Update language
+        function updateLanguage() {
+            // Update text elements with translations
+            document.querySelector('.hero h1').textContent = translations[currentLanguage].heroTitle;
+            document.querySelector('.hero p').textContent = translations[currentLanguage].heroSubtitle;
+            document.querySelector('.stat-item:nth-child(1) .stat-label').textContent = translations[currentLanguage].statPlatform;
+            document.querySelector('.stat-item:nth-child(2) .stat-label').textContent = translations[currentLanguage].statFree;
+            document.getElementById('searchInput').placeholder = translations[currentLanguage].searchPlaceholder;
+            
+            // Update filter buttons
+            document.querySelector('.filter-btn[data-filter="all"]').textContent = translations[currentLanguage].filterAll;
+            document.querySelector('.filter-btn[data-filter="static"]').textContent = translations[currentLanguage].filterStatic;
+            document.querySelector('.filter-btn[data-filter="dynamic"]').textContent = translations[currentLanguage].filterDynamic;
+            document.querySelector('.filter-btn[data-filter="both"]').textContent = translations[currentLanguage].filterBoth;
+            document.querySelector('.filter-btn[data-filter="enterprise"]').textContent = translations[currentLanguage].filterEnterprise;
+            document.querySelector('.filter-btn[data-filter="popular"]').textContent = translations[currentLanguage].filterPopular;
+            
+            // Update action buttons
+            document.querySelector('.action-btn:nth-child(1)').innerHTML = `<i class="fas fa-star"></i> ${translations[currentLanguage].actionFavorites}`;
+            document.querySelector('.action-btn:nth-child(2)').innerHTML = `<i class="fas fa-fire"></i> ${translations[currentLanguage].actionPopular}`;
+            document.querySelector('.action-btn:nth-child(3)').innerHTML = `<i class="fas fa-clock"></i> ${translations[currentLanguage].actionNewest}`;
+            document.querySelector('.action-btn:nth-child(4)').innerHTML = `<i class="fas fa-star"></i> ${translations[currentLanguage].actionRating}`;
+            document.querySelector('.action-btn:nth-child(5)').innerHTML = `<i class="fas fa-balance-scale"></i> ${translations[currentLanguage].actionCompare}`;
+            document.querySelector('.action-btn:nth-child(6)').innerHTML = `<i class="fas fa-refresh"></i> ${translations[currentLanguage].actionReset}`;
+            
+            // Update section titles
+            document.querySelector('.section-title').textContent = translations[currentLanguage].sectionTitle;
+            document.querySelector('.section-subtitle').textContent = translations[currentLanguage].sectionSubtitle;
+            
+            // Update empty state
+            document.querySelector('.empty-state h3').textContent = translations[currentLanguage].emptyTitle;
+            document.querySelector('.empty-state p').textContent = translations[currentLanguage].emptySubtitle;
+            
+            // Update footer
+            document.querySelector('.footer h3').innerHTML = `<i class="fas fa-rocket"></i> ${translations[currentLanguage].footerTitle}`;
+            document.querySelector('.footer p').textContent = translations[currentLanguage].footerText;
+            document.querySelector('.footer p:last-of-type').innerHTML = `&copy; 2025 Deploy-Your-Things. Dibuat dengan <i class="fas fa-heart" style="color: var(--accent-danger);"></i> untuk developer Indonesia.`;
+            
+            // Update newsletter
+            document.querySelector('.newsletter h4').textContent = translations[currentLanguage].newsletterTitle;
+            document.querySelector('.newsletter p').textContent = translations[currentLanguage].newsletterText;
+            document.querySelector('.newsletter-input').placeholder = translations[currentLanguage].newsletterPlaceholder;
+            document.querySelector('.newsletter-form button').textContent = translations[currentLanguage].newsletterButton;
+            
+            // Update recently viewed
+            if (recentlyViewed.length > 0) {
+                document.querySelector('.recently-viewed h3').textContent = translations[currentLanguage].recentlyViewed;
+            }
+            
+            // Update recommendations
+            document.querySelector('.recommendations h3').textContent = translations[currentLanguage].recommendations;
+            
+            // Update chart
+            updateChart();
+            
+            // Re-render platforms to update labels
+            renderPlatforms();
+        }
+
+        // Toggle user menu
+        function toggleUserMenu() {
+            const dropdown = document.getElementById('userDropdown');
+            dropdown.classList.toggle('active');
+        }
+
+        // Toggle mobile menu
+        function toggleMobileMenu() {
+            const navLinks = document.querySelector('.nav-links');
+            if (navLinks.style.display === 'flex') {
+                navLinks.style.display = 'none';
+            } else {
+                navLinks.style.display = 'flex';
+                navLinks.style.position = 'absolute';
+                navLinks.style.top = '100%';
+                navLinks.style.left = '0';
+                navLinks.style.right = '0';
+                navLinks.style.flexDirection = 'column';
+                navLinks.style.backgroundColor = 'var(--bg-secondary)';
+                navLinks.style.padding = '1rem';
+                navLinks.style.borderBottom = '1px solid var(--border-primary)';
+            }
+        }
+
+        // Show only favorites
+        function showOnlyFavorites() {
+            showFavoritesOnly = !showFavoritesOnly;
+            renderPlatforms();
+            
+            if (showFavoritesOnly) {
+                showToast('Showing favorites only', 'info');
+            } else {
+                showToast('Showing all platforms', 'info');
+            }
+        }
+
+        // Sort by popularity
+        function sortByPopularity() {
+            platforms.sort((a, b) => {
+                if (a.category === 'popular' && b.category !== 'popular') return -1;
+                if (b.category === 'popular' && a.category !== 'popular') return 1;
+                return 0;
+            });
+            renderPlatforms();
+        }
+
+        // Sort by newest
+        function sortByNewest() {
+            platforms.sort((a, b) => new Date(b.addedDate || '2023-01-01') - new Date(a.addedDate || '2023-01-01'));
+            renderPlatforms();
+        }
+
+        // Sort by rating
+        function sortByRating() {
+            platforms.sort((a, b) => b.rating - a.rating);
+            renderPlatforms();
+        }
+
+        // Reset filters
+        function resetFilters() {
+            currentFilter = 'all';
+            currentSearch = '';
+            showFavoritesOnly = false;
+            
+            document.getElementById('searchInput').value = '';
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.dataset.filter === 'all') {
+                    btn.classList.add('active');
+                }
+            });
+            
+            document.querySelectorAll('.action-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Reset advanced filters
+            document.getElementById('storageFilter').value = '';
+            document.getElementById('bandwidthFilter').value = '';
+            document.getElementById('regionFilter').value = '';
+            document.getElementById('sslFilter').checked = false;
+            document.getElementById('customDomainFilter').checked = false;
+            document.getElementById('cdnFilter').checked = false;
+            document.getElementById('apiFilter').checked = false;
+            
+            renderPlatforms();
+        }
+
+        // Toggle advanced search
+        function toggleAdvancedSearch() {
+            const panel = document.getElementById('advancedSearchPanel');
+            panel.classList.toggle('active');
+        }
+
+        // Apply advanced filters
+        function applyAdvancedFilters() {
+            renderPlatforms();
+            toggleAdvancedSearch();
+        }
+
+        // Reset advanced filters
+        function resetAdvancedFilters() {
+            document.getElementById('storageFilter').value = '';
+            document.getElementById('bandwidthFilter').value = '';
+            document.getElementById('regionFilter').value = '';
+            document.getElementById('sslFilter').checked = false;
+            document.getElementById('customDomainFilter').checked = false;
+            document.getElementById('cdnFilter').checked = false;
+            document.getElementById('apiFilter').checked = false;
+            
+            renderPlatforms();
+        }
+
+        // Export favorites
+        function exportFavorites() {
+            const favoritePlatforms = platforms.filter(p => favorites.includes(p.id));
+            const dataStr = JSON.stringify(favoritePlatforms, null, 2);
+            const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
+            
+            const exportFileDefaultName = 'deploygratis_favorites.json';
+            
+            const linkElement = document.createElement('a');
+            linkElement.setAttribute('href', dataUri);
+            linkElement.setAttribute('download', exportFileDefaultName);
+            linkElement.click();
+            
+            showToast(translations[currentLanguage].toastExportedFavorites, 'success');
+        }
+
+        // Import favorites
+        function importFavorites() {
+            document.getElementById('fileInput').click();
+        }
+
+        // Export all data
+        function exportAllData() {
+            const allData = {
+                favorites: favorites,
+                recentlyViewed: recentlyViewed,
+                userPreferences: userPreferences,
+                personalNotes: personalNotes,
+                savedSearches: savedSearches,
+                userData: userData
+            };
+            
+            const dataStr = JSON.stringify(allData, null, 2);
+            const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
+            
+            const exportFileDefaultName = 'deploygratis_data.json';
+            
+            const linkElement = document.createElement('a');
+            linkElement.setAttribute('href', dataUri);
+            linkElement.setAttribute('download', exportFileDefaultName);
+            linkElement.click();
+            
+            showToast(translations[currentLanguage].toastExportedData, 'success');
+        }
+
+        // Handle file import
+        function handleFileImport(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const data = JSON.parse(e.target.result);
+                    
+                    // Handle different import types
+                    if (Array.isArray(data)) {
+                        // It's a list of platforms (favorites import)
+                        const importedIds = data.map(p => p.id);
+                        favorites = [...new Set([...favorites, ...importedIds])];
+                        localStorage.setItem('deploygratis_favorites', JSON.stringify(favorites));
+                        updateFavoriteCount();
+                        renderPlatforms();
+                        showToast(translations[currentLanguage].toastImportedFavorites, 'success');
+                    } else if (data.favorites) {
+                        // It's a full data export
+                        favorites = data.favorites || [];
+                        recentlyViewed = data.recentlyViewed || [];
+                        userPreferences = { ...userPreferences, ...data.userPreferences };
+                        personalNotes = data.personalNotes || {};
+                        savedSearches = data.savedSearches || [];
+                        userData = data.userData || userData;
+                        
+                        localStorage.setItem('deploygratis_favorites', JSON.stringify(favorites));
+                        localStorage.setItem('deploygratis_recently_viewed', JSON.stringify(recentlyViewed));
+                        localStorage.setItem('deploygratis_preferences', JSON.stringify(userPreferences));
+                        localStorage.setItem('deploygratis_personal_notes', JSON.stringify(personalNotes));
+                        localStorage.setItem('deploygratis_saved_searches', JSON.stringify(savedSearches));
+                        localStorage.setItem('deploygratis_user_data', JSON.stringify(userData));
+                        
+                        updateFavoriteCount();
+                        updateRecentlyViewed();
+                        applyUserPreferences();
+                        updateUserData();
+                        renderPlatforms();
+                        
+                        showToast('All data imported successfully', 'success');
+                    }
+                } catch (error) {
+                    console.error('Error importing data:', error);
+                    showToast('Failed to import data', 'error');
+                }
+            };
+            
+            reader.readAsText(file);
+            event.target.value = ''; // Reset file input
+        }
+
+        // Save search
+        function saveSearch() {
+            const searchQuery = document.getElementById('searchInput').value.trim();
+            if (!searchQuery) {
+                showToast('Please enter a search query', 'warning');
+                return;
+            }
+            
+            if (savedSearches.includes(searchQuery)) {
+                showToast('Search already saved', 'info');
+                return;
+            }
+            
+            savedSearches.push(searchQuery);
+            localStorage.setItem('deploygratis_saved_searches', JSON.stringify(savedSearches));
+            
+            showToast(translations[currentLanguage].toastSavedSearch, 'success');
+        }
+
+        // Subscribe to newsletter
+        function subscribeNewsletter(event) {
+            event.preventDefault();
+            const email = event.target.querySelector('.newsletter-input').value.trim();
+            
+            if (!email) {
+                showToast('Please enter your email', 'warning');
+                return;
+            }
+            
+            // In a real app, you would send this to your backend
+            console.log('Newsletter subscription:', email);
+            
+            showToast(translations[currentLanguage].toastSubscribed, 'success');
+            event.target.reset();
+        }
+
+        // Show toast notification
+        function showToast(message, type = 'info') {
+            const toast = document.getElementById('toast');
+            const toastMessage = document.getElementById('toastMessage');
+            
+            // Set message
+            toastMessage.textContent = message;
+            
+            // Set type
+            toast.className = 'toast show';
+            if (type === 'success') {
+                toast.classList.add('success');
+                toast.querySelector('i').className = 'fas fa-check-circle';
+            } else if (type === 'error') {
+                toast.classList.add('error');
+                toast.querySelector('i').className = 'fas fa-exclamation-circle';
+            } else if (type === 'warning') {
+                toast.querySelector('i').className = 'fas fa-exclamation-triangle';
+            } else {
+                toast.classList.add('info');
+                toast.querySelector('i').className = 'fas fa-info-circle';
+            }
+            
+            // Hide after 3 seconds
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        // Scroll to top
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Open help modal
+        function openHelpModal() {
+            document.getElementById('helpModal').style.display = 'block';
+        }
+
+        // Close help modal
+        function closeHelpModal() {
+            document.getElementById('helpModal').style.display = 'none';
+        }
+
+        // User profile functions
+        function showProfile() {
+            document.getElementById('profileModal').style.display = 'block';
+            updateProfileData();
+            toggleUserMenu();
+        }
+
+        function closeProfileModal() {
+            document.getElementById('profileModal').style.display = 'none';
+        }
+
+        function updateProfileData() {
+            document.getElementById('profileInitial').textContent = userData.name.charAt(0).toUpperCase();
+            document.getElementById('profileName').textContent = userData.name;
+            document.getElementById('profileEmail').textContent = userData.email;
+            document.getElementById('profileFavoritesCount').textContent = favorites.length;
+            document.getElementById('profileViewedCount').textContent = recentlyViewed.length;
+        }
+
+        function updateUserData() {
+            document.getElementById('userInitial').textContent = userData.name.charAt(0).toUpperCase();
+        }
+
+        function editProfile() {
+            const name = prompt('Nama:', userData.name);
+            if (name !== null && name.trim() !== '') {
+                userData.name = name.trim();
+            }
+            
+            const email = prompt('Email:', userData.email);
+            if (email !== null && email.trim() !== '') {
+                userData.email = email.trim();
+            }
+            
+            localStorage.setItem('deploygratis_user_data', JSON.stringify(userData));
+            updateProfileData();
+            updateUserData();
+            showToast('Profile updated successfully', 'success');
+        }
+
+        // Preferences functions
+        function showPreferences() {
+            document.getElementById('preferencesModal').style.display = 'block';
+            // Load current preferences
+            document.getElementById('prefTheme').value = userPreferences.theme;
+            document.getElementById('prefLanguage').value = userPreferences.language;
+            document.getElementById('prefRecommendations').checked = userPreferences.recommendations;
+            document.getElementById('prefAnimations').checked = userPreferences.animations;
+            toggleUserMenu();
+        }
+
+        function closePreferencesModal() {
+            document.getElementById('preferencesModal').style.display = 'none';
+        }
+
+        function updateThemePreference() {
+            const theme = document.getElementById('prefTheme').value;
+            if (theme === 'light') {
+                document.documentElement.setAttribute('data-theme', 'light');
+                document.getElementById('themeIcon').className = 'fas fa-sun';
+            } else {
+                document.documentElement.removeAttribute('data-theme');
+                document.getElementById('themeIcon').className = 'fas fa-moon';
+            }
+        }
+
+        function updateLanguagePreference() {
+            const language = document.getElementById('prefLanguage').value;
+            currentLanguage = language;
+            updateLanguage();
+        }
+
+        function updateRecommendationsPreference() {
+            userPreferences.recommendations = document.getElementById('prefRecommendations').checked;
+        }
+
+        function updateAnimationsPreference() {
+            const enabled = document.getElementById('prefAnimations').checked;
+            userPreferences.animations = enabled;
+            
+            if (!enabled) {
+                document.documentElement.style.setProperty('--transition', 'none');
+            } else {
+                document.documentElement.style.removeProperty('--transition');
+            }
+        }
+
+        function savePreferences() {
+            userPreferences.theme = document.getElementById('prefTheme').value;
+            userPreferences.language = document.getElementById('prefLanguage').value;
+            userPreferences.recommendations = document.getElementById('prefRecommendations').checked;
+            userPreferences.animations = document.getElementById('prefAnimations').checked;
+            
+            localStorage.setItem('deploygratis_preferences', JSON.stringify(userPreferences));
+            applyUserPreferences();
+            
+            showToast('Preferences saved successfully', 'success');
+            closePreferencesModal();
+        }
+
+        // History functions
+        function showHistory() {
+            document.getElementById('historyModal').style.display = 'block';
+            updateHistoryList();
+            toggleUserMenu();
+        }
+
+        function closeHistoryModal() {
+            document.getElementById('historyModal').style.display = 'none';
+        }
+
+        function updateHistoryList() {
+            const historyList = document.getElementById('historyList');
+            
+            if (recentlyViewed.length === 0) {
+                historyList.innerHTML = '<p class="empty-notes">No browsing history yet</p>';
+                return;
+            }
+            
+            historyList.innerHTML = recentlyViewed.map(platformId => {
+                const platform = platforms.find(p => p.id === platformId);
+                if (!platform) return '';
+                
+                return `
+                    <div class="history-item">
+                        <div class="recently-viewed-item" onclick="openPlatformModal('${platform.id}')">
+                            <div class="recently-viewed-logo" style="background: ${platform.logoColor};">
+                                <i class="${platform.logo}"></i>
+                            </div>
+                            <div class="recently-viewed-info">
+                                <h4>${platform.name}</h4>
+                                <p>${getTypeLabel(platform.type)}</p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function clearHistory() {
+            if (!confirm('Are you sure you want to clear your browsing history?')) return;
+            
+            recentlyViewed = [];
+            localStorage.setItem('deploygratis_recently_viewed', JSON.stringify(recentlyViewed));
+            updateHistoryList();
+            updateRecentlyViewed();
+            
+            showToast(translations[currentLanguage].toastHistoryCleared, 'success');
+        }
+
+        function exportHistory() {
+            const historyData = {
+                recentlyViewed: recentlyViewed,
+                exportDate: new Date().toISOString()
+            };
+            
+            const dataStr = JSON.stringify(historyData, null, 2);
+            const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
+            
+            const exportFileDefaultName = 'deploygratis_history.json';
+            
+            const linkElement = document.createElement('a');
+            linkElement.setAttribute('href', dataUri);
+            linkElement.setAttribute('download', exportFileDefaultName);
+            linkElement.click();
+            
+            showToast(translations[currentLanguage].toastHistoryExported, 'success');
+        }
+
+        // Platform submission functions
+        function showSubmissionModal() {
+            document.getElementById('submissionModal').style.display = 'block';
+        }
+
+        function closeSubmissionModal() {
+            document.getElementById('submissionModal').style.display = 'none';
+            document.getElementById('submissionModal').querySelector('form').reset();
+        }
+
+        function submitPlatform(event) {
+            event.preventDefault();
+            
+            const formData = {
+                name: document.getElementById('platformName').value,
+                url: document.getElementById('platformUrl').value,
+                type: document.getElementById('platformType').value,
+                description: document.getElementById('platformDescription').value,
+                features: document.getElementById('platformFeatures').value.split(',').map(f => f.trim()).filter(f => f),
+                tags: document.getElementById('platformTags').value.split(',').map(t => t.trim()).filter(t => t),
+                free: document.getElementById('platformFree').checked,
+                storage: document.getElementById('platformStorage').value,
+                bandwidth: document.getElementById('platformBandwidth').value,
+                customDomain: document.getElementById('platformCustomDomain').checked,
+                ssl: document.getElementById('platformSSL').checked,
+                region: document.getElementById('platformRegion').value,
+                submitterEmail: document.getElementById('submitterEmail').value,
+                submitterNotes: document.getElementById('submitterNotes').value,
+                submissionDate: new Date().toISOString()
+            };
+            
+            // In a real app, you would send this to your backend
+            console.log('Platform submission:', formData);
+            
+            // Save to local storage for demo purposes
+            const submissions = JSON.parse(localStorage.getItem('deploygratis_submissions') || '[]');
+            submissions.push(formData);
+            localStorage.setItem('deploygratis_submissions', JSON.stringify(submissions));
+            
+            showToast(translations[currentLanguage].toastPlatformSubmitted, 'success');
+            closeSubmissionModal();
+        }
+
+        // Feedback functions
+        function showFeedbackModal() {
+            document.getElementById('feedbackModal').style.display = 'block';
+        }
+
+        function closeFeedbackModal() {
+            document.getElementById('feedbackModal').style.display = 'none';
+            document.getElementById('feedbackModal').querySelector('form').reset();
+        }
+
+        function submitFeedback(event) {
+            event.preventDefault();
+            
+            const feedbackData = {
+                type: document.getElementById('feedbackType').value,
+                email: document.getElementById('feedbackEmail').value,
+                message: document.getElementById('feedbackMessage').value,
+                submissionDate: new Date().toISOString()
+            };
+            
+            // In a real app, you would send this to your backend
+            console.log('Feedback submission:', feedbackData);
+            
+            // Save to local storage for demo purposes
+            const feedbacks = JSON.parse(localStorage.getItem('deploygratis_feedbacks') || '[]');
+            feedbacks.push(feedbackData);
+            localStorage.setItem('deploygratis_feedbacks', JSON.stringify(feedbacks));
+            
+            showToast(translations[currentLanguage].toastFeedbackSubmitted, 'success');
+            closeFeedbackModal();
+        }
+
+        // Fixed functions for user menu actions
+        function exportUserData() {
+            exportAllData();
+            toggleUserMenu();
+        }
+
+        function importUserData() {
+            importFavorites();
+            toggleUserMenu();
+        }
+
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                // Clear user-specific data but keep preferences
+                favorites = [];
+                recentlyViewed = [];
+                personalNotes = {};
+                savedSearches = [];
+                
+                localStorage.setItem('deploygratis_favorites', JSON.stringify(favorites));
+                localStorage.setItem('deploygratis_recently_viewed', JSON.stringify(recentlyViewed));
+                localStorage.setItem('deploygratis_personal_notes', JSON.stringify(personalNotes));
+                localStorage.setItem('deploygratis_saved_searches', JSON.stringify(savedSearches));
+                
+                updateFavoriteCount();
+                updateRecentlyViewed();
+                renderPlatforms();
+                
+                showToast('Logged out successfully', 'success');
+            }
+            toggleUserMenu();
+        }
+
+        // Add footer links functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add click handlers for footer links
+            document.querySelectorAll('.footer-links a').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const href = this.getAttribute('href');
+                    
+                    switch(href) {
+                        case '#about':
+                            showAbout();
+                            break;
+                        case '#privacy':
+                            showPrivacy();
+                            break;
+                        case '#terms':
+                            showTerms();
+                            break;
+                        case '#contact':
+                            showContact();
+                            break;
+                        case '#contribute':
+                            showSubmissionModal();
+                            break;
+                    }
+                });
+            });
+        });
+
+        function showAbout() {
+            alert('Deploy-Your-Things adalah platform yang mengumpulkan dan mengkurasi layanan deployment gratis dari seluruh dunia. Kami membantu developer menemukan platform yang tepat untuk project mereka tanpa biaya.');
+        }
+
+        function showPrivacy() {
+            alert('Kebijakan Privasi:\n\nKami menghormati privasi Anda. Data yang kami kumpulkan hanya digunakan untuk meningkatkan pengalaman pengguna dan tidak akan dibagikan kepada pihak ketiga tanpa persetujuan Anda.');
+        }
+
+        function showTerms() {
+            alert('Syarat & Ketentuan:\n\nDengan menggunakan platform ini, Anda setuju untuk tidak menyalahgunakan layanan dan mengikuti semua ketentuan yang berlaku.');
+        }
+
+        function showContact() {
+            showFeedbackModal();
+        }
+
+        // Generate stars for comparison table (internal function)
+        function generateStars(rating) {
+            const fullStars = Math.floor(rating);
+            const halfStar = rating % 1 >= 0.5 ? 1 : 0;
+            const emptyStars = 5 - fullStars - halfStar;
+            
+            let stars = '';
+            for (let i = 0; i < fullStars; i++) {
+                stars += '<i class="fas fa-star"></i>';
+            }
+            if (halfStar) {
+                stars += '<i class="fas fa-star-half-alt"></i>';
+            }
+            for (let i = 0; i < emptyStars; i++) {
+                stars += '<i class="far fa-star"></i>';
+            }
+            
+            return stars;
+        }
+    </script>
+</body>
+</html>

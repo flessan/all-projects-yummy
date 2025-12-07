@@ -1,0 +1,2567 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>AuthLab Pro — All-in-One Authentication Toolkit</title>
+  <style>
+    /* ===== CORE VARIABLES & RESET ===== */
+    :root {
+      --bg: #ffffff;
+      --muted: #6b7280;
+      --accent: #0ea5e9; /* blue */
+      --accent-2: #ec4899; /* pink */
+      --accent-3: #8b5cf6; /* purple */
+      --card: #ffffff;
+      --glass: rgba(14,165,233,0.04);
+      --radius: 12px;
+      --shadow: 0 8px 20px rgba(2,6,23,0.06);
+      --success: #10b981;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+      --transition: all 0.2s ease;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html, body {
+      height: 100%;
+    }
+
+    body {
+      margin: 0;
+      background: linear-gradient(180deg, #fbfdff 0%, #fff 100%);
+      color: #0f172a;
+      font-size: 14px;
+      -webkit-font-smoothing: antialiased;
+      padding: 28px;
+      line-height: 1.5;
+    }
+
+    /* ===== ACCESSIBILITY ===== */
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border-width: 0;
+    }
+
+    /* Skip to content link for keyboard users */
+    .skip-link {
+      position: absolute;
+      top: -40px;
+      left: 0;
+      background: var(--accent);
+      color: white;
+      padding: 8px;
+      z-index: 100;
+      transition: top 0.3s;
+    }
+
+    .skip-link:focus {
+      top: 0;
+    }
+
+    /* ===== LAYOUT ===== */
+    .app {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 260px 1fr;
+      gap: 20px;
+      align-items: start;
+    }
+
+    /* ===== SIDEBAR ===== */
+    .sidebar {
+      background: var(--card);
+      padding: 18px;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      border: 1px solid #eef6fb;
+      height: fit-content;
+      position: sticky;
+      top: 28px;
+    }
+
+    .brand {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+
+    .logo {
+      width: 48px;
+      height: 48px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      color: #fff;
+      flex-shrink: 0;
+    }
+
+    .brand h1 {
+      margin: 0;
+      font-size: 16px;
+      line-height: 1.2;
+    }
+
+    .brand small {
+      color: var(--muted);
+      font-size: 12px;
+      display: block;
+    }
+
+    /* ===== NAVIGATION ===== */
+    .nav {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-top: 16px;
+    }
+
+    .nav-title {
+      font-size: 12px;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin: 10px 0 4px 8px;
+    }
+
+    .tab-btn {
+      padding: 10px 12px;
+      border-radius: 10px;
+      border: 0;
+      background: transparent;
+      text-align: left;
+      cursor: pointer;
+      color: #0f172a;
+      font-weight: 500;
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      transition: var(--transition);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .tab-btn:hover {
+      background: var(--glass);
+    }
+
+    .tab-btn:focus {
+      outline: 2px solid var(--accent);
+      outline-offset: -2px;
+    }
+
+    .tab-btn.active {
+      background: linear-gradient(90deg, rgba(14,165,233,0.08), rgba(236,72,153,0.04));
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.6);
+      font-weight: 600;
+    }
+
+    .tab-btn.active::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 3px;
+      background: var(--accent);
+      border-radius: 0 3px 3px 0;
+    }
+
+    /* ===== MAIN CONTENT ===== */
+    .main {
+      min-height: 80vh;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .h-title {
+      font-weight: 700;
+      font-size: 20px;
+    }
+
+    .controls {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    /* ===== PANELS ===== */
+    .panel {
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 16px;
+      box-shadow: var(--shadow);
+      border: 1px solid #eef6fb;
+      margin-bottom: 16px;
+    }
+
+    .panel-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .panel-title {
+      font-weight: 600;
+      font-size: 16px;
+    }
+
+    /* ===== TABS CONTENT ===== */
+    .tools-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .tab-content {
+      animation: fadeIn 0.3s ease;
+    }
+
+    .tab-content.hidden {
+      display: none;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ===== GRID LAYOUT ===== */
+    .cols {
+      display: grid;
+      grid-template-columns: 1fr 420px;
+      gap: 16px;
+    }
+
+    @media (max-width: 1000px) {
+      .app {
+        grid-template-columns: 1fr;
+      }
+      
+      .sidebar {
+        position: static;
+      }
+      
+      .cols {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* ===== FORM ELEMENTS ===== */
+    label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: 500;
+      font-size: 14px;
+    }
+
+    input[type="text"], 
+    input[type="number"], 
+    input[type="color"],
+    select, 
+    textarea {
+      width: 100%;
+      padding: 10px 12px;
+      border-radius: 10px;
+      border: 1px solid #e6eef6;
+      background: #fff;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", monospace;
+      font-size: 13px;
+      transition: var(--transition);
+    }
+
+    input[type="text"]:focus, 
+    input[type="number"]:focus, 
+    select:focus, 
+    textarea:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(14,165,233,0.1);
+    }
+
+    textarea {
+      min-height: 140px;
+      resize: vertical;
+    }
+
+    /* ===== CHECKBOXES & RADIOS ===== */
+    .checkbox-group,
+    .radio-group {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 8px;
+    }
+
+    .checkbox-label,
+    .radio-label {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      font-weight: normal;
+    }
+
+    input[type="checkbox"],
+    input[type="radio"] {
+      width: 16px;
+      height: 16px;
+      accent-color: var(--accent);
+    }
+
+    /* ===== BUTTONS ===== */
+    .btn {
+      padding: 8px 12px;
+      border-radius: 10px;
+      border: 0;
+      background: var(--accent);
+      color: #fff;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 14px;
+      transition: var(--transition);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    .btn:hover {
+      background: #0284c7;
+      transform: translateY(-1px);
+    }
+
+    .btn:active {
+      transform: translateY(0);
+    }
+
+    .btn:focus {
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(14,165,233,0.3);
+    }
+
+    .btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .btn.ghost {
+      background: transparent;
+      color: var(--accent);
+      border: 1px solid var(--accent);
+    }
+
+    .btn.ghost:hover {
+      background: rgba(14,165,233,0.05);
+    }
+
+    .btn.warn {
+      background: var(--warning);
+    }
+
+    .btn.warn:hover {
+      background: #d97706;
+    }
+
+    .btn.secondary {
+      background: var(--accent-2);
+    }
+
+    .btn.secondary:hover {
+      background: #db2777;
+    }
+
+    .btn.success {
+      background: var(--success);
+    }
+
+    .btn.success:hover {
+      background: #059669;
+    }
+
+    .btn.small {
+      padding: 6px 8px;
+      font-size: 13px;
+    }
+
+    .btn-icon {
+      width: 32px;
+      height: 32px;
+      padding: 0;
+      border-radius: 8px;
+    }
+
+    .btn-group {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    /* ===== RESULTS & LISTS ===== */
+    .results {
+      background: #fff;
+      padding: 10px;
+      border-radius: 10px;
+      border: 1px solid #eef6fb;
+      min-height: 120px;
+      overflow: auto;
+      max-height: 300px;
+    }
+
+    .result-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px;
+      border-bottom: 1px dashed #f1f5f9;
+      transition: var(--transition);
+    }
+
+    .result-row:hover {
+      background: rgba(14,165,233,0.03);
+    }
+
+    .result-row:last-child {
+      border-bottom: 0;
+    }
+
+    .result-name {
+      font-family: ui-monospace, monospace;
+      cursor: pointer;
+      padding: 4px;
+      border-radius: 4px;
+      transition: var(--transition);
+    }
+
+    .result-name:hover {
+      background: rgba(14,165,233,0.05);
+    }
+
+    /* ===== AVATAR & CANVAS ===== */
+    .avatar-wrap {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+    }
+
+    .canvas-box {
+      width: 120px;
+      height: 120px;
+      border-radius: 12px;
+      background: #fff;
+      border: 1px solid #eef6fb;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    /* ===== PASSWORD STRENGTH ===== */
+    .strength {
+      height: 10px;
+      border-radius: 8px;
+      background: #f1f5f9;
+      overflow: hidden;
+      border: 1px solid #eef6fb;
+      margin-top: 8px;
+    }
+
+    .strength > span {
+      display: block;
+      height: 100%;
+      width: 0%;
+      transition: width 0.5s ease;
+    }
+
+    /* ===== PREVIEW IFRAME ===== */
+    .preview {
+      border-radius: 10px;
+      overflow: hidden;
+      border: 1px solid #eef6fb;
+      background: #fff;
+    }
+
+    .preview .frame {
+      width: 100%;
+      height: 340px;
+      border: 0;
+      display: block;
+    }
+
+    /* ===== UTILITY CLASSES ===== */
+    .muted {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .text-center {
+      text-align: center;
+    }
+
+    .mt-1 { margin-top: 4px; }
+    .mt-2 { margin-top: 8px; }
+    .mt-3 { margin-top: 12px; }
+    .mt-4 { margin-top: 16px; }
+
+    .mb-1 { margin-bottom: 4px; }
+    .mb-2 { margin-bottom: 8px; }
+    .mb-3 { margin-bottom: 12px; }
+    .mb-4 { margin-bottom: 16px; }
+
+    .pill {
+      display: inline-block;
+      padding: 6px 8px;
+      border-radius: 999px;
+      background: #f8fafc;
+      border: 1px solid #eef6fb;
+      font-size: 12px;
+    }
+
+    /* ===== NOTIFICATIONS & TOASTS ===== */
+    .toast-container {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 1000;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .toast {
+      background: white;
+      border-radius: 8px;
+      padding: 12px 16px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 250px;
+      animation: slideIn 0.3s ease;
+    }
+
+    @keyframes slideIn {
+      from { transform: translateX(100%); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+
+    .toast.success {
+      border-left: 4px solid var(--success);
+    }
+
+    .toast.error {
+      border-left: 4px solid var(--danger);
+    }
+
+    .toast.info {
+      border-left: 4px solid var(--accent);
+    }
+
+    .toast-close {
+      margin-left: auto;
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--muted);
+    }
+
+    /* ===== LOADING SPINNER ===== */
+    .spinner {
+      display: inline-block;
+      width: 16px;
+      height: 16px;
+      border: 2px solid rgba(255,255,255,0.3);
+      border-radius: 50%;
+      border-top-color: white;
+      animation: spin 0.8s ease-in-out infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* ===== FOOTER ===== */
+    .footer {
+      margin-top: 24px;
+      color: var(--muted);
+      font-size: 13px;
+      text-align: center;
+      padding-top: 16px;
+      border-top: 1px solid #eef6fb;
+    }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 768px) {
+      body {
+        padding: 16px;
+      }
+      
+      .header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      
+      .controls {
+        width: 100%;
+        justify-content: flex-end;
+      }
+    }
+  </style>
+</head>
+<body>
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+  
+  <div class="app">
+    <!-- SIDEBAR -->
+    <aside class="sidebar panel">
+      <div class="brand">
+        <div class="logo" aria-hidden="true">🔐</div>
+        <div>
+          <h1>AuthLab Pro</h1>
+          <small>Authentication Toolkit</small>
+        </div>
+      </div>
+
+      <nav class="nav" id="nav" aria-label="Tool navigation">
+        <div class="nav-title">Main Tools</div>
+        <button class="tab-btn active" data-target="tab-dashboard" aria-current="page">
+          <span aria-hidden="true">🏠</span> Dashboard
+        </button>
+        <button class="tab-btn" data-target="tab-username">
+          <span aria-hidden="true">🦊</span> Username Tools
+        </button>
+        <button class="tab-btn" data-target="tab-avatar">
+          <span aria-hidden="true">🧩</span> Avatar Generator
+        </button>
+        <button class="tab-btn" data-target="tab-password">
+          <span aria-hidden="true">🔐</span> Password Tools
+        </button>
+        
+        <div class="nav-title">Advanced Tools</div>
+        <button class="tab-btn" data-target="tab-visualizer">
+          <span aria-hidden="true">🧮</span> Visualizer
+        </button>
+        <button class="tab-btn" data-target="tab-entropy">
+          <span aria-hidden="true">📈</span> Entropy
+        </button>
+        <button class="tab-btn" data-target="tab-mock">
+          <span aria-hidden="true">🧾</span> Mock Generator
+        </button>
+        <button class="tab-btn" data-target="tab-preview">
+          <span aria-hidden="true">🧑‍💻</span> Previewer
+        </button>
+        <button class="tab-btn" data-target="tab-export">
+          <span aria-hidden="true">💾</span> Exporter
+        </button>
+      </nav>
+
+      <div class="mt-4">
+        <button id="clearLocal" class="btn ghost small">
+          Clear Local Data
+        </button>
+      </div>
+
+      <div class="mt-4 muted">
+        <div>Made by Thio & Raisya</div>
+        <div class="mt-2" style="font-size: 12px">
+          Single-file UI + separate CSS — ready for Git
+        </div>
+      </div>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="main" id="main-content">
+      <div class="header">
+        <div class="h-title">AuthLab Pro Suite</div>
+        <div class="controls">
+          <div class="pill" id="currentTool">Dashboard</div>
+        </div>
+      </div>
+
+      <div class="tools-wrap">
+        <!-- DASHBOARD -->
+        <section id="tab-dashboard" class="tab-content panel" tabindex="0">
+          <div class="panel-header">
+            <h2 class="panel-title">Welcome — Dashboard</h2>
+          </div>
+          <p class="muted">
+            Select a tool from the sidebar. All tools run client-side. You can modify and commit to Git.
+          </p>
+          
+          <div class="mt-4 cols">
+            <div>
+              <div class="panel">
+                <h3 class="panel-title">Quick actions</h3>
+                <div class="btn-group mt-3">
+                  <button class="btn" data-target="tab-username">
+                    Try Username
+                  </button>
+                  <button class="btn" data-target="tab-password">
+                    Try Password
+                  </button>
+                  <button class="btn" data-target="tab-preview">
+                    Open Previewer
+                  </button>
+                </div>
+                <p class="muted mt-3">
+                  Autosave for username & password settings to localStorage.
+                </p>
+              </div>
+            </div>
+            
+            <div>
+              <div class="panel">
+                <h3 class="panel-title">About</h3>
+                <p class="muted">
+                  AuthLab Pro — compact toolkit for authentication & identity experiments. Built for offline/demo use.
+                </p>
+                <div class="mt-3">
+                  <h4 class="muted">Features</h4>
+                  <ul class="muted mt-2" style="padding-left: 20px;">
+                    <li>Username generation with multiple modes</li>
+                    <li>Avatar generation from seed</li>
+                    <li>Password strength analysis</li>
+                    <li>Visual pattern generation</li>
+                    <li>Mock data generation</li>
+                    <li>Template previewer</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- USERNAME GENERATOR -->
+        <section id="tab-username" class="tab-content panel hidden" tabindex="0">
+          <div class="panel-header">
+            <h2 class="panel-title">Username Tools</h2>
+          </div>
+          
+          <div class="cols">
+            <div>
+              <label for="u_base">Base name (optional)</label>
+              <input id="u_base" placeholder="e.g. thio" />
+
+              <label for="u_mode" class="mt-3">Mode</label>
+              <select id="u_mode">
+                <option value="animal">Animal Mode</option>
+                <option value="creative">Creative Mode</option>
+                <option value="classic">Classic Mode</option>
+                <option value="random">Random Only</option>
+              </select>
+
+              <label for="u_batch" class="mt-3">Batch size</label>
+              <input id="u_batch" type="number" min="1" max="30" value="8" />
+
+              <div class="btn-group mt-4">
+                <button id="u_gen" class="btn">
+                  Generate
+                </button>
+                <button id="u_copy_all" class="btn ghost">
+                  Copy All
+                </button>
+                <button id="u_save" class="btn secondary">
+                  Save
+                </button>
+              </div>
+
+              <div class="muted mt-3">
+                Click on a username to copy it. You can add custom base words in the script.
+              </div>
+            </div>
+
+            <div>
+              <label>Results</label>
+              <div id="u_results" class="results" aria-live="polite"></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- AVATAR GENERATOR -->
+        <section id="tab-avatar" class="tab-content panel hidden" tabindex="0">
+          <div class="panel-header">
+            <h2 class="panel-title">Avatar Generator</h2>
+          </div>
+          
+          <div class="cols">
+            <div>
+              <label for="a_seed">Seed (username)</label>
+              <input id="a_seed" placeholder="enter username or text" />
+              
+              <label for="a_mode" class="mt-3">Mode</label>
+              <select id="a_mode">
+                <option value="identicon">Identicon (geometric)</option>
+                <option value="gradient">Gradient circle</option>
+                <option value="pixel">Pixel block</option>
+              </select>
+
+              <div class="btn-group mt-4">
+                <button id="a_gen" class="btn">
+                  Generate
+                </button>
+                <button id="a_download" class="btn ghost">
+                  Download PNG
+                </button>
+              </div>
+              
+              <div class="muted mt-3">
+                Avatar generated on canvas — PNG download available.
+              </div>
+            </div>
+
+            <div>
+              <label>Preview</label>
+              <div class="avatar-wrap">
+                <div class="canvas-box panel">
+                  <canvas id="a_canvas" width="120" height="120" aria-label="Generated avatar"></canvas>
+                </div>
+                <div>
+                  <div id="a_meta" class="muted">No avatar yet</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- PASSWORD TOOLS -->
+        <section id="tab-password" class="tab-content panel hidden" tabindex="0">
+          <div class="panel-header">
+            <h2 class="panel-title">Password Tools</h2>
+          </div>
+          
+          <div class="cols">
+            <div>
+              <label>Options</label>
+              <div class="checkbox-group mt-2">
+                <label class="checkbox-label">
+                  <input type="checkbox" id="p_lower" checked />
+                  <span>lowercase</span>
+                </label>
+                <label class="checkbox-label">
+                  <input type="checkbox" id="p_upper" checked />
+                  <span>UPPERCASE</span>
+                </label>
+                <label class="checkbox-label">
+                  <input type="checkbox" id="p_numbers" checked />
+                  <span>0-9</span>
+                </label>
+                <label class="checkbox-label">
+                  <input type="checkbox" id="p_symbols" checked />
+                  <span>symbols</span>
+                </label>
+              </div>
+
+              <label for="p_length" class="mt-3">Length</label>
+              <input id="p_length" type="number" min="6" max="64" value="14" />
+
+              <div class="btn-group mt-4">
+                <button id="p_gen" class="btn">
+                  Generate
+                </button>
+                <button id="p_regen" class="btn ghost">
+                  Regenerate
+                </button>
+                <button id="p_copy" class="btn secondary">
+                  Copy
+                </button>
+              </div>
+
+              <div class="mt-4">
+                <label for="p_output">Generated</label>
+                <input id="p_output" readonly aria-describedby="p_strength_text" />
+                <div class="strength mt-2" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+                  <span id="p_strength"></span>
+                </div>
+                <div id="p_strength_text" class="muted mt-2">
+                  Strength: —
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <label for="e_input">Entropy Calculator</label>
+              <input id="e_input" placeholder="Paste password to calculate entropy" />
+              
+              <div class="btn-group mt-3">
+                <button id="e_calc" class="btn">
+                  Calculate
+                </button>
+                <button id="e_clear" class="btn ghost">
+                  Clear
+                </button>
+              </div>
+              
+              <div id="e_result" class="panel mt-3 muted" aria-live="polite">
+                Entropy results appear here.
+              </div>
+
+              <div class="mt-4">
+                <h4 class="muted">Tips</h4>
+                <ul class="muted mt-2" style="padding-left: 20px;">
+                  <li>Use longer passphrases with mixed character types for higher entropy</li>
+                  <li>Avoid common words and patterns</li>
+                  <li>Consider using a password manager for complex passwords</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- VISUALIZER -->
+        <section id="tab-visualizer" class="tab-content panel hidden" tabindex="0">
+          <div class="panel-header">
+            <h2 class="panel-title">Password Visualizer</h2>
+          </div>
+          
+          <div class="cols">
+            <div>
+              <label for="v_seed">Seed (password)</label>
+              <input id="v_seed" placeholder="type a password or phrase" />
+              
+              <div class="btn-group mt-4">
+                <button id="v_gen" class="btn">
+                  Generate Pattern
+                </button>
+                <button id="v_download" class="btn ghost">
+                  Download PNG
+                </button>
+              </div>
+            </div>
+
+            <div>
+              <label>Preview</label>
+              <div class="panel" style="padding: 12px;">
+                <canvas id="v_canvas" width="300" height="150" 
+                        style="width: 100%; height: auto; border-radius: 8px; background: #fff;"
+                        aria-label="Password visualization pattern">
+                </canvas>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ENTROPY CALCULATOR -->
+        <section id="tab-entropy" class="tab-content panel hidden" tabindex="0">
+          <div class="panel-header">
+            <h2 class="panel-title">Entropy Calculator</h2>
+          </div>
+          
+          <div>
+            <label for="ent_input">Password</label>
+            <input id="ent_input" placeholder="enter password" />
+            
+            <div class="btn-group mt-3">
+              <button id="ent_calc" class="btn">
+                Calculate Entropy
+              </button>
+              <button id="ent_copy" class="btn ghost">
+                Copy Bits
+              </button>
+            </div>
+            
+            <div id="ent_out" class="panel mt-3 muted" aria-live="polite">
+              Result will show here.
+            </div>
+          </div>
+        </section>
+
+        <!-- MOCK DATA GENERATOR -->
+        <section id="tab-mock" class="tab-content panel hidden" tabindex="0">
+          <div class="panel-header">
+            <h2 class="panel-title">Account Mock Generator</h2>
+          </div>
+          
+          <div class="cols">
+            <div>
+              <label for="m_count">Count</label>
+              <input id="m_count" type="number" min="1" max="200" value="6" />
+              
+              <div class="btn-group mt-4">
+                <button id="m_gen" class="btn">
+                  Generate
+                </button>
+                <button id="m_json" class="btn ghost">
+                  Export JSON
+                </button>
+                <button id="m_csv" class="btn secondary">
+                  Export CSV
+                </button>
+              </div>
+              
+              <div class="muted mt-3">
+                Local, fake data — safe for testing forms.
+              </div>
+            </div>
+
+            <div>
+              <label>Results</label>
+              <div id="m_results" class="results" aria-live="polite"></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- PREVIEWER -->
+        <section id="tab-preview" class="tab-content panel hidden" tabindex="0">
+          <div class="panel-header">
+            <h2 class="panel-title">Login Page Previewer</h2>
+          </div>
+          
+          <div class="cols">
+            <div>
+              <label for="pr_template">Template</label>
+              <select id="pr_template">
+                <option value="github">GitHub</option>
+                <option value="google">Google</option>
+                <option value="discord">Discord</option>
+                <option value="corporate">Corporate</option>
+              </select>
+
+              <label for="pr_color" class="mt-3">Primary Color</label>
+              <input id="pr_color" type="color" value="#0ea5e9" />
+
+              <div class="btn-group mt-4">
+                <button id="pr_load" class="btn">
+                  Load Preview
+                </button>
+                <button id="pr_copy" class="btn ghost">
+                  Copy HTML
+                </button>
+              </div>
+            </div>
+
+            <div>
+              <label>Preview</label>
+              <div class="preview panel">
+                <iframe id="pr_frame" class="frame" title="Login page preview"></iframe>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- EXPORTER -->
+        <section id="tab-export" class="tab-content panel hidden" tabindex="0">
+          <div class="panel-header">
+            <h2 class="panel-title">Template Exporter</h2>
+          </div>
+          
+          <div class="cols">
+            <div>
+              <label for="ex_name">Project name</label>
+              <input id="ex_name" placeholder="MyAuthTemplate" />
+              
+              <label class="mt-3">Include:</label>
+              <div class="checkbox-group mt-2">
+                <label class="checkbox-label">
+                  <input type="checkbox" id="ex_include_avatar" checked />
+                  <span>Avatar</span>
+                </label>
+                <label class="checkbox-label">
+                  <input type="checkbox" id="ex_include_preview" checked />
+                  <span>Preview HTML</span>
+                </label>
+                <label class="checkbox-label">
+                  <input type="checkbox" id="ex_include_readme" checked />
+                  <span>README</span>
+                </label>
+              </div>
+
+              <div class="btn-group mt-4">
+                <button id="ex_generate" class="btn">
+                  Generate Files
+                </button>
+                <button id="ex_download_all" class="btn ghost">
+                  Download Files
+                </button>
+              </div>
+              
+              <div id="ex_status" class="muted mt-3">
+                Files will be generated client-side. (ZIP not required — downloads available.)
+              </div>
+            </div>
+
+            <div>
+              <label>Files (preview)</label>
+              <div id="ex_files" class="results" aria-live="polite"></div>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <div class="footer">
+        AuthLab Pro — single-file UI + separate CSS — have fun & share
+      </div>
+    </main>
+  </div>
+
+  <!-- Toast container for notifications -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- SCRIPT: all logic inline -->
+  <script>
+  (function(){
+    'use strict';
+    
+    // ===== HELPER FUNCTIONS =====
+    const $ = q => document.querySelector(q);
+    const $$ = q => Array.from(document.querySelectorAll(q));
+    const saveKey = k => 'authlab:' + k;
+    
+    // Toast notification system
+    function showToast(message, type = 'info') {
+      const container = $('#toastContainer');
+      const toast = document.createElement('div');
+      toast.className = `toast ${type}`;
+      
+      let icon = '';
+      if (type === 'success') icon = '✓';
+      if (type === 'error') icon = '✕';
+      if (type === 'info') icon = 'ℹ';
+      
+      toast.innerHTML = `
+        <span>${icon}</span>
+        <span>${message}</span>
+        <button class="toast-close" aria-label="Close notification">✕</button>
+      `;
+      
+      container.appendChild(toast);
+      
+      // Add event listener to close button
+      toast.querySelector('.toast-close').addEventListener('click', () => {
+        toast.style.opacity = '0';
+        setTimeout(() => toast.remove(), 300);
+      });
+      
+      // Auto remove after 5 seconds
+      setTimeout(() => {
+        toast.style.opacity = '0';
+        setTimeout(() => toast.remove(), 300);
+      }, 5000);
+    }
+    
+    // Helper for copying text to clipboard with feedback
+    async function copyToClipboard(text, feedback = 'Copied to clipboard') {
+      try {
+        await navigator.clipboard.writeText(text);
+        showToast(feedback, 'success');
+        return true;
+      } catch (err) {
+        showToast('Failed to copy: ' + err.message, 'error');
+        return false;
+      }
+    }
+    
+    // ===== TAB NAVIGATION =====
+    const tabs = $$('.tab-btn');
+    const currentLabel = $('#currentTool');
+    
+    function showTab(id) {
+      // Update active state on buttons
+      $$('#nav .tab-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.target === id);
+        btn.setAttribute('aria-current', btn.dataset.target === id ? 'page' : 'false');
+      });
+      
+      // Show/hide content panels
+      $$('.tab-content').forEach(panel => {
+        panel.classList.add('hidden');
+        panel.setAttribute('aria-hidden', 'true');
+      });
+      
+      const targetPanel = document.getElementById(id);
+      if (targetPanel) {
+        targetPanel.classList.remove('hidden');
+        targetPanel.setAttribute('aria-hidden', 'false');
+        
+        // Update current tool label
+        const title = targetPanel.querySelector('.panel-title');
+        if (title) {
+          currentLabel.textContent = title.textContent;
+        }
+        
+        // Scroll to top
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        
+        // Focus the panel for keyboard users
+        setTimeout(() => targetPanel.focus(), 100);
+      }
+    }
+    
+    // Add click event listeners to tab buttons
+    tabs.forEach(btn => {
+      btn.addEventListener('click', () => showTab(btn.dataset.target));
+    });
+    
+    // Quick action buttons on dashboard
+    $$('.btn[data-target]').forEach(btn => {
+      btn.addEventListener('click', e => showTab(e.currentTarget.dataset.target));
+    });
+    
+    // Clear local storage
+    $('#clearLocal').addEventListener('click', () => {
+      if (confirm('Clear localStorage for AuthLab?')) {
+        Object.keys(localStorage)
+          .filter(k => k.startsWith('authlab:'))
+          .forEach(k => localStorage.removeItem(k));
+        showToast('Local data cleared', 'success');
+      }
+    });
+
+    /* ===== USERNAME GENERATOR ===== */
+    const adjectives = ["curious", "bright", "silent", "rapid", "gentle", "brave", "midnight", "rainy", "happy", "lucky", "clever", "sly", "swift", "quiet", "bold", "neon"];
+    const animals = ["fox", "otter", "swan", "penguin", "tiger", "panda", "raccoon", "owl", "hedgehog", "badger", "lemur", "wolf", "hare"];
+    const creative = ["circuit", "byte", "syntax", "pixel", "flux", "vector", "loop", "node", "string", "signal", "anchor", "tidal"];
+    
+    function rand(arr) { 
+      return arr[Math.floor(Math.random() * arr.length)]; 
+    }
+    
+    function slugify(s) { 
+      return s.toString().toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, ''); 
+    }
+
+    function genUsername(mode, base) {
+      base = base ? slugify(base) : '';
+      
+      if (mode === 'animal') {
+        const a = rand(animals);
+        const adj = rand(adjectives);
+        return base ? 
+          (Math.random() < 0.4 ? base + '-' + a : base + '-' + adj + '-' + a) : 
+          (adj + '-' + a);
+      } else if (mode === 'creative') {
+        return base ? base + '-' + rand(creative) : (rand(adjectives) + '-' + rand(creative));
+      } else if (mode === 'classic') {
+        const num = Math.floor(Math.random() * 9999);
+        return base ? `${base}${Math.random() < 0.5 ? '-' : ''}${num}` : `user${num}`;
+      } else { // random
+        const choice = Math.random();
+        if (choice < 0.45) return rand(adjectives) + '-' + rand(animals);
+        if (choice < 0.8) return rand(creative) + '-' + rand(animals);
+        return 'user' + Math.floor(Math.random() * 99999);
+      }
+    }
+
+    function renderUserResults(listEl, arr) {
+      listEl.innerHTML = '';
+      
+      if (arr.length === 0) {
+        listEl.innerHTML = '<div class="muted text-center">No results yet. Generate some usernames!</div>';
+        return;
+      }
+      
+      arr.forEach(name => {
+        const row = document.createElement('div');
+        row.className = 'result-row';
+        
+        const left = document.createElement('div');
+        left.className = 'result-name';
+        left.textContent = name;
+        left.setAttribute('role', 'button');
+        left.setAttribute('tabindex', '0');
+        left.title = 'Click to copy';
+        left.setAttribute('aria-label', `Copy username: ${name}`);
+        
+        const copyHandler = async () => {
+          const success = await copyToClipboard(name, 'Username copied!');
+          if (success) {
+            left.style.opacity = '0.6';
+            setTimeout(() => left.style.opacity = '1', 300);
+          }
+        };
+        
+        left.addEventListener('click', copyHandler);
+        left.addEventListener('keydown', e => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            copyHandler();
+          }
+        });
+        
+        const right = document.createElement('div');
+        const btn = document.createElement('button');
+        btn.className = 'btn small';
+        btn.textContent = 'Copy';
+        btn.setAttribute('aria-label', `Copy username: ${name}`);
+        
+        btn.addEventListener('click', async () => {
+          const success = await copyToClipboard(name, 'Username copied!');
+          if (success) {
+            btn.textContent = 'Copied!';
+            setTimeout(() => btn.textContent = 'Copy', 1000);
+          }
+        });
+        
+        right.appendChild(btn);
+        row.appendChild(left);
+        row.appendChild(right);
+        listEl.appendChild(row);
+      });
+    }
+
+    $('#u_gen').addEventListener('click', () => {
+      const mode = $('#u_mode').value;
+      const base = $('#u_base').value.trim();
+      let count = parseInt($('#u_batch').value) || 8;
+      count = Math.min(30, Math.max(1, count));
+      
+      const results = [];
+      for (let i = 0; i < count; i++) {
+        results.push(genUsername(mode, base));
+      }
+      
+      renderUserResults($('#u_results'), results);
+      localStorage.setItem(saveKey('username:latest'), JSON.stringify(results));
+    });
+    
+    $('#u_copy_all').addEventListener('click', async () => {
+      const rows = Array.from($('#u_results').querySelectorAll('.result-name')).map(n => n.textContent);
+      if (rows.length === 0) {
+        showToast('No usernames to copy', 'error');
+        return;
+      }
+      
+      await copyToClipboard(rows.join('\n'), 'All usernames copied!');
+    });
+    
+    $('#u_save').addEventListener('click', () => {
+      const rows = Array.from($('#u_results').querySelectorAll('.result-name')).map(n => n.textContent);
+      localStorage.setItem(saveKey('username:saved'), JSON.stringify(rows));
+      showToast('Usernames saved locally', 'success');
+    });
+    
+    // Load last generated usernames
+    try {
+      const last = JSON.parse(localStorage.getItem(saveKey('username:latest')) || 'null');
+      if (Array.isArray(last) && last.length) {
+        renderUserResults($('#u_results'), last);
+      }
+    } catch (e) {
+      console.error('Error loading saved usernames:', e);
+    }
+
+    /* ===== AVATAR GENERATOR ===== */
+    const a_canvas = $('#a_canvas');
+    const a_ctx = a_canvas.getContext('2d');
+    
+    function hashStr(s) {
+      let h = 2166136261 >>> 0;
+      for (let i = 0; i < s.length; i++) {
+        h ^= s.charCodeAt(i);
+        h += (h << 1) + (h << 4) + (h << 7) + (h << 8) + (h << 24);
+      }
+      return (h >>> 0).toString(16);
+    }
+    
+    function colorFromHash(h) {
+      // Derive two colors
+      const r = parseInt(h.slice(0, 2) || 'aa', 16) % 200 + 20;
+      const g = parseInt(h.slice(2, 4) || 'bb', 16) % 200 + 20;
+      const b = parseInt(h.slice(4, 6) || 'cc', 16) % 200 + 20;
+      return `rgb(${r}, ${g}, ${b})`;
+    }
+    
+    function drawIdenticon(seed) {
+      const h = hashStr(seed);
+      const bg = '#ffffff';
+      a_ctx.fillStyle = bg;
+      a_ctx.fillRect(0, 0, a_canvas.width, a_canvas.height);
+      
+      const cols = 5;
+      const size = Math.floor(a_canvas.width / cols);
+      const color = colorFromHash(h);
+      
+      for (let x = 0; x < cols; x++) {
+        for (let y = 0; y < cols; y++) {
+          const idx = x * cols + y;
+          // Symmetric: mirror x
+          const check = parseInt(h[idx % h.length], 16) % 2 === 0;
+          const draw = (x < Math.ceil(cols / 2)) ? 
+            check : 
+            ((parseInt(h[(cols - 1 - x) * cols + y % h.length], 16) % 2 === 0));
+          
+          if (draw) {
+            a_ctx.fillStyle = color;
+            a_ctx.fillRect(x * size, y * size, size, size);
+          }
+        }
+      }
+    }
+    
+    function drawGradient(seed) {
+      const h = hashStr(seed);
+      const c1 = colorFromHash(h);
+      const c2 = colorFromHash(h.slice(-6));
+      
+      const g = a_ctx.createLinearGradient(0, 0, a_canvas.width, a_canvas.height);
+      g.addColorStop(0, c1);
+      g.addColorStop(1, c2);
+      
+      a_ctx.fillStyle = g;
+      a_ctx.fillRect(0, 0, a_canvas.width, a_canvas.height);
+      
+      // Add initial letter
+      a_ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
+      a_ctx.font = 'bold 48px sans-serif';
+      a_ctx.textAlign = 'center';
+      a_ctx.textBaseline = 'middle';
+      
+      const ch = (seed || '?')[0] ? (seed[0].toUpperCase()) : '?';
+      a_ctx.fillText(ch, a_canvas.width / 2, a_canvas.height / 2);
+    }
+    
+    function drawPixel(seed) {
+      const h = hashStr(seed);
+      const cols = 8;
+      const size = Math.floor(a_canvas.width / cols);
+      
+      a_ctx.fillStyle = '#fff';
+      a_ctx.fillRect(0, 0, a_canvas.width, a_canvas.height);
+      
+      const color = colorFromHash(h);
+      
+      for (let x = 0; x < cols; x++) {
+        for (let y = 0; y < cols; y++) {
+          const idx = (x * cols + y) % h.length;
+          if (parseInt(h[idx], 16) % 3 === 0) {
+            a_ctx.fillStyle = color;
+            a_ctx.fillRect(x * size, y * size, size, size);
+          }
+        }
+      }
+    }
+
+    $('#a_gen').addEventListener('click', () => {
+      const s = $('#a_seed').value.trim() || ('seed-' + Math.random().toString(36).slice(2, 7));
+      const mode = $('#a_mode').value;
+      
+      if (mode === 'identicon') drawIdenticon(s);
+      else if (mode === 'gradient') drawGradient(s);
+      else drawPixel(s);
+      
+      $('#a_meta').textContent = 'Seed: ' + s;
+      localStorage.setItem(saveKey('avatar:seed'), JSON.stringify({ s, mode }));
+    });
+    
+    $('#a_download').addEventListener('click', () => {
+      const url = a_canvas.toDataURL('image/png');
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'avatar.png';
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      showToast('Avatar downloaded', 'success');
+    });
+    
+    // Load saved avatar seed
+    try {
+      const as = JSON.parse(localStorage.getItem(saveKey('avatar:seed')) || 'null');
+      if (as) {
+        $('#a_seed').value = as.s;
+        $('#a_mode').value = as.mode;
+        $('#a_gen').click();
+      }
+    } catch (e) {
+      console.error('Error loading saved avatar:', e);
+    }
+
+    /* ===== PASSWORD GENERATOR & STRENGTH ===== */
+    const lowerChars = 'abcdefghijklmnopqrstuvwxyz';
+    const upperChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    const numChars = '0123456789';
+    const symChars = '!@#$%^&*()-_=+[]{};:,.<>?/';
+
+    function generatePassword(opts) {
+      let pool = '';
+      if (opts.lower) pool += lowerChars;
+      if (opts.upper) pool += upperChars;
+      if (opts.numbers) pool += numChars;
+      if (opts.symbols) pool += symChars;
+      
+      if (!pool) pool = lowerChars;
+      
+      let pw = '';
+      for (let i = 0; i < opts.length; i++) {
+        pw += pool[Math.floor(Math.random() * pool.length)];
+      }
+      return pw;
+    }
+
+    function calcEntropyBits(pw) {
+      // Approximate: bits = length * log2(pool)
+      let pool = 0;
+      if (/[a-z]/.test(pw)) pool += 26;
+      if (/[A-Z]/.test(pw)) pool += 26;
+      if (/[0-9]/.test(pw)) pool += 10;
+      if (/[^a-zA-Z0-9]/.test(pw)) pool += 32;
+      if (pool === 0) pool = 26;
+      
+      const bits = pw.length * Math.log2(pool);
+      return Math.round(bits * 10) / 10;
+    }
+
+    function updateStrengthVisual(bits) {
+      const el = $('#p_strength');
+      const strengthBar = el.parentElement;
+      const pct = Math.min(100, Math.round((bits / 100) * 100));
+      
+      el.style.width = pct + '%';
+      strengthBar.setAttribute('aria-valuenow', pct);
+      
+      let color = '#ef4444', text = 'Weak';
+      if (bits > 60) {
+        color = '#10b981';
+        text = 'Strong';
+      } else if (bits > 35) {
+        color = '#f59e0b';
+        text = 'Medium';
+      }
+      
+      el.style.background = color;
+      $('#p_strength_text').textContent = `Strength: ${text} (${bits} bits)`;
+    }
+
+    $('#p_gen').addEventListener('click', () => {
+      const opts = {
+        lower: $('#p_lower').checked,
+        upper: $('#p_upper').checked,
+        numbers: $('#p_numbers').checked,
+        symbols: $('#p_symbols').checked,
+        length: parseInt($('#p_length').value) || 12
+      };
+      
+      const pw = generatePassword(opts);
+      $('#p_output').value = pw;
+      const bits = calcEntropyBits(pw);
+      updateStrengthVisual(bits);
+      
+      localStorage.setItem(saveKey('password:last'), JSON.stringify({ pw, opts }));
+    });
+    
+    $('#p_regen').addEventListener('click', () => $('#p_gen').click());
+    
+    $('#p_copy').addEventListener('click', async () => {
+      const v = $('#p_output').value;
+      if (!v) {
+        showToast('No password to copy', 'error');
+        return;
+      }
+      
+      await copyToClipboard(v, 'Password copied!');
+    });
+    
+    // Load saved password
+    try {
+      const last = JSON.parse(localStorage.getItem(saveKey('password:last')) || 'null');
+      if (last) {
+        $('#p_output').value = last.pw;
+        $('#p_length').value = last.opts.length;
+        $('#p_lower').checked = last.opts.lower;
+        $('#p_upper').checked = last.opts.upper;
+        $('#p_numbers').checked = last.opts.numbers;
+        $('#p_symbols').checked = last.opts.symbols;
+        
+        const b = calcEntropyBits(last.pw);
+        updateStrengthVisual(b);
+      }
+    } catch (e) {
+      console.error('Error loading saved password:', e);
+    }
+
+    // Entropy calculator actions
+    $('#e_calc').addEventListener('click', () => {
+      const pw = $('#e_input').value || $('#p_output').value;
+      if (!pw) {
+        showToast('No password to analyze', 'error');
+        return;
+      }
+      
+      const bits = calcEntropyBits(pw);
+      const strength = bits > 60 ? 'Strong' : bits > 35 ? 'Medium' : 'Weak';
+      $('#e_result').textContent = `Entropy: ${bits} bits — ${strength}`;
+    });
+    
+    $('#e_clear').addEventListener('click', () => {
+      $('#e_input').value = '';
+      $('#e_result').textContent = 'Entropy results appear here.';
+    });
+
+    /* ===== VISUALIZER ===== */
+    const v_canvas = $('#v_canvas');
+    const v_ctx = v_canvas.getContext('2d');
+    
+    function drawPattern(seed) {
+      const h = hashStr(seed || ('seed' + Math.random()));
+      const cols = 20;
+      const rows = 10;
+      const w = v_canvas.width / cols;
+      const hh = v_canvas.height / rows;
+      
+      for (let x = 0; x < cols; x++) {
+        for (let y = 0; y < rows; y++) {
+          const idx = (x * rows + y) % h.length;
+          const v = parseInt(h[idx], 16) % 16;
+          const color = (v % 2 === 0) ? colorFromHash(h) : '#f1f5f9';
+          
+          v_ctx.fillStyle = color;
+          v_ctx.fillRect(x * w, y * hh, w, hh);
+        }
+      }
+    }
+    
+    $('#v_gen').addEventListener('click', () => {
+      const s = $('#v_seed').value || $('#p_output').value || Math.random().toString(36).slice(2);
+      drawPattern(s);
+    });
+    
+    $('#v_download').addEventListener('click', () => {
+      const url = v_canvas.toDataURL('image/png');
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'pattern.png';
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      showToast('Pattern downloaded', 'success');
+    });
+
+    /* ===== ENTROPY TAB ===== */
+    $('#ent_calc').addEventListener('click', () => {
+      const pw = $('#ent_input').value;
+      if (!pw) {
+        showToast('Enter a password to calculate entropy', 'error');
+        return;
+      }
+      
+      const bits = calcEntropyBits(pw);
+      let strength = 'Weak';
+      if (bits > 80) strength = 'Very strong';
+      else if (bits > 60) strength = 'Strong';
+      else if (bits > 35) strength = 'Medium';
+      
+      $('#ent_out').textContent = `${bits} bits — ${strength}`;
+    });
+    
+    $('#ent_copy').addEventListener('click', async () => {
+      const t = $('#ent_out').textContent;
+      if (!t || t === 'Result will show here.') {
+        showToast('No entropy data to copy', 'error');
+        return;
+      }
+      
+      await copyToClipboard(t, 'Entropy data copied!');
+    });
+
+    /* ===== MOCK DATA GENERATOR ===== */
+    const firstNames = ["Rani", "Budi", "Siti", "Andi", "Rizal", "Maya", "Dewi", "Anton", "Rizky", "Lia", "Sukma", "Hendra"];
+    const lastNames = ["Saputra", "Wijaya", "Pratama", "Setiawan", "Herlina", "Mulyani", "Kusuma", "Putra"];
+    
+    function randFrom(a) { 
+      return a[Math.floor(Math.random() * a.length)]; 
+    }
+    
+    function genPhone() {
+      const prefix = ['081', '082', '083', '085', '087'];
+      return prefix[Math.floor(Math.random() * prefix.length)] + Math.floor(10000000 + Math.random() * 90000000);
+    }
+    
+    function genMock(n) {
+      const out = [];
+      for (let i = 0; i < n; i++) {
+        const fn = randFrom(firstNames), ln = randFrom(lastNames);
+        const name = fn + ' ' + ln;
+        const email = (fn + '.' + ln + Math.floor(Math.random() * 99) + '@example.com').toLowerCase();
+        out.push({
+          name, 
+          email, 
+          phone: genPhone(), 
+          username: slugify(fn + ln + Math.floor(Math.random() * 99))
+        });
+      }
+      return out;
+    }
+    
+    $('#m_gen').addEventListener('click', () => {
+      const n = parseInt($('#m_count').value) || 6;
+      const data = genMock(n);
+      const container = $('#m_results');
+      container.innerHTML = '';
+      
+      if (data.length === 0) {
+        container.innerHTML = '<div class="muted text-center">No data generated</div>';
+        return;
+      }
+      
+      data.forEach(d => {
+        const r = document.createElement('div');
+        r.className = 'result-row';
+        
+        r.innerHTML = `
+          <div>
+            <div style="font-weight:600">${d.name}</div>
+            <div class="muted" style="font-weight:400">${d.email} · ${d.phone}</div>
+          </div>
+          <div>
+            <button class="btn small">Copy</button>
+          </div>
+        `;
+        
+        r.querySelector('button').addEventListener('click', async () => {
+          await copyToClipboard(JSON.stringify(d), 'Mock data copied!');
+        });
+        
+        container.appendChild(r);
+      });
+      
+      localStorage.setItem(saveKey('mock:last'), JSON.stringify(data));
+    });
+    
+    $('#m_json').addEventListener('click', () => {
+      const last = JSON.parse(localStorage.getItem(saveKey('mock:last')) || '[]');
+      if (!last.length) {
+        showToast('No mock data to export', 'error');
+        return;
+      }
+      
+      const blob = new Blob([JSON.stringify(last, null, 2)], { type: 'application/json' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'mock.json';
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      showToast('JSON file downloaded', 'success');
+    });
+    
+    $('#m_csv').addEventListener('click', () => {
+      const last = JSON.parse(localStorage.getItem(saveKey('mock:last')) || '[]');
+      if (!last.length) {
+        showToast('No mock data to export', 'error');
+        return;
+      }
+      
+      const headers = Object.keys(last[0]);
+      const lines = [headers.join(',')].concat(last.map(r => 
+        headers.map(h => '"' + String(r[h]).replace(/"/g, '""') + '"').join(',')
+      ));
+      
+      const blob = new Blob([lines.join('\n')], { type: 'text/csv' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'mock.csv';
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      showToast('CSV file downloaded', 'success');
+    });
+    
+    // Load last mock data
+    try {
+      const last = JSON.parse(localStorage.getItem(saveKey('mock:last')) || 'null');
+      if (last) {
+        $('#m_count').value = last.length;
+        $('#m_gen').click();
+      }
+    } catch (e) {
+      console.error('Error loading mock data:', e);
+    }
+
+    /* ===== PREVIEWER ===== */
+    function previewTemplate(type, color) {
+      const c = color || '#0ea5e9';
+      
+      if (type === 'github') {
+        return `<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Sign in to GitHub</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: #f6f8fa;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      color: #24292e;
+    }
+    .box {
+      width: 360px;
+      padding: 28px;
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 8px 30px rgba(2,6,23,0.06);
+    }
+    h1 {
+      margin: 0 0 12px;
+      font-size: 24px;
+      text-align: center;
+    }
+    .form-group {
+      margin-bottom: 16px;
+    }
+    input {
+      width: 100%;
+      padding: 8px;
+      margin-top: 8px;
+      border-radius: 6px;
+      border: 1px solid #e1e4e8;
+      font-size: 14px;
+    }
+    input:focus {
+      outline: none;
+      border-color: ${c};
+      box-shadow: 0 0 0 3px rgba(14,165,233,0.1);
+    }
+    .btn {
+      display: block;
+      width: 100%;
+      padding: 10px 12px;
+      border-radius: 6px;
+      background: ${c};
+      color: #fff;
+      text-decoration: none;
+      text-align: center;
+      font-weight: 600;
+      border: none;
+      cursor: pointer;
+      margin-top: 16px;
+    }
+    .btn:hover {
+      background: ${c}dd;
+    }
+    .forgot {
+      display: block;
+      text-align: center;
+      margin-top: 16px;
+      font-size: 13px;
+      color: ${c};
+    }
+  </style>
+</head>
+<body>
+  <div class="box">
+    <h1>Sign in to GitHub</h1>
+    <div class="form-group">
+      <label for="username" class="sr-only">Username or email</label>
+      <input id="username" placeholder="Username or email" autofocus>
+    </div>
+    <div class="form-group">
+      <label for="password" class="sr-only">Password</label>
+      <input id="password" type="password" placeholder="Password">
+    </div>
+    <button class="btn">Sign in</button>
+    <a href="#" class="forgot">Forgot password?</a>
+  </div>
+</body>
+</html>`;
+      }
+      
+      if (type === 'google') {
+        return `<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Sign in - Google Accounts</title>
+  <style>
+    body {
+      font-family: Roboto, Arial, Helvetica, sans-serif;
+      background: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      color: #202124;
+    }
+    .card {
+      width: 380px;
+      padding: 28px;
+      border-radius: 8px;
+      border: 1px solid #dadce0;
+    }
+    h1 {
+      font-size: 24px;
+      margin: 0 0 12px;
+      color: #202124;
+    }
+    .logo {
+      text-align: center;
+      margin-bottom: 24px;
+    }
+    .logo svg {
+      width: 75px;
+      height: 24px;
+    }
+    .form-group {
+      margin-bottom: 16px;
+    }
+    input {
+      width: 100%;
+      padding: 13px;
+      margin-top: 8px;
+      border-radius: 4px;
+      border: 1px solid #dadce0;
+      font-size: 16px;
+    }
+    input:focus {
+      outline: none;
+      border-color: ${c};
+      box-shadow: 0 0 0 3px rgba(14,165,233,0.1);
+    }
+    .btn {
+      display: block;
+      width: 100%;
+      padding: 10px 12px;
+      border-radius: 4px;
+      background: ${c};
+      color: #fff;
+      text-decoration: none;
+      text-align: center;
+      font-weight: 500;
+      border: none;
+      cursor: pointer;
+      margin-top: 24px;
+    }
+    .btn:hover {
+      background: ${c}dd;
+    }
+    .create-account {
+      text-align: center;
+      margin-top: 24px;
+    }
+    .create-account a {
+      color: ${c};
+      text-decoration: none;
+      font-weight: 500;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="logo">
+      <svg viewBox="0 0 75 24" width="75" height="24">
+        <path fill="#4285F4" d="M10.31 20.13c-5.51 0-10-4.49-10-10s4.49-10 10-10 10 4.49 10 10-4.49 10-10 10zm0-18c-4.41 0-8 3.59-8 8s3.59 8 8 8 8-3.59 8-8-3.59-8-8-8z"/>
+        <path fill="#EA4335" d="M24.13 20.13c-5.51 0-10-4.49-10-10s4.49-10 10-10 10 4.49 10 10-4.49 10-10 10zm0-18c-4.41 0-8 3.59-8 8s3.59 8 8 8 8-3.59 8-8-3.59-8-8-8z"/>
+        <path fill="#FBBC05" d="M38.13 20.13c-5.51 0-10-4.49-10-10s4.49-10 10-10 10 4.49 10 10-4.49 10-10 10zm0-18c-4.41 0-8 3.59-8 8s3.59 8 8 8 8-3.59 8-8-3.59-8-8-8z"/>
+        <path fill="#34A853" d="M52.13 20.13c-5.51 0-10-4.49-10-10s4.49-10 10-10 10 4.49 10 10-4.49 10-10 10zm0-18c-4.41 0-8 3.59-8 8s3.59 8 8 8 8-3.59 8-8-3.59-8-8-8z"/>
+        <path fill="#4285F4" d="M66.13 20.13c-5.51 0-10-4.49-10-10s4.49-10 10-10 10 4.49 10 10-4.49 10-10 10zm0-18c-4.41 0-8 3.59-8 8s3.59 8 8 8 8-3.59 8-8-3.59-8-8-8z"/>
+      </svg>
+    </div>
+    <h1>Sign in</h1>
+    <div class="form-group">
+      <label for="email" class="sr-only">Email or phone</label>
+      <input id="email" placeholder="Email or phone" autofocus>
+    </div>
+    <div class="form-group">
+      <label for="password" class="sr-only">Password</label>
+      <input id="password" type="password" placeholder="Password">
+    </div>
+    <button class="btn">Next</button>
+    <div class="create-account">
+      <a href="#">Create account</a>
+    </div>
+  </div>
+</body>
+</html>`;
+      }
+      
+      if (type === 'discord') {
+        return `<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Welcome Back - Discord</title>
+  <style>
+    body {
+      font-family: Whitney, Helvetica, Arial, sans-serif;
+      background: #7289da;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      color: #fff;
+    }
+    .panel {
+      width: 480px;
+      padding: 32px;
+      background: #36393f;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px 0 rgba(0,0,0,0.2);
+    }
+    h1 {
+      font-size: 26px;
+      margin: 0 0 8px;
+      font-weight: 600;
+    }
+    .subtitle {
+      color: #b9bbbe;
+      margin-bottom: 24px;
+    }
+    .form-group {
+      margin-bottom: 20px;
+    }
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 12px;
+      text-transform: uppercase;
+      color: #b9bbbe;
+      font-weight: 600;
+    }
+    input {
+      width: 100%;
+      padding: 10px 12px;
+      border-radius: 4px;
+      border: 1px solid #202225;
+      background: #2f3136;
+      color: #f6f6f7;
+      font-size: 16px;
+    }
+    input:focus {
+      outline: none;
+      border-color: ${c};
+      box-shadow: 0 0 0 2px rgba(14,165,233,0.2);
+    }
+    .btn {
+      display: block;
+      width: 100%;
+      padding: 12px 16px;
+      border-radius: 4px;
+      background: ${c};
+      color: #fff;
+      text-decoration: none;
+      text-align: center;
+      font-weight: 600;
+      border: none;
+      cursor: pointer;
+      margin-top: 8px;
+      font-size: 16px;
+    }
+    .btn:hover {
+      background: ${c}dd;
+    }
+    .links {
+      margin-top: 16px;
+      text-align: center;
+    }
+    .links a {
+      color: #00b0f4;
+      text-decoration: none;
+      font-size: 14px;
+      margin: 0 8px;
+    }
+    .links a:hover {
+      text-decoration: underline;
+    }
+    .qr-login {
+      margin-top: 24px;
+      text-align: center;
+      border-top: 1px solid #4f545c;
+      padding-top: 24px;
+    }
+    .qr-text {
+      color: #b9bbbe;
+      font-size: 14px;
+      margin-bottom: 8px;
+    }
+  </style>
+</head>
+<body>
+  <div class="panel">
+    <h1>Welcome Back!</h1>
+    <p class="subtitle">We're so excited to see you again!</p>
+    
+    <div class="form-group">
+      <label for="email">EMAIL OR PHONE NUMBER</label>
+      <input id="email" autofocus>
+    </div>
+    
+    <div class="form-group">
+      <label for="password">PASSWORD</label>
+      <input id="password" type="password">
+    </div>
+    
+    <button class="btn">Login</button>
+    
+    <div class="links">
+      <a href="#">Forgot your password?</a>
+      <a href="#">Register</a>
+    </div>
+    
+    <div class="qr-login">
+      <p class="qr-text">Or scan this QR code with your mobile device</p>
+      <div style="width: 120px; height: 120px; background: #fff; margin: 0 auto; border-radius: 4px;"></div>
+    </div>
+  </div>
+</body>
+</html>`;
+      }
+      
+      // Corporate template
+      return `<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Sign in to Acme Corp</title>
+  <style>
+    body {
+      font-family: Inter, Arial, sans-serif;
+      background: #f7fafc;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      color: #2d3748;
+    }
+    .container {
+      display: flex;
+      gap: 40px;
+      align-items: center;
+      max-width: 1000px;
+      width: 100%;
+      padding: 0 20px;
+    }
+    .branding {
+      flex: 1;
+    }
+    .logo {
+      height: 64px;
+      width: 64px;
+      border-radius: 12px;
+      background: ${c};
+      margin-bottom: 24px;
+    }
+    .company-name {
+      font-size: 32px;
+      font-weight: 700;
+      margin-bottom: 16px;
+    }
+    .tagline {
+      font-size: 18px;
+      color: #718096;
+      max-width: 400px;
+    }
+    .card {
+      width: 420px;
+      padding: 32px;
+      background: #fff;
+      border-radius: 12px;
+      border: 1px solid #e2e8f0;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    }
+    h1 {
+      font-size: 24px;
+      margin: 0 0 24px;
+      font-weight: 700;
+    }
+    .form-group {
+      margin-bottom: 20px;
+    }
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 500;
+      font-size: 14px;
+    }
+    input {
+      width: 100%;
+      padding: 12px 16px;
+      border-radius: 8px;
+      border: 1px solid #e2e8f0;
+      background: #fff;
+      font-size: 16px;
+    }
+    input:focus {
+      outline: none;
+      border-color: ${c};
+      box-shadow: 0 0 0 3px rgba(14,165,233,0.1);
+    }
+    .options {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 24px;
+      font-size: 14px;
+    }
+    .options label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: normal;
+    }
+    .options input[type="checkbox"] {
+      width: auto;
+    }
+    .btn {
+      display: block;
+      width: 100%;
+      padding: 12px 16px;
+      border-radius: 8px;
+      background: ${c};
+      color: #fff;
+      text-decoration: none;
+      text-align: center;
+      font-weight: 600;
+      border: none;
+      cursor: pointer;
+      margin-top: 8px;
+      font-size: 16px;
+    }
+    .btn:hover {
+      background: ${c}dd;
+    }
+    .divider {
+      display: flex;
+      align-items: center;
+      margin: 24px 0;
+      color: #a0aec0;
+      font-size: 14px;
+    }
+    .divider::before, .divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: #e2e8f0;
+    }
+    .divider span {
+      padding: 0 16px;
+    }
+    .social-login {
+      display: flex;
+      gap: 12px;
+    }
+    .social-btn {
+      flex: 1;
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid #e2e8f0;
+      background: #fff;
+      text-align: center;
+      cursor: pointer;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+    .social-btn:hover {
+      background: #f7fafc;
+    }
+    .signup-link {
+      text-align: center;
+      margin-top: 24px;
+      font-size: 14px;
+      color: #718096;
+    }
+    .signup-link a {
+      color: ${c};
+      text-decoration: none;
+      font-weight: 500;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="branding">
+      <div class="logo"></div>
+      <h1 class="company-name">Acme Corp</h1>
+      <p class="tagline">Secure access to your account and manage your profile settings</p>
+    </div>
+    
+    <div class="card">
+      <h1>Sign in to your account</h1>
+      
+      <form>
+        <div class="form-group">
+          <label for="email">Email address</label>
+          <input id="email" type="email" placeholder="name@company.com" autofocus>
+        </div>
+        
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input id="password" type="password" placeholder="••••••••">
+        </div>
+        
+        <div class="options">
+          <label>
+            <input type="checkbox" id="remember">
+            Remember me
+          </label>
+          <a href="#" style="color: ${c}; text-decoration: none;">Forgot password?</a>
+        </div>
+        
+        <button type="submit" class="btn">Sign in</button>
+      </form>
+      
+      <div class="divider">
+        <span>Or continue with</span>
+      </div>
+      
+      <div class="social-login">
+        <div class="social-btn">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+            <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+            <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+            <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
+            <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+          </svg>
+          Google
+        </div>
+        <div class="social-btn">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+          </svg>
+          GitHub
+        </div>
+      </div>
+      
+      <div class="signup-link">
+        Don't have an account? <a href="#">Sign up</a>
+      </div>
+    </div>
+  </div>
+</body>
+</html>`;
+    }
+
+    $('#pr_load').addEventListener('click', () => {
+      const t = $('#pr_template').value;
+      const c = $('#pr_color').value;
+      const doc = previewTemplate(t, c);
+      $('#pr_frame').srcdoc = doc;
+    });
+    
+    $('#pr_copy').addEventListener('click', async () => {
+      const t = $('#pr_template').value;
+      const c = $('#pr_color').value;
+      const doc = previewTemplate(t, c);
+      
+      await copyToClipboard(doc, 'HTML template copied!');
+    });
+
+    /* ===== EXPORTER ===== */
+    let exFiles = [];
+    
+    $('#ex_generate').addEventListener('click', () => {
+      exFiles = [];
+      const name = $('#ex_name').value.trim() || 'MyAuthTemplate';
+      
+      // Basic index.html with preview embed and avatar placeholder
+      const incAvatar = $('#ex_include_avatar').checked;
+      const incPreview = $('#ex_include_preview').checked;
+      
+      const html = `<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>${name}</title>
+  <style>
+    body {
+      font-family: Inter, Arial, sans-serif;
+      padding: 24px;
+      background: #f8fafc;
+      color: #334155;
+      line-height: 1.6;
+    }
+    .container {
+      max-width: 420px;
+      margin: 0 auto;
+      background: #fff;
+      padding: 24px;
+      border-radius: 8px;
+      border: 1px solid #e2e8f0;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    h1 {
+      margin-top: 0;
+      color: #1e293b;
+    }
+    .form-group {
+      margin-bottom: 16px;
+    }
+    label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: 500;
+      font-size: 14px;
+    }
+    input {
+      width: 100%;
+      padding: 10px 12px;
+      border-radius: 6px;
+      border: 1px solid #cbd5e1;
+      font-size: 14px;
+    }
+    input:focus {
+      outline: none;
+      border-color: #0ea5e9;
+      box-shadow: 0 0 0 3px rgba(14,165,233,0.1);
+    }
+    .btn {
+      display: inline-block;
+      padding: 10px 16px;
+      border-radius: 6px;
+      background: #0ea5e9;
+      color: #fff;
+      text-decoration: none;
+      font-weight: 500;
+      border: none;
+      cursor: pointer;
+    }
+    .btn:hover {
+      background: #0284c7;
+    }
+    .avatar {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background: #e2e8f0;
+      margin: 0 auto 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 32px;
+      color: #64748b;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>${name} — Login</h1>
+    ${incAvatar ? '<div class="avatar">U</div>' : ''}
+    <form>
+      <div class="form-group">
+        <label for="username">Username</label>
+        <input id="username" type="text" placeholder="Enter your username">
+      </div>
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input id="password" type="password" placeholder="Enter your password">
+      </div>
+      <div class="form-group">
+        <button type="submit" class="btn">Login</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>`;
+      
+      exFiles.push({ name: 'index.html', content: html });
+      
+      if ($('#ex_include_readme').checked) {
+        exFiles.push({
+          name: 'README.md', 
+          content: `# ${name}\n\nGenerated by AuthLab Pro\n\n## Description\nThis is a basic login template generated by AuthLab Pro.\n\n## Usage\nOpen index.html in your browser to view the login form.\n\n## Customization\nYou can customize the styles and functionality as needed.\n`
+        });
+      }
+      
+      // Show files
+      const container = $('#ex_files');
+      container.innerHTML = '';
+      
+      if (exFiles.length === 0) {
+        container.innerHTML = '<div class="muted text-center">No files generated</div>';
+        return;
+      }
+      
+      exFiles.forEach(f => {
+        const r = document.createElement('div');
+        r.className = 'result-row';
+        
+        r.innerHTML = `
+          <div>
+            <div style="font-weight:600">${f.name}</div>
+            <div class="muted" style="font-weight:400">
+              ${(f.content.slice(0, 140).replace(/</g, '&lt;'))}...
+            </div>
+          </div>
+          <div>
+            <button class="btn small">Download</button>
+          </div>
+        `;
+        
+        r.querySelector('button').addEventListener('click', () => {
+          const blob = new Blob([f.content], { 
+            type: f.name.endsWith('.html') ? 'text/html' : 
+                  f.name.endsWith('.md') ? 'text/markdown' : 'text/plain' 
+          });
+          const a = document.createElement('a');
+          a.href = URL.createObjectURL(blob);
+          a.download = f.name;
+          document.body.appendChild(a);
+          a.click();
+          a.remove();
+          showToast(`${f.name} downloaded`, 'success');
+        });
+        
+        container.appendChild(r);
+      });
+      
+      $('#ex_status').textContent = 'Files ready — download individually';
+    });
+
+    $('#ex_download_all').addEventListener('click', () => {
+      if (exFiles.length === 0) {
+        showToast('Generate files first', 'error');
+        return;
+      }
+      
+      // Download all files sequentially
+      exFiles.forEach(f => {
+        const blob = new Blob([f.content], { 
+          type: f.name.endsWith('.html') ? 'text/html' : 
+                f.name.endsWith('.md') ? 'text/markdown' : 'text/plain' 
+        });
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = f.name;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+      });
+      
+      showToast('Downloads started (multiple files)', 'success');
+    });
+
+    // Initialize: show dashboard
+    showTab('tab-dashboard');
+  })();
+  </script>
+</body>
+</html>

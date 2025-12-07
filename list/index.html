@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>List2Do++ | Modern To-Do List App</title>
+    <meta name="description" content="A modern, responsive to-do list application with drag-and-drop functionality, themes, and more">
+    <meta name="theme-color" content="#6366f1">
+    <link rel="manifest" href="data:application/json;base64,eyJuYW1lIjoiTGlzdDJEbysrIiwic2hvcnRfbmFtZSI6Ikxpc3QyRG8rKyIsInRoZW1lX2NvbG9yIjoiIzYzNjZmMSIsImRpc3BsYXkiOiJzdGFuZGFsb25lIiwic3RhcnRfdXJsIjoiLiIsIm9yaWVudGF0aW9uIjoicG9ydHJhaXQtcHJpbWFyeSIsImljb25zIjpbeyJzcmMiOiJpY29uLTE5Mi5wbmciLCJzaXplcyI6IjE5MngxOTIiLCJ0eXBlIjoiaW1hZ2UvcG5nIn1dfQ==">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/list/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div class="loading-screen" id="loadingScreen">
+        <div class="loader"></div>
+        <div style="color: white; font-weight: 500;">Loading List2Do++</div>
+    </div>
+
+    <div class="app-container" id="appContainer">
+        <!-- Header -->
+        <header class="app-header">
+            <div class="logo">
+                <i class="fas fa-tasks"></i>
+                List2Do++
+            </div>
+            <div class="header-actions">
+                <button class="header-btn" id="searchToggle" title="Search">
+                    <i class="fas fa-search"></i>
+                </button>
+                <button class="header-btn" id="statsToggle" title="Statistics">
+                    <i class="fas fa-chart-pie"></i>
+                </button>
+                <button class="header-btn" id="settingsToggle" title="Settings">
+                    <i class="fas fa-cog"></i>
+                </button>
+            </div>
+        </header>
+
+        <!-- Search Container -->
+        <div class="search-container" id="searchContainer">
+            <input type="text" class="search-input" id="searchInput" placeholder="Search tasks...">
+            <button class="search-close" id="searchClose">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+
+        <!-- Search Results -->
+        <div class="search-results" id="searchResults">
+            <div class="search-results-header">
+                <div class="search-results-title">Search Results</div>
+                <div class="search-results-count" id="searchResultsCount">0 results</div>
+            </div>
+            <div id="searchResultsContent"></div>
+        </div>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Stats Cards -->
+            <div class="stats-container" id="statsContainer">
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-clipboard-list"></i>
+                    </div>
+                    <div class="stat-value" id="pendingTasks">0</div>
+                    <div class="stat-label">Pending</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-layer-group"></i>
+                    </div>
+                    <div class="stat-value" id="totalCategories">0</div>
+                    <div class="stat-label">Categories</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-list-check"></i>
+                    </div>
+                    <div class="stat-value" id="totalTasks">0</div>
+                    <div class="stat-label">Total Tasks</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <div class="stat-value" id="completedTasks">0</div>
+                    <div class="stat-label">Completed</div>
+                </div>
+            </div>
+
+            <!-- Add Category Section -->
+            <div class="add-category-section">
+                <input type="text" class="add-category-input" id="newCategoryInput" placeholder="Add new category..." maxlength="24">
+                <button class="btn btn-primary" id="addCategoryBtn">
+                    <i class="fas fa-plus"></i>
+                    Add
+                </button>
+            </div>
+
+            <!-- Categories Section -->
+            <div class="categories-container">
+                <div class="categories-header">
+                    <h2 class="categories-title">‎‎ ‎ <i class="fas fa-check"></i>‎‎  ‎ ‎ Your Categories</h2>
+                    <div class="view-toggle">
+                        <button class="view-btn active" id="gridViewBtn" title="Grid View">
+                            <i class="fas fa-th"></i>
+                        </button>
+                        <button class="view-btn" id="sliderViewBtn" title="Slider View">
+                            <i class="fas fa-grip-horizontal"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="categories-grid" id="categoriesContainer">
+                    <!-- Categories will be dynamically added here -->
+                </div>
+            </div>
+        </main>
+
+        <!-- Bottom Navigation -->
+        <nav class="bottom-nav">
+            <a href="#" class="nav-item active">
+                <i class="fas fa-home"></i>
+                <span>Home</span>
+            </a>
+            <a href="/jam" class="nav-item" rel="noopener">
+                <i class="fas fa-clock"></i>
+                <span>Jam</span>
+            </a>
+            <a href="https://www.spotify.com" class="nav-item" rel="noopener">
+                <i class="fab fa-spotify"></i>
+                <span>Spotify</span>
+            </a>
+            <a href="/" class="nav-item" rel="noopener">
+                <i class="fas fa-user"></i>
+                <span>Fless</span>
+            </a>
+        </nav>
+    </div>
+
+    <!-- Settings Modal -->
+    <div class="modal-overlay" id="settingsModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 class="modal-title">Settings</h2>
+                <button class="modal-close" id="settingsClose">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="setting-group">
+                    <label class="setting-label">Theme</label>
+                    <div class="theme-options">
+                        <button class="theme-btn" data-theme="light" title="Light Theme">
+                            <i class="fas fa-sun"></i>
+                        </button>
+                        <button class="theme-btn" data-theme="dark" title="Dark Theme">
+                            <i class="fas fa-moon"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="setting-group">
+                    <label class="setting-label">Accent Color</label>
+                    <div class="accent-options">
+                        <button class="accent-btn" data-accent="blue" title="Blue"></button>
+                        <button class="accent-btn" data-accent="green" title="Green"></button>
+                        <button class="accent-btn" data-accent="pink" title="Pink"></button>
+                        <button class="accent-btn" data-accent="orange" title="Orange"></button>
+                        <button class="accent-btn" data-accent="purple" title="Red"></button>
+                    </div>
+                </div>
+                <div class="setting-group">
+                    <button class="reset-btn" id="resetBtn">
+                        <i class="fas fa-redo"></i> Reset All Data
+                    </button>
+                </div>
+                <div style="font-size: 0.85rem; color: var(--gray); margin-top: 16px;">
+                    <i class="fas fa-info-circle"></i> Your preferences will be saved on this device.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ===== App Data =====
+        let data = JSON.parse(localStorage.getItem('list2do_data')) || [
+            {
+                name: "Shopping",
+                tasks: [
+                    { name: "Buy milk", done: false, createdAt: "2023-06-15" },
+                    { name: "Buy fruits", done: true, createdAt: "2023-06-14" }
+                ]
+            },
+            {
+                name: "Work",
+                tasks: [
+                    { name: "Report bug", done: false, createdAt: "2023-06-16" },
+                    { name: "Meeting with client", done: false, createdAt: "2023-06-17" }
+                ]
+            }
+        ];
+
+        let viewMode = 'grid'; // 'grid' or 'slider'
+
+        // ===== Initialize App =====
+        document.addEventListener('DOMContentLoaded', function() {
+            // Hide loading screen after a short delay
+            setTimeout(() => {
+                document.getElementById('loadingScreen').classList.add('hidden');
+                document.getElementById('appContainer').classList.add('loaded');
+            }, 500);
+            
+            applySettings();
+            renderCategories();
+        });
+
+        // ===== Settings & Theme =====
+        function applySettings() {
+            const theme = localStorage.getItem('list2do_theme') || 'light';
+            document.documentElement.setAttribute('data-theme', theme);
+            document.querySelectorAll('.theme-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.getAttribute('data-theme') === theme);
+            });
+
+            const accent = localStorage.getItem('list2do_accent') || 'blue';
+            document.documentElement.setAttribute('data-accent', accent);
+            document.querySelectorAll('.accent-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.getAttribute('data-accent') === accent);
+            });
+        }
+
+        function openSettings() {
+            document.getElementById('settingsModal').classList.add('active');
+            applySettings();
+        }
+
+        function closeSettings() {
+            document.getElementById('settingsModal').classList.remove('active');
+        }
+
+        // ===== Event Listeners =====
+        document.getElementById('settingsToggle').addEventListener('click', openSettings);
+        document.getElementById('settingsClose').addEventListener('click', closeSettings);
+        document.getElementById('settingsModal').addEventListener('click', function(e) {
+            if (e.target === this) closeSettings();
+        });
+
+        document.querySelectorAll('.theme-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                localStorage.setItem('list2do_theme', btn.getAttribute('data-theme'));
+                applySettings();
+            });
+        });
+
+        document.querySelectorAll('.accent-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                localStorage.setItem('list2do_accent', btn.getAttribute('data-accent'));
+                applySettings();
+            });
+        });
+
+        document.getElementById('resetBtn').addEventListener('click', function() {
+            if (confirm("All data and settings will be deleted. Continue?")) {
+                localStorage.removeItem('list2do_data');
+                localStorage.removeItem('list2do_theme');
+                localStorage.removeItem('list2do_accent');
+                location.reload();
+            }
+        });
+
+        // ===== Search Functionality =====
+        const searchToggle = document.getElementById('searchToggle');
+        const searchContainer = document.getElementById('searchContainer');
+        const searchInput = document.getElementById('searchInput');
+        const searchClose = document.getElementById('searchClose');
+        const searchResults = document.getElementById('searchResults');
+        const searchResultsContent = document.getElementById('searchResultsContent');
+        const searchResultsCount = document.getElementById('searchResultsCount');
+
+        searchToggle.addEventListener('click', function() {
+            searchContainer.classList.add('active');
+            searchInput.focus();
+            searchToggle.classList.add('active');
+        });
+
+        searchClose.addEventListener('click', function() {
+            searchContainer.classList.remove('active');
+            searchResults.classList.remove('active');
+            searchInput.value = '';
+            searchToggle.classList.remove('active');
+        });
+
+        searchInput.addEventListener('input', function() {
+            const query = searchInput.value.trim().toLowerCase();
+            
+            if (!query) {
+                searchResults.classList.remove('active');
+                return;
+            }
+
+            const results = [];
+            
+            data.forEach((category, catIndex) => {
+                category.tasks.forEach((task, taskIndex) => {
+                    if (task.name.toLowerCase().includes(query)) {
+                        results.push({
+                            ...task,
+                            catIndex,
+                            taskIndex,
+                            categoryName: category.name
+                        });
+                    }
+                });
+            });
+
+            searchResultsCount.textContent = `${results.length} result${results.length !== 1 ? 's' : ''}`;
+            
+            if (results.length === 0) {
+                searchResultsContent.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-search"></i>
+                        <h3>No results found</h3>
+                        <p>Try different keywords</p>
+                    </div>
+                `;
+            } else {
+                searchResultsContent.innerHTML = results.map(result => `
+                    <div class="search-result-item" data-cat="${result.catIndex}" data-task="${result.taskIndex}">
+                        <div class="search-result-name">${result.name}</div>
+                        <div class="search-result-meta">
+                            <i class="fas fa-folder"></i> ${result.categoryName}
+                            <span>•</span>
+                            <i class="fas fa-calendar"></i> ${result.createdAt}
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            searchResults.classList.add('active');
+        });
+
+        // Navigate to task from search results
+        searchResultsContent.addEventListener('click', function(e) {
+            const resultItem = e.target.closest('.search-result-item');
+            if (resultItem) {
+                const catIndex = parseInt(resultItem.dataset.cat);
+                const taskIndex = parseInt(resultItem.dataset.task);
+                
+                // Close search
+                searchContainer.classList.remove('active');
+                searchResults.classList.remove('active');
+                searchInput.value = '';
+                searchToggle.classList.remove('active');
+                
+                // Scroll to category
+                const categoryCard = document.querySelector(`.category-card[data-cat="${catIndex}"]`);
+                if (categoryCard) {
+                    categoryCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    
+                    // Highlight task
+                    setTimeout(() => {
+                        const taskItem = document.querySelector(`.task-item[data-cat="${catIndex}"][data-task="${taskIndex}"]`);
+                        if (taskItem) {
+                            taskItem.style.backgroundColor = 'rgba(99, 102, 241, 0.2)';
+                            setTimeout(() => {
+                                taskItem.style.backgroundColor = '';
+                            }, 2000);
+                        }
+                    }, 500);
+                }
+            }
+        });
+
+        // ===== Stats Toggle =====
+        const statsToggle = document.getElementById('statsToggle');
+        const statsContainer = document.getElementById('statsContainer');
+        let statsVisible = true;
+
+        statsToggle.addEventListener('click', function() {
+            statsVisible = !statsVisible;
+            statsContainer.style.display = statsVisible ? 'grid' : 'none';
+            statsToggle.classList.toggle('active', statsVisible);
+        });
+
+        // ===== View Mode Toggle =====
+        const gridViewBtn = document.getElementById('gridViewBtn');
+        const sliderViewBtn = document.getElementById('sliderViewBtn');
+        const categoriesContainer = document.getElementById('categoriesContainer');
+
+        gridViewBtn.addEventListener('click', function() {
+            viewMode = 'grid';
+            categoriesContainer.className = 'categories-grid';
+            gridViewBtn.classList.add('active');
+            sliderViewBtn.classList.remove('active');
+            renderCategories();
+        });
+
+        sliderViewBtn.addEventListener('click', function() {
+            viewMode = 'slider';
+            categoriesContainer.className = 'categories-slider';
+            sliderViewBtn.classList.add('active');
+            gridViewBtn.classList.remove('active');
+            renderCategories();
+        });
+
+        // ===== Category Functions =====
+        function addCategory() {
+            const nameInput = document.getElementById('newCategoryInput');
+            const name = nameInput.value.trim();
+            
+            if (!name) {
+                showNotification('Category name cannot be empty!', 'error');
+                return;
+            }
+            
+            if (name.length > 24) {
+                showNotification('Category name must be less than 24 characters!', 'error');
+                return;
+            }
+            
+            data.push({ name: name, tasks: [] });
+            saveData();
+            nameInput.value = '';
+            renderCategories();
+            showNotification('Category added successfully!', 'success');
+        }
+
+        function deleteCategory(index) {
+            if (confirm(`Are you sure you want to delete "${data[index].name}" and all its tasks?`)) {
+                data.splice(index, 1);
+                saveData();
+                renderCategories();
+                showNotification('Category deleted successfully!', 'success');
+            }
+        }
+
+        function addTask(catIndex) {
+            const taskName = prompt("Enter task name:");
+            if (!taskName) return;
+            
+            const newTask = {
+                name: taskName.trim().substring(0, 80),
+                done: false,
+                createdAt: new Date().toISOString().split('T')[0]
+            };
+            
+            data[catIndex].tasks.push(newTask);
+            saveData();
+            renderCategories();
+            showNotification('Task added successfully!', 'success');
+        }
+
+        function editTask(catIndex, taskIndex) {
+            const task = data[catIndex].tasks[taskIndex];
+            const newName = prompt("Edit task name:", task.name);
+            
+            if (newName !== null && newName.trim()) {
+                task.name = newName.trim().substring(0, 80);
+                saveData();
+                renderCategories();
+                showNotification('Task updated successfully!', 'success');
+            }
+        }
+
+        function deleteTask(catIndex, taskIndex) {
+            if (confirm("Are you sure you want to delete this task?")) {
+                data[catIndex].tasks.splice(taskIndex, 1);
+                saveData();
+                renderCategories();
+                showNotification('Task deleted successfully!', 'success');
+            }
+        }
+
+        function toggleTask(catIndex, taskIndex) {
+            data[catIndex].tasks[taskIndex].done = !data[catIndex].tasks[taskIndex].done;
+            saveData();
+            renderCategories();
+        }
+
+        function sortTasks(catIndex, sortBy) {
+            switch(sortBy) {
+                case 'name':
+                    data[catIndex].tasks.sort((a, b) => a.name.localeCompare(b.name));
+                    break;
+                case 'date':
+                    data[catIndex].tasks.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
+                    break;
+                case 'completed':
+                    data[catIndex].tasks.sort((a, b) => a.done - b.done);
+                    break;
+            }
+            saveData();
+            renderCategories();
+        }
+
+        // ===== Data Management =====
+        function saveData() {
+            localStorage.setItem('list2do_data', JSON.stringify(data));
+            calculateStats();
+        }
+
+        function calculateStats() {
+            const totalCategories = data.length;
+            let totalTasks = 0;
+            let completedTasks = 0;
+            let pendingTasks = 0;
+            
+            data.forEach(category => {
+                totalTasks += category.tasks.length;
+                completedTasks += category.tasks.filter(task => task.done).length;
+            });
+            
+            pendingTasks = totalTasks - completedTasks;
+            
+            document.getElementById('totalCategories').textContent = totalCategories;
+            document.getElementById('totalTasks').textContent = totalTasks;
+            document.getElementById('completedTasks').textContent = completedTasks;
+            document.getElementById('pendingTasks').textContent = pendingTasks;
+        }
+
+        // ===== Render Functions =====
+        function renderCategories() {
+            if (data.length === 0) {
+                categoriesContainer.innerHTML = `
+                    <div class="empty-state" style="grid-column: 1/-1;">
+                        <i class="fas fa-clipboard-list"></i>
+                        <h3>No categories yet</h3>
+                        <p>Add a new category to get started</p>
+                    </div>
+                `;
+                calculateStats();
+                return;
+            }
+            
+            categoriesContainer.innerHTML = data.map((category, catIndex) => `
+                <div class="category-card slide-up" data-cat="${catIndex}">
+                    <div class="category-header">
+                        <div class="category-title">
+                            <i class="fas fa-folder"></i>
+                            ${category.name}
+                        </div>
+                        <div class="category-actions">
+                            <div class="sort-dropdown">
+                                <button class="category-btn" onclick="toggleSortDropdown(${catIndex})" title="Sort">
+                                    <i class="fas fa-sort"></i>
+                                </button>
+                                <div class="sort-options" id="sortOptions-${catIndex}">
+                                    <div class="sort-option" onclick="sortTasks(${catIndex}, 'name'); closeSortDropdown(${catIndex})">
+                                        <i class="fas fa-sort-alpha-down"></i>
+                                        <span>Name</span>
+                                    </div>
+                                    <div class="sort-option" onclick="sortTasks(${catIndex}, 'date'); closeSortDropdown(${catIndex})">
+                                        <i class="fas fa-calendar"></i>
+                                        <span>Date</span>
+                                    </div>
+                                    <div class="sort-option" onclick="sortTasks(${catIndex}, 'completed'); closeSortDropdown(${catIndex})">
+                                        <i class="fas fa-check-circle"></i>
+                                        <span>Completed</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="category-btn" onclick="deleteCategory(${catIndex})" title="Delete">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="category-content">
+                        <div class="tasks-list" id="tasks-${catIndex}">
+                            ${category.tasks.length > 0 ?
+                                category.tasks.map((task, taskIndex) => `
+                                <div class="task-item${task.done ? ' done' : ''}" data-cat="${catIndex}" data-task="${taskIndex}">
+                                    <div class="task-checkbox ${task.done ? 'checked' : ''}" onclick="toggleTask(${catIndex}, ${taskIndex})"></div>
+                                    <div class="task-content">
+                                        <div class="task-name">${task.name}</div>
+                                        <div class="task-date">Created: ${task.createdAt}</div>
+                                    </div>
+                                    <div class="task-actions">
+                                        <button class="task-btn" onclick="editTask(${catIndex}, ${taskIndex})" title="Edit">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button class="task-btn" onclick="deleteTask(${catIndex}, ${taskIndex})" title="Delete">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                `).join('')
+                                :
+                                `<div class="empty-state">
+                                    <i class="fas fa-tasks"></i>
+                                    <p>No tasks yet</p>
+                                </div>`
+                            }
+                        </div>
+                        <button class="add-task-btn" onclick="addTask(${catIndex})">
+                            <i class="fas fa-plus"></i>
+                            Add Task
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+            
+            calculateStats();
+            setTimeout(initSortable, 100);
+        }
+
+        // Sort dropdown functions
+        window.toggleSortDropdown = function(catIndex) {
+            const dropdown = document.getElementById(`sortOptions-${catIndex}`);
+            const isActive = dropdown.classList.contains('active');
+            
+            // Close all dropdowns
+            document.querySelectorAll('.sort-options').forEach(opt => {
+                opt.classList.remove('active');
+            });
+            
+            // Toggle current dropdown
+            if (!isActive) {
+                dropdown.classList.add('active');
+            }
+        };
+
+        window.closeSortDropdown = function(catIndex) {
+            document.getElementById(`sortOptions-${catIndex}`).classList.remove('active');
+        };
+
+        // Close dropdowns when clicking outside
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('.sort-dropdown')) {
+                document.querySelectorAll('.sort-options').forEach(opt => {
+                    opt.classList.remove('active');
+                });
+            }
+        });
+
+        // ===== SortableJS for drag and drop =====
+        function initSortable() {
+            data.forEach((category, catIndex) => {
+                const container = document.getElementById(`tasks-${catIndex}`);
+                if (!container) return;
+                
+                new Sortable(container, {
+                    group: "tasks",
+                    handle: ".task-item",
+                    animation: 150,
+                    filter: ".add-task-btn,.empty-state",
+                    onEnd: function(evt) {
+                        if (evt.oldIndex === evt.newIndex) return;
+                        
+                        const moved = data[catIndex].tasks.splice(evt.oldIndex, 1)[0];
+                        data[catIndex].tasks.splice(evt.newIndex, 0, moved);
+                        saveData();
+                        renderCategories();
+                    }
+                });
+            });
+        }
+
+        // ===== Notification System =====
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.className = `notification notification-${type}`;
+            notification.innerHTML = `
+                <div class="notification-content">
+                    <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : 'info-circle'}"></i>
+                    <span>${message}</span>
+                </div>
+            `;
+            
+            document.body.appendChild(notification);
+            
+            // Remove notification after animation completes
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+        }
+
+        // ===== Event Listeners =====
+        document.getElementById('addCategoryBtn').addEventListener('click', addCategory);
+        document.getElementById('newCategoryInput').addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') addCategory();
+        });
+
+        // Add touch support for swipe gestures on mobile
+        let touchStartX = 0;
+        let touchEndX = 0;
+
+        document.addEventListener('touchstart', function(e) {
+            touchStartX = e.changedTouches[0].screenX;
+        });
+
+        document.addEventListener('touchend', function(e) {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+        });
+
+        function handleSwipe() {
+            if (touchEndX < touchStartX - 50) {
+                // Swipe left - could be used for future functionality
+            }
+            if (touchEndX > touchStartX + 50) {
+                // Swipe right - could be used for future functionality
+            }
+        }
+    </script>
+</body>
+</html>

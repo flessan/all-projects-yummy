@@ -1,0 +1,16 @@
+{
+  "name": "Jam",
+  "short_name": "Jam",
+  "start_url": "/projects/jam",
+  "display": "standalone",
+  "background_color": "#4e54c8",
+  "theme_color": "#4e54c8",
+  "description": "Simple analog & digital clock",
+  "icons": [
+    {
+      "src": "https://images.icon-icons.com/39/PNG/96/xclock_clock_time_5987.png",
+      "sizes": "96x96",
+      "type": "image/png"
+    }
+  ]
+}
