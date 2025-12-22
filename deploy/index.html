@@ -3221,7 +3221,7 @@
         // Load platforms from JSON
         async function loadPlatforms() {
             try {
-                const response = await fetch('/deploy/platforms.json');
+                const response = await fetch('platforms.json');
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
