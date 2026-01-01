@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Code Cleaner Pro - Advanced Tools</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <style>
+    /* Identical Theme Setup */
+    :root {
+      --bg-main: #0d1117;
+      --bg-secondary: #161b22;
+      --bg-tertiary: #21262d;
+      --border-color: #30363d;
+      --text-primary: #c9d1d9;
+      --text-secondary: #8b949e;
+      --accent-blue: #58a6ff;
+      --accent-green: #3fb950;
+      --accent-red: #f85149;
+      --font-ui: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      --font-mono: "SFMono-Regular", Consolas, monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-main);
+      color: var(--text-primary);
+      font-family: var(--font-ui);
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    ::-webkit-scrollbar {
+      width: 10px;
+      height: 10px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--border-color);
+      border-radius: 5px;
+    }
+
+    /* Layout */
+    header {
+      background: var(--bg-secondary);
+      border-bottom: 1px solid var(--border-color);
+      padding: 0.75rem 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 60px;
+    }
+
+    .header-title {
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .header-title i {
+      color: var(--accent-blue);
+    }
+
+    .toolbar {
+      background: var(--bg-secondary);
+      border-bottom: 1px solid var(--border-color);
+      padding: 10px 1.5rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      align-items: center;
+    }
+
+    /* Controls */
+    select,
+    .btn {
+      background: var(--bg-tertiary);
+      color: var(--text-primary);
+      border: 1px solid var(--border-color);
+      padding: 6px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-family: var(--font-ui);
+      font-size: 0.85rem;
+      outline: none;
+    }
+
+    select:focus,
+    .btn:hover {
+      border-color: var(--text-secondary);
+    }
+
+    .btn.primary {
+      background: var(--accent-green);
+      color: white;
+      border: none;
+      font-weight: 500;
+    }
+
+    .btn.primary:hover {
+      background: #2ea043;
+    }
+
+    .btn.danger {
+      color: var(--accent-red);
+    }
+
+    .mode-toggle {
+      display: flex;
+      background: var(--bg-tertiary);
+      border-radius: 6px;
+      padding: 2px;
+      border: 1px solid var(--border-color);
+    }
+
+    .mode-btn {
+      padding: 6px 12px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      transition: 0.2s;
+    }
+
+    .mode-btn.active {
+      background: var(--accent-blue);
+      color: white;
+    }
+
+    /* Editors */
+    main {
+      flex: 1;
+      padding: 1.5rem;
+      overflow: hidden;
+      display: flex;
+      gap: 1rem;
+    }
+
+    .editor-column {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      min-width: 0;
+    }
+
+    .panel {
+      flex: 1;
+      background: var(--bg-main);
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .panel-header {
+      background: var(--bg-secondary);
+      padding: 8px 12px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      justify-content: space-between;
+    }
+
+    textarea.code-area {
+      flex: 1;
+      background: var(--bg-main);
+      color: var(--text-primary);
+      border: none;
+      padding: 15px;
+      font-family: var(--font-mono);
+      font-size: 14px;
+      resize: none;
+      outline: none;
+      line-height: 1.5;
+      white-space: pre;
+    }
+
+    /* Split Mode Specifics */
+    #split-view {
+      display: none;
+      height: 100%;
+      gap: 1rem;
+    }
+
+    #split-view.active {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .split-row {
+      display: flex;
+      gap: 1rem;
+      flex: 1;
+      min-height: 0;
+    }
+
+    .split-col {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    /* Simple Mode */
+    #simple-view {
+      display: flex;
+      height: 100%;
+      gap: 1rem;
+    }
+
+    #simple-view.hidden {
+      display: none;
+    }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      .split-row {
+        flex-direction: column;
+      }
+
+      main {
+        flex-direction: column;
+        overflow-y: auto;
+      }
+
+      .panel {
+        min-height: 300px;
+      }
+    }
+
+    /* Toast */
+    .toast {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: var(--accent-blue);
+      color: white;
+      padding: 10px 20px;
+      border-radius: 6px;
+      opacity: 0;
+      transition: opacity 0.3s;
+      pointer-events: none;
+      z-index: 1000;
+    }
+
+    .toast.show {
+      opacity: 1;
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <div class="header-title">
+      <i class="fas fa-broom"></i> Code Cleaner Pro
+    </div>
+    <div>
+      <button class="btn" onclick="copyResult()"><i class="fas fa-copy"></i> Copy Result</button>
+      <button class="btn danger" onclick="clearAll()"><i class="fas fa-trash"></i> Clear</button>
+    </div>
+  </header>
+
+  <div class="toolbar">
+    <!-- Mode Toggle -->
+    <div class="mode-toggle">
+      <div class="mode-btn active" onclick="setMode('simple')" id="btn-simple">Single Editor</div>
+      <div class="mode-btn" onclick="setMode('split')" id="btn-split">Split/Merge</div>
+    </div>
+
+    <div style="width: 1px; height: 24px; background: var(--border-color);"></div>
+
+    <!-- Language Selector (for Single Mode) -->
+    <div id="lang-control">
+      <label style="font-size: 0.85rem; color: var(--text-secondary);">Target:</label>
+      <select id="lang-select">
+        <option value="html">HTML</option>
+        <option value="css">CSS</option>
+        <option value="js">JavaScript</option>
+        <option value="auto">Auto Detect</option>
+      </select>
+    </div>
+
+    <!-- Actions -->
+    <button class="btn" onclick="removeComments()"><i class="fas fa-eraser"></i> Remove Comments</button>
+    <button class="btn" onclick="minifyCode()"><i class="fas fa-compress-arrows-alt"></i> Minify</button>
+    <button class="btn" onclick="basicBeautify()"><i class="fas fa-align-left"></i> Beautify</button>
+
+    <!-- Split Mode Actions -->
+    <div id="split-actions" style="display:none; margin-left: auto;">
+      <button class="btn" onclick="extractComponents()"><i class="fas fa-expand-arrows-alt"></i> Extract
+        (Split)</button>
+      <button class="btn primary" onclick="combineComponents()"><i class="fas fa-compress"></i> Combine (Merge)</button>
+    </div>
+  </div>
+
+  <main>
+    <!-- Simple View (One Input -> One Output) -->
+    <div id="simple-view">
+      <div class="editor-column">
+        <div class="panel">
+          <div class="panel-header">Input</div>
+          <textarea id="input-simple" class="code-area" placeholder="Paste your code here..."></textarea>
+        </div>
+      </div>
+      <div class="editor-column">
+        <div class="panel">
+          <div class="panel-header">Output</div>
+          <textarea id="output-simple" class="code-area" readonly placeholder="Result..."></textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- Split View (HTML/CSS/JS Inputs -> Result) -->
+    <div id="split-view">
+      <div class="split-row">
+        <div class="split-col">
+          <div class="panel">
+            <div class="panel-header"><i class="fab fa-html5" style="color: #e34c26"></i> HTML Structure</div>
+            <textarea id="input-html" class="code-area" placeholder="<body>...</body>"></textarea>
+          </div>
+        </div>
+        <div class="split-col">
+          <div class="panel">
+            <div class="panel-header"><i class="fab fa-css3-alt" style="color: #264de4"></i> CSS Styles</div>
+            <textarea id="input-css" class="code-area" placeholder="body { ... }"></textarea>
+          </div>
+        </div>
+        <div class="split-col">
+          <div class="panel">
+            <div class="panel-header"><i class="fab fa-js" style="color: #f0db4f"></i> JavaScript</div>
+            <textarea id="input-js" class="code-area" placeholder="console.log(...)"></textarea>
+          </div>
+        </div>
+      </div>
+      <div class="panel" style="height: 40%;">
+        <div class="panel-header">Final Combined Output</div>
+        <textarea id="output-split" class="code-area" readonly placeholder="Combined result appears here..."></textarea>
+      </div>
+    </div>
+  </main>
+
+  <div id="toast" class="toast">Action Completed</div>
+
+  <script>
+    // --- State ---
+    let currentMode = 'simple';
+
+    // --- UI Logic ---
+    function setMode(mode) {
+      currentMode = mode;
+      document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+      document.getElementById(`btn-${mode}`).classList.add('active');
+
+      if (mode === 'simple') {
+        document.getElementById('simple-view').classList.remove('hidden');
+        document.getElementById('split-view').classList.remove('active');
+        document.getElementById('split-actions').style.display = 'none';
+        document.getElementById('lang-control').style.display = 'inline-block';
+      } else {
+        document.getElementById('simple-view').classList.add('hidden');
+        document.getElementById('split-view').classList.add('active');
+        document.getElementById('split-actions').style.display = 'flex';
+        document.getElementById('lang-control').style.display = 'none';
+      }
+    }
+
+    function showToast(msg) {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 2000);
+    }
+
+    function clearAll() {
+      document.querySelectorAll('textarea').forEach(el => el.value = '');
+      showToast('All cleared');
+    }
+
+    function copyResult() {
+      const activeOutput = currentMode === 'simple'
+        ? document.getElementById('output-simple')
+        : document.getElementById('output-split');
+
+      if (!activeOutput.value) return;
+      activeOutput.select();
+      document.execCommand('copy');
+      window.getSelection().removeAllRanges();
+      showToast('Copied to clipboard');
+    }
+
+    // --- Core Logic: Simple Mode ---
+
+    function getInput() {
+      return document.getElementById('input-simple').value;
+    }
+
+    function setOutput(val) {
+      document.getElementById('output-simple').value = val;
+    }
+
+    function getTargetLang() {
+      return document.getElementById('lang-select').value;
+    }
+
+    
+
+    function minifyCode() {
+      let code = getInput();
+      // Remove newlines and extra spaces
+      code = code.replace(/\s+/g, ' ');
+      // Remove space between > and < for HTML
+      code = code.replace(/>\s+</g, '><');
+      // Remove spaces around common delimiters
+      code = code.replace(/\s*([{}:;,])\s*/g, '$1');
+
+      setOutput(code.trim());
+      showToast('Code Minified');
+    }
+
+    function basicBeautify() {
+      let code = getInput();
+      // Very basic indentation logic
+      code = code.replace(/{/g, '{\n    ')
+        .replace(/}/g, '\n}')
+        .replace(/;/g, ';\n')
+        .replace(/</g, '\n<')
+        .replace(/>/g, '>\n');
+
+      // Cleanup double newlines
+      code = code.replace(/\n\s*\n/g, '\n');
+      setOutput(code.trim());
+      showToast('Basic Beautify applied');
+    }
+
+    // --- Core Logic: Split/Merge Mode ---
+
+    function extractComponents() {
+      // Take input from simple view or allow user to paste into HTML box for extraction?
+      // Let's assume user pastes full code into HTML box, then we extract to CSS/JS boxes
+
+      const raw = document.getElementById('input-html').value;
+
+      // 1. Extract CSS
+      const cssMatches = raw.match(/<style[^>]*>([\s\S]*?)<\/style>/gi);
+      if (cssMatches) {
+        let css = '';
+        cssMatches.forEach(m => {
+          css += m.replace(/<\/?style[^>]*>/gi, '') + '\n';
+        });
+        document.getElementById('input-css').value = css.trim();
+      } else {
+        document.getElementById('input-css').value = '';
+      }
+
+      // 2. Extract JS
+      const jsMatches = raw.match(/<script[^>]*>([\s\S]*?)<\/script>/gi);
+      if (jsMatches) {
+        let js = '';
+        jsMatches.forEach(m => {
+          js += m.replace(/<\/?script[^>]*>/gi, '') + '\n';
+        });
+        document.getElementById('input-js').value = js.trim();
+      } else {
+        document.getElementById('input-js').value = '';
+      }
+
+      // 3. Clean HTML (remove style and script tags)
+      let html = raw.replace(/<style[^>]*>[\s\S]*?<\/style>/gi, '')
+        .replace(/<script[^>]*>[\s\S]*?<\/script>/gi, '');
+
+      document.getElementById('input-html').value = html.trim();
+
+      showToast('Components Extracted');
+    }
+
+    function combineComponents() {
+      const html = document.getElementById('input-html').value;
+      const css = document.getElementById('input-css').value;
+      const js = document.getElementById('input-js').value;
+
+      let final = html;
+
+      // Insert CSS before </head> or at the beginning of body
+      const cssBlock = css ? `\n&lt;style&gt;\n${css}\n&lt;/style&gt;\n` : '';
+
+      if (final.includes('&lt;/head&gt;')) {
+        final = final.replace('&lt;/head&gt;', cssBlock + '&lt;/head&gt;');
+      } else {
+        final = cssBlock + final;
+      }
+
+      // Insert JS before </body> or at the end
+      const jsBlock = js ? `\n&lt;script&gt;\n${js}\n&lt;/script&gt;\n` : '';
+
+      if (final.includes('&lt;/body&gt;')) {
+        final = final.replace('&lt;/body&gt;', jsBlock + '&lt;/body&gt;');
+      } else {
+        final += jsBlock;
+      }
+
+      document.getElementById('output-split').value = final.trim();
+      showToast('Components Merged');
+    }
+
+  </script>
+</body>
+
+</html>
