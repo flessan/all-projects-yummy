@@ -2,128 +2,132 @@
 <html lang="en">
 
 <head>
-	<meta charset="utf-8">
-	<title>fles.is-a.dev - projects page</title>
-	<meta name="Description" content="A homepage for fles.is-a and his projects." />
-	<meta name="author" content="Thio Saputra">
-	<link rel="icon" type="https://smellymoo.com/image/vnd.microsoft.icon" href="favicon.ico" />
-	<script src="https://smellymoo.com/script_min.js"></script>
-	<style>
-		body {
-			overflow: hidden;
-			margin: 0;
-			padding: 0
-		}
+    <meta charset="utf-8">
+    <title>fles.is-a.dev - projects page</title>
+    <meta name="Description" content="A homepage for fles.is-a and his projects." />
+    <meta name="author" content="Thio Saputra">
+    <link rel="icon" type="https://smellymoo.com/image/vnd.microsoft.icon" href="favicon.ico" />
+    <script>
+        var mobile, window_size, galaxy_size, icon_size, satellite_size, galaxy, icons, sun, radius, radius_satellite, width, height, time, groups, vis_factor, current_group, speed_factor = .1, last_frame_time = 0; function is_satellite(e) { return e.parentElement != galaxy } function resize() { 0 < navigator.maxTouchPoints || 0 < navigator.msMaxTouchPoints ? (mobile = !0, galaxy.classList.add("mobile")) : (mobile = !1, galaxy.classList.remove("mobile")), width = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth, height = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight, window_size = Math.min(width, height), vis_factor = mobile ? (satellite_size = window_size / 7, .3) : (satellite_size = window_size / 8, .6); var e = height / 2 - (icon_size = window_size / 4) / 2, t = width / 2 - icon_size / 2; radius = (galaxy_size = window_size - 1.8 * icon_size) / 2, radius_satellite = galaxy_size / 3.5, sun.style.top = e + "px", sun.style.left = t + "px"; for (var n = 0; n < icons.length; n++)scale(icons[n]) } function orbit_offset(e, t, n, i) { var s = e.parentElement == i ? 0 : parseFloat(i.style.top), o = e.parentElement == i ? 0 : parseFloat(i.style.left), a = parseFloat(e.style.width), r = parseFloat(e.style.height), l = parseFloat(i.style.margin), u = (isNaN(l) && (l = 0), parseFloat(i.style.width) + 2 * l), i = parseFloat(i.style.height) + 2 * l; e.style.top = s + i / 2 - r / 2 + n * Math.sin(t) + "px", e.style.left = o + u / 2 - a / 2 + n * Math.cos(t) + "px" } function spin_subs(e, t) { for (var n = Math.PI / e.elements.length * 2, i = 0; i < e.elements.length; i++)orbit_offset(e.elements[i], time * speed_factor * (e.center == sun ? 1 : -1) + i * n, t, e.center) } function group_radius(e) { return e.center == sun ? radius : radius_satellite } function animate_openclose(e, t) { var n = Math.min(e.timer_openclose / .54, 1), i = Math.pow(t - n, 2); spin_subs(e, group_radius(e) * i); for (var s = 0, o = e.elements; s < o.length; s++) { var a = o[s]; a.style.opacity = i + "", a.style.scale = i + "" } } function frame() { requestAnimationFrame(frame); for (var e = (time = Date.now() / 1e3) - last_frame_time, t = 0, n = groups; t < n.length; t++) { var i = n[t]; i.timer_openclose += e, animate_openclose(i, i.open ? 0 : 1) } last_frame_time = time } function scale(e) { var t = e.getElementsByTagName("img")[0], n = e.getElementsByTagName("span")[0], i = is_satellite(e) ? satellite_size : icon_size; e.style.width = i + "px", e.style.height = i + "px", e.style.fontSize = i / 9 + "px", t.style.width = i / 2 + "px", t.style.height = i / 2 + "px", t.style.margin = i / 4 + "px", n.style.top = -i / 4 + "px" } function open_group(e) { if (!e.open) { current_group && close_group(current_group), (current_group = e).open = !0; for (var t = e.timer_openclose = 0; t < icons.length; t++)e.center != icons[t] && (icons[t].style.opacity = vis_factor + ""); for (var n = 0, i = e.elements; n < i.length; n++)(e => { e.style.opacity = "", e.style.scale = "", e.style.display = "", e.style.pointerEvents = e.style.touchAction = "none", setTimeout(function () { e.style.pointerEvents = e.style.touchAction = "" }, 0) })(i[n]) } } function close_group(e) { if (e.open) { e == current_group && (current_group = null), e.open = !1; for (var t = e.timer_openclose = 0, n = e.elements; t < n.length; t++) { var i = n[t]; i.style.pointerEvents = "none", i.style.touchAction = "none" } for (var s = 0; s < icons.length; s++)icons[s].style.opacity = "" } } function icon_hover(t, e) { var n = groups.filter(function (e) { return e.center == t })[0]; n && open_group(n) } function init() { last_frame_time = Date.now() / 1e3, galaxy = document.getElementById("galaxy"), icons = document.getElementsByClassName("icon"), sun = document.getElementById("sun"), groups = []; for (var i, e = 0; e < icons.length; e++)(e => { is_satellite(e = icons[e]) && (e.style.display = "none"), e.addEventListener("mouseenter", function (e) { icon_hover(e.target, !0), e.stopPropagation() }, !1); var t = null != (i = e.parentElement) && i.classList.contains("icon") ? e.parentElement : sun; if (e == sun) return; var n = groups.filter(function (e) { return e.center == t })[0]; if (n) n.elements.push(e); else { if (n = { center: t, elements: [e], open: sun == t, timer_openclose: 0 }, groups.push(n), t == sun) return; t.addEventListener("mousedown", function () { return open_group(n) }, !1), t.addEventListener("mouseleave", function () { return close_group(n) }, !1) } })(e); window.addEventListener("resize", resize), galaxy.style.visibility = "visible", resize(), frame() } window.requestAnimationFrame || (window.requestAnimationFrame = window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame || function (e) { window.setTimeout(e, 100) });
+    </script>
+    <style>
+        body {
+            overflow: hidden;
+            margin: 0;
+            padding: 0
+        }
 
-		img {
-			border: 0
-		}
+        img {
+            border: 0
+        }
 
-		#galaxy {
-			overflow: hidden;
-			position: absolute;
-			visibility: hidden;
-			width: 100%;
-			height: 100%
-		}
+        #galaxy {
+            overflow: hidden;
+            position: absolute;
+            visibility: hidden;
+            width: 100%;
+            height: 100%
+        }
 
-		.icon {
-			position: absolute;
-			text-align: center
-		}
+        .icon {
+            position: absolute;
+            text-align: center
+        }
 
-		.icon>a {
-			display: block
-		}
+        .icon>a {
+            display: block
+        }
 
-		.icon>a img {
-			width: 100%;
-			height: 100%
-		}
+        .icon>a img {
+            width: 100%;
+            height: 100%
+        }
 
-		.icon span {
-			position: relative;
-			visibility: hidden;
-			pointer-events: none
-		}
+        .icon span {
+            position: relative;
+            visibility: hidden;
+            pointer-events: none
+        }
 
-		.icon>span,
-		.icon>a>span {
-			visibility: hidden
-		}
+        .icon>span,
+        .icon>a>span {
+            visibility: hidden
+        }
 
-		.icon:hover>span,
-		.mobile .icon>span {
-			visibility: visible
-		}
+        .icon:hover>span,
+        .mobile .icon>span {
+            visibility: visible
+        }
 
-		p {
-			font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-			font-size: 12px;
-			text-align: left;
-		}
+        p {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 12px;
+            text-align: left;
+        }
 
-		@media (prefers-color-scheme:dark) {
-			html {
-				background-color: black;
-				color: white
-			}
+        @media (prefers-color-scheme:dark) {
+            html {
+                background-color: black;
+                color: white
+            }
 
-			span {
-				color: white
-			}
+            span {
+                color: white
+            }
 
-			.dark-invert {
-				filter: invert(100%) hue-rotate(180deg)
-			}
+            .dark-invert {
+                filter: invert(100%) hue-rotate(180deg)
+            }
 
-			.dark-invert span {
-				color: black
-			}
-		}
-	</style>
+            .dark-invert span {
+                color: black
+            }
+        }
+    </style>
 </head>
 
 <body onload="init()">
-	<div id='galaxy'>
-		<div id="sun" class="icon">
-			<a href="mailto:flessan.@yahoo.com?Subject=homepage" target="_top">
-				<img src="https://avatars.githubusercontent.com/u/132740827?v=4" /></a><span>Email</span>
-		</div>
-		<div id="drawsum" class="icon">
-			<img src="https://workskull.pages.dev/logosh.png" /><span>Workskull</span>
-			<div class="icon dark-invert"><a href="https://workskull.pages.dev/"><img src="" /></a><span>Landings</span>
-			</div>
-			<div class="icon"><a href=""><img src="" /></a><span>Store</span></div>
-			<div class="icon"><a href=""><img src="" /></a><span>Projects</span></div>
-		</div>
-		<div id="moojelly" class="icon">
-			<img src="https://raw.githubusercontent.com/flessan/flessan/refs/heads/main/fav.png" /><span>Flessan</span>
-			<div class="icon"><a href="https://fless.ps.fhgdps.com"><img
-						src="https://yt3.googleusercontent.com/GhnidUYK7ObleEcr8KzuTwkUbG_SG7chLnfHrDERM49S15St8RXcP0aPplY68ZpHKFGA0pMQ_fg=s160-c-k-c0x00ffffff-no-rj" /></a><span>GDIPS</span>
-			</div>
-			<div class="icon dark-invert"><a href="https://github.com/smellymoo/moojelly"><img
-						src="https://smellymoo.com/images/github.png" /></a><span>Github</span></div>
-		</div>
-		<div id="sandbox" class="icon">
-			<img src="https://smellymoo.com/images/sandbox.png" /><span>Sand:Box</span>
-			<div class="icon"><a href="https://store.steampowered.com/app/2179380/Sandbox/"><img
-						src="https://smellymoo.com/images/steam.png" /></a><span>Steam</span></div>
-			<div class="icon"><a href="https://play.google.com/store/apps/details?id=smellymoo.sand"><img
-						src="https://smellymoo.com/images/android.png" /></a><span>Android</span></div>
-			<!--<div class="icon dark-invert"><a href="https://apps.apple.com/us/app/sand-box-particle-sandbox/id1573768189"><img src="images/apple.png"/></a><span>iOS</span></div>-->
-			<div class="icon"><a href="https://discord.gg/pB5cHnrmtx"><img
-						src="https://smellymoo.com/images/discord.png" /></a><span>Discord</span></div>
-			<div class="icon"><a href="https://t.me/fallingsandbox"><img
-						src="https://smellymoo.com/images/telegram.png" /></a><span>Telegram</span></div>
-		</div>
-		<div id="github" class="icon">
-			<img class="dark-invert" src="https://smellymoo.com/images/github.png" /><span>Github</span>
-			<div class="icon"><a href="https://github.com/smellymoo/moojelly"><img
-						src="https://smellymoo.com/images/moojelly.png" /></a><span>MooJelly</span></div>
-		</div>
-		<p style="text-align:left; position:fixed; bottom:20px; left:25%; transform: translateX(-50%);">Inspired by <a
-				href="https://smellymoo.com">SmellyMoo</a></p>
+    <div id='galaxy'>
+        <div id="sun" class="icon">
+            <a href="mailto:flessan@yahoo.com?Subject=homepage" target="_top">
+                <img src="https://avatars.githubusercontent.com/u/132740827?v=4" /></a><span>Email</span>
+        </div>
+        <div id="drawsum" class="icon">
+            <img src="https://workskull.pages.dev/logosh.png" /><span>Workskull</span>
+            <div class="icon dark-invert"><a href="https://workskull.pages.dev/"><img src="" /></a><span>Landings</span>
+            </div>
+            <div class="icon"><a href=""><img src="" /></a><span>Store</span></div>
+            <div class="icon"><a href=""><img src="" /></a><span>Projects</span></div>
+        </div>
+        <div id="moojelly" class="icon">
+            <img src="https://raw.githubusercontent.com/flessan/flessan/refs/heads/main/fav.png" /><span>Flessan</span>
+            <div class="icon"><a href="https://fless.ps.fhgdps.com"><img
+                        src="https://yt3.googleusercontent.com/GhnidUYK7ObleEcr8KzuTwkUbG_SG7chLnfHrDERM49S15St8RXcP0aPplY68ZpHKFGA0pMQ_fg=s160-c-k-c0x00ffffff-no-rj"
+                        style="border-radius: 50%;" /></a><span>GDIPS</span>
+            </div>
+            <div class="icon dark-invert"><a href="https://github.com/smellymoo/moojelly"><img
+                        src="https://smellymoo.com/images/github.png" /></a><span>Github</span></div>
+        </div>
+        <div id="gdips" class="icon">
+            <img src="https://yt3.googleusercontent.com/GhnidUYK7ObleEcr8KzuTwkUbG_SG7chLnfHrDERM49S15St8RXcP0aPplY68ZpHKFGA0pMQ_fg=s160-c-k-c0x00ffffff-no-rj"
+                style="border-radius: 50%;" /><span>GDIPS</span>
+            <div class="icon"><a href=""><img src="https://smellymoo.com/images/pc.png" /></a><span>PC</span></div>
+            <div class="icon"><a href=""><img src="https://smellymoo.com/images/android.png" /></a><span>Android</span>
+            </div>
+            <!--<div class="icon dark-invert"><a href="https://apps.apple.com/us/app/sand-box-particle-sandbox/id1573768189"><img src="images/apple.png"/></a><span>iOS</span></div>-->
+            <div class="icon"><a href="https://dcd.gg/gdi"><img
+                        src="https://smellymoo.com/images/discord.png" /></a><span>Discord</span></div>
+            <div class="icon"><a href="https://t.me/gdips"><img
+                        src="https://smellymoo.com/images/telegram.png" /></a><span>Telegram</span></div>
+        </div>
+        <div id="github" class="icon">
+            <img class="dark-invert" src="https://smellymoo.com/images/github.png" /><span>Github</span>
+            <div class="icon"><a href="https://github.com/skenpat"><img
+                        src="https://res.cloudinary.com/dahcxjdbl/image/upload/v1760687917/faviconV2_s4utef.png" /></a><span>Skenpat-People</span>
+            </div>
+        </div>
+        <p style="text-align:left; position:fixed; bottom:20px; left:25%; transform: translateX(-50%);">Inspired by <a
+                style="color: white" href="https://smellymoo.com">SmellyMoo</a></p>
 </body>
 
 </html>
