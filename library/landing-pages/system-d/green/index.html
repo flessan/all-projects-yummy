@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>sysdir — system directory</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --green: #4AF626;
+    --green-dim: #2a8a16;
+    --green-bright: #7fff00;
+    --red: #ff4444;
+    --yellow: #ffcc00;
+    --cyan: #00cccc;
+    --bg: #0a0a0a;
+    --bg-line: #111;
+    --white: #cccccc;
+    --gray: #666;
+    --cursor-width: 8px;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--green);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    line-height: 1.6;
+    min-height: 100vh;
+    overflow-x: hidden;
+    position: relative;
+  }
+
+  /* CRT scanline overlay */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(0, 0, 0, 0.08) 2px,
+      rgba(0, 0, 0, 0.08) 4px
+    );
+    pointer-events: none;
+    z-index: 9999;
+  }
+
+  /* Subtle vignette */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,0.6) 100%);
+    pointer-events: none;
+    z-index: 9998;
+  }
+
+  .terminal {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 40px 20px 80px;
+  }
+
+  /* Boot lines */
+  .boot-line {
+    opacity: 0;
+    transform: translateY(2px);
+    white-space: nowrap;
+    overflow: hidden;
+  }
+  .boot-line.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .boot-line .timestamp {
+    color: var(--gray);
+    margin-right: 8px;
+  }
+  .boot-line .bracket {
+    color: var(--green-dim);
+  }
+  .boot-line .ok {
+    color: var(--green);
+    font-weight: 700;
+  }
+  .boot-line .service-name {
+    color: var(--white);
+  }
+  .boot-line .detail {
+    color: var(--gray);
+    font-size: 12px;
+  }
+
+  /* Separator */
+  .separator {
+    color: var(--green-dim);
+    margin: 12px 0;
+    opacity: 0;
+  }
+  .separator.visible { opacity: 1; }
+
+  /* Cursor blink */
+  .cursor {
+    display: inline-block;
+    width: var(--cursor-width);
+    height: 16px;
+    background: var(--green);
+    vertical-align: text-bottom;
+    animation: blink 1s step-end infinite;
+  }
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+  }
+
+  /* Header after boot */
+  .header-area {
+    margin: 30px 0 20px;
+    opacity: 0;
+  }
+  .header-area.visible { opacity: 1; }
+  .header-area h1 {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--green);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+  .header-area h1 span {
+    color: var(--green-bright);
+  }
+  .header-area .subtitle {
+    color: var(--gray);
+    font-size: 12px;
+    margin-top: 4px;
+  }
+
+  /* Search */
+  .search-area {
+    margin: 20px 0 24px;
+    opacity: 0;
+  }
+  .search-area.visible { opacity: 1; }
+  .search-area input {
+    width: 100%;
+    max-width: 500px;
+    background: var(--bg);
+    border: 1px solid var(--green-dim);
+    color: var(--green);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    padding: 8px 12px;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .search-area input::placeholder {
+    color: var(--green-dim);
+    opacity: 0.6;
+  }
+  .search-area input:focus {
+    border-color: var(--green);
+    box-shadow: 0 0 8px rgba(74, 246, 38, 0.15);
+  }
+
+  /* Category unit */
+  .unit {
+    margin-bottom: 4px;
+    opacity: 0;
+    transform: translateX(-10px);
+  }
+  .unit.visible {
+    opacity: 1;
+    transform: translateX(0);
+    transition: opacity 0.3s, transform 0.3s;
+  }
+
+  .unit-header {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    padding: 6px 8px;
+    cursor: pointer;
+    border-left: 2px solid transparent;
+    transition: background 0.15s, border-color 0.15s;
+    user-select: none;
+    position: relative;
+  }
+  .unit-header:hover {
+    background: rgba(74, 246, 38, 0.06);
+    border-left-color: var(--green-dim);
+  }
+  .unit-header:active {
+    background: rgba(74, 246, 38, 0.12);
+  }
+
+  .unit-arrow {
+    color: var(--green-dim);
+    width: 20px;
+    text-align: center;
+    transition: transform 0.25s ease;
+    flex-shrink: 0;
+    font-size: 12px;
+  }
+  .unit.expanded .unit-arrow {
+    transform: rotate(90deg);
+  }
+
+  .unit-icon {
+    width: 24px;
+    text-align: center;
+    flex-shrink: 0;
+    font-size: 14px;
+  }
+
+  .unit-name {
+    color: var(--white);
+    font-weight: 500;
+    flex: 1;
+  }
+  .unit-header:hover .unit-name {
+    color: var(--green);
+  }
+
+  .unit-status {
+    color: var(--green-dim);
+    font-size: 11px;
+    margin-right: 8px;
+    transition: color 0.15s;
+  }
+  .unit-header:hover .unit-status {
+    color: var(--green);
+  }
+
+  .unit-count {
+    color: var(--gray);
+    font-size: 11px;
+    background: rgba(74,246,38,0.05);
+    padding: 1px 6px;
+    border-radius: 2px;
+  }
+
+  /* Links container */
+  .unit-links {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.35s ease;
+    padding-left: 46px;
+  }
+  .unit.expanded .unit-links {
+    max-height: 600px;
+  }
+
+  .link-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 4px 8px;
+    border-left: 1px solid var(--green-dim);
+    margin-left: 10px;
+    text-decoration: none;
+    color: var(--gray);
+    transition: color 0.15s, background 0.15s, border-color 0.15s;
+    position: relative;
+  }
+  .link-item::before {
+    content: '─';
+    position: absolute;
+    left: -1px;
+    color: var(--green-dim);
+    font-size: 10px;
+  }
+  .link-item:hover {
+    color: var(--green);
+    background: rgba(74, 246, 38, 0.06);
+    border-left-color: var(--green);
+  }
+  .link-item:hover .link-url {
+    color: var(--green-dim);
+  }
+  .link-item:hover::before {
+    color: var(--green);
+  }
+  .link-bullet {
+    color: var(--green-dim);
+    font-size: 8px;
+    flex-shrink: 0;
+    transition: color 0.15s;
+  }
+  .link-item:hover .link-bullet {
+    color: var(--green);
+  }
+  .link-name {
+    flex: 1;
+    font-size: 13px;
+  }
+  .link-url {
+    font-size: 10px;
+    color: #333;
+    transition: color 0.15s;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 200px;
+  }
+
+  /* Footer */
+  .footer-area {
+    margin-top: 40px;
+    padding-top: 16px;
+    border-top: 1px solid #1a1a1a;
+    color: var(--gray);
+    font-size: 11px;
+    opacity: 0;
+  }
+  .footer-area.visible { opacity: 1; }
+  .footer-area a {
+    color: var(--green-dim);
+    text-decoration: none;
+    transition: color 0.15s;
+  }
+  .footer-area a:hover { color: var(--green); }
+
+  /* Glow effect on hover for the whole row */
+  .unit-header::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, rgba(74,246,38,0.03) 0%, transparent 60%);
+    opacity: 0;
+    transition: opacity 0.2s;
+    pointer-events: none;
+  }
+  .unit-header:hover::after {
+    opacity: 1;
+  }
+
+  /* No results */
+  .no-results {
+    color: var(--red);
+    padding: 20px 8px;
+    font-size: 13px;
+    display: none;
+  }
+  .no-results.show { display: block; }
+
+  /* Responsive */
+  @media (max-width: 640px) {
+    .terminal { padding: 20px 12px 60px; }
+    body { font-size: 12px; }
+    .link-url { display: none; }
+    .unit-links { padding-left: 32px; }
+    .unit-count { display: none; }
+    .header-area h1 { font-size: 16px; }
+    .boot-line .detail { display: none; }
+  }
+
+  /* Selection style */
+  ::selection {
+    background: var(--green);
+    color: var(--bg);
+  }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--green-dim); border-radius: 0; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--green); }
+
+  /* Reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    .boot-line, .unit, .header-area, .search-area, .separator, .footer-area {
+      opacity: 1 !important;
+      transform: none !important;
+      transition: none !important;
+    }
+    .cursor { animation: none; opacity: 1; }
+    .unit-links { transition: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="terminal" id="terminal">
+  <!-- Boot lines will be injected here -->
+  <div id="boot-output"></div>
+
+  <div class="header-area" id="header-area">
+    <h1>sys<span>dir</span>.init</h1>
+    <div class="subtitle">system directory unit — target=directory.graphical</div>
+  </div>
+
+  <div class="search-area" id="search-area">
+    <input type="text" id="search-input" placeholder="$ find /dir — ketik untuk filter..." aria-label="Cari directory">
+  </div>
+
+  <div class="no-results" id="no-results">[ FAILED ] Unit tidak ditemukan.</div>
+
+  <div id="units-container"></div>
+
+  <div class="footer-area" id="footer-area">
+    <div>sysdir v0.1.0 — systemd-style directory navigator</div>
+    <div style="margin-top:4px;">Tekan <a href="#" onclick="expandAll(); return false;">expand-all</a> atau <a href="#" onclick="collapseAll(); return false;">collapse-all</a></div>
+  </div>
+</div>
+
+<script>
+// === DATA ===
+const categories = [
+  {
+    name: 'Development',
+    icon: '⚙',
+    status: 'running',
+    links: [
+      { name: 'GitHub', url: 'https://github.com' },
+      { name: 'GitLab', url: 'https://gitlab.com' },
+      { name: 'Stack Overflow', url: 'https://stackoverflow.com' },
+      { name: 'MDN Web Docs', url: 'https://developer.mozilla.org' },
+      { name: 'Dev.to', url: 'https://dev.to' },
+      { name: 'CodePen', url: 'https://codepen.io' },
+    ]
+  },
+  {
+    name: 'Social Media',
+    icon: '◉',
+    status: 'running',
+    links: [
+      { name: 'X / Twitter', url: 'https://x.com' },
+      { name: 'Reddit', url: 'https://reddit.com' },
+      { name: 'LinkedIn', url: 'https://linkedin.com' },
+      { name: 'Discord', url: 'https://discord.com' },
+      { name: 'Telegram', url: 'https://web.telegram.org' },
+    ]
+  },
+  {
+    name: 'Entertainment',
+    icon: '♫',
+    status: 'running',
+    links: [
+      { name: 'YouTube', url: 'https://youtube.com' },
+      { name: 'Spotify', url: 'https://open.spotify.com' },
+      { name: 'Netflix', url: 'https://netflix.com' },
+      { name: 'Twitch', url: 'https://twitch.tv' },
+      { name: 'Crunchyroll', url: 'https://crunchyroll.com' },
+    ]
+  },
+  {
+    name: 'Productivity',
+    icon: '▣',
+    status: 'running',
+    links: [
+      { name: 'Notion', url: 'https://notion.so' },
+      { name: 'Google Drive', url: 'https://drive.google.com' },
+      { name: 'Trello', url: 'https://trello.com' },
+      { name: 'Obsidian', url: 'https://obsidian.md' },
+      { name: 'Todoist', url: 'https://todoist.com' },
+    ]
+  },
+  {
+    name: 'News & Info',
+    icon: '◈',
+    status: 'running',
+    links: [
+      { name: 'Hacker News', url: 'https://news.ycombinator.com' },
+      { name: 'The Verge', url: 'https://theverge.com' },
+      { name: 'Ars Technica', url: 'https://arstechnica.com' },
+      { name: 'BBC News', url: 'https://bbc.com/news' },
+      { name: 'Wikipedia', url: 'https://wikipedia.org' },
+    ]
+  },
+  {
+    name: 'Design & Assets',
+    icon: '◆',
+    status: 'running',
+    links: [
+      { name: 'Figma', url: 'https://figma.com' },
+      { name: 'Dribbble', url: 'https://dribbble.com' },
+      { name: 'Behance', url: 'https://behance.net' },
+      { name: 'Unsplash', url: 'https://unsplash.com' },
+      { name: 'Coolors', url: 'https://coolors.co' },
+      { name: 'FontShare', url: 'https://fontshare.com' },
+    ]
+  },
+  {
+    name: 'AI & Tools',
+    icon: '◎',
+    status: 'running',
+    links: [
+      { name: 'ChatGPT', url: 'https://chat.openai.com' },
+      { name: 'Claude', url: 'https://claude.ai' },
+      { name: 'Midjourney', url: 'https://midjourney.com' },
+      { name: 'HuggingFace', url: 'https://huggingface.co' },
+      { name: 'Perplexity', url: 'https://perplexity.ai' },
+    ]
+  },
+  {
+    name: 'Learning',
+    icon: '▬',
+    status: 'running',
+    links: [
+      { name: 'freeCodeCamp', url: 'https://freecodecamp.org' },
+      { name: 'Coursera', url: 'https://coursera.org' },
+      { name: 'Khan Academy', url: 'https://khanacademy.org' },
+      { name: 'Udemy', url: 'https://udemy.com' },
+      { name: 'The Odin Project', url: 'https://theodinproject.com' },
+    ]
+  },
+];
+
+// === BOOT SEQUENCE ===
+const bootMessages = [
+  { text: 'systemd[1]: Detected architecture x86-64.', type: 'info' },
+  { text: 'systemd[1]: Set hostname to <sysdir>.', type: 'info' },
+  { text: 'systemd[1]: Starting Journal Service...', type: 'ok' },
+  { text: 'systemd[1]: Starting Network Manager...', type: 'ok' },
+  { text: 'systemd[1]: Reached target Network.', type: 'ok' },
+  { text: 'systemd[1]: Starting Firewall...', type: 'ok' },
+  { text: 'systemd[1]: Starting DNS Resolver...', type: 'ok' },
+  { text: 'systemd[1]: Starting User Login Service...', type: 'ok' },
+  { text: 'systemd[1]: Started Directory Graphical Interface.', type: 'ok' },
+  { text: 'systemd[1]: Reached target directory.graphical.', type: 'ok' },
+];
+
+function getTimestamp() {
+  const now = new Date();
+  const h = String(now.getHours()).padStart(2, '0');
+  const m = String(now.getMinutes()).padStart(2, '0');
+  const s = String(now.getSeconds()).padStart(2, '0');
+  const ms = String(now.getMilliseconds()).padStart(3, '0');
+  return `${h}:${m}:${s}.${ms}`;
+}
+
+function createBootLine(msg, index) {
+  const div = document.createElement('div');
+  div.className = 'boot-line';
+  div.style.transition = `opacity 0.15s ease ${index * 0.08}s, transform 0.15s ease ${index * 0.08}s`;
+
+  const ts = `<span class="timestamp">[  ${getTimestamp()}]</span>`;
+
+  if (msg.type === 'ok') {
+    // Parse "Starting XXX..." → show [ OK ]
+    const match = msg.text.match(/^(Starting|Started|Reached)\s+(.+?)(\.\.\.)?$/);
+    if (match) {
+      const action = match[1];
+      const service = match[2];
+      const dots = match[3] || '';
+      div.innerHTML = `${ts}<span class="service-name">[  OK  ]</span> <span class="service-name">${action}</span> ${service}${dots}`;
+    } else {
+      div.innerHTML = `${ts}<span class="service-name">[  OK  ]</span> ${msg.text}`;
+    }
+  } else {
+    div.innerHTML = `${ts}<span class="detail">${msg.text}</span>`;
+  }
+
+  return div;
+}
+
+function runBootSequence() {
+  const output = document.getElementById('boot-output');
+
+  bootMessages.forEach((msg, i) => {
+    const line = createBootLine(msg, i);
+    output.appendChild(line);
+  });
+
+  // Separator
+  const sep = document.createElement('div');
+  sep.className = 'separator';
+  sep.textContent = '─'.repeat(60);
+  output.appendChild(sep);
+
+  // Trigger visibility with stagger
+  const allBootLines = output.querySelectorAll('.boot-line, .separator');
+  allBootLines.forEach((el, i) => {
+    setTimeout(() => el.classList.add('visible'), 80 * i);
+  });
+
+  // After boot done, show main content
+  const totalBootTime = 80 * allBootLines.length + 200;
+  setTimeout(() => {
+    document.getElementById('header-area').classList.add('visible');
+    document.getElementById('header-area').style.transition = 'opacity 0.4s ease';
+  }, totalBootTime);
+
+  setTimeout(() => {
+    document.getElementById('search-area').classList.add('visible');
+    document.getElementById('search-area').style.transition = 'opacity 0.4s ease';
+  }, totalBootTime + 150);
+
+  // Render units with stagger
+  setTimeout(() => {
+    renderUnits();
+  }, totalBootTime + 300);
+
+  setTimeout(() => {
+    document.getElementById('footer-area').classList.add('visible');
+    document.getElementById('footer-area').style.transition = 'opacity 0.4s ease';
+  }, totalBootTime + 300 + categories.length * 60 + 200);
+}
+
+// === RENDER UNITS ===
+function renderUnits(filter = '') {
+  const container = document.getElementById('units-container');
+  container.innerHTML = '';
+
+  const lowerFilter = filter.toLowerCase();
+  let visibleCount = 0;
+
+  categories.forEach((cat, i) => {
+    const filteredLinks = filter
+      ? cat.links.filter(l => l.name.toLowerCase().includes(lowerFilter) || l.url.toLowerCase().includes(lowerFilter))
+      : cat.links;
+
+    // Jika filter aktif dan kategori tidak punya hasil, skip
+    if (filter && filteredLinks.length === 0) return;
+    visibleCount++;
+
+    const unit = document.createElement('div');
+    unit.className = 'unit';
+    if (filter) unit.classList.add('expanded'); // Auto-expand saat filter
+    unit.style.transition = `opacity 0.3s ease ${i * 0.06}s, transform 0.3s ease ${i * 0.06}s`;
+
+    const linksHTML = filteredLinks.map(link => `
+      <a href="${link.url}" target="_blank" rel="noopener noreferrer" class="link-item">
+        <span class="link-bullet">●</span>
+        <span class="link-name">${highlightMatch(link.name, filter)}</span>
+        <span class="link-url">${link.url}</span>
+      </a>
+    `).join('');
+
+    unit.innerHTML = `
+      <div class="unit-header" role="button" tabindex="0" aria-expanded="${filter ? 'true' : 'false'}" aria-label="Kategori ${cat.name}">
+        <span class="unit-arrow">▶</span>
+        <span class="unit-icon">${cat.icon}</span>
+        <span class="unit-name">${cat.name}</span>
+        <span class="unit-status">[${cat.status}]</span>
+        <span class="unit-count">${filteredLinks.length}</span>
+      </div>
+      <div class="unit-links">${linksHTML}</div>
+    `;
+
+    container.appendChild(unit);
+
+    // Trigger visibility
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        unit.classList.add('visible');
+      });
+    });
+
+    // Click to expand/collapse
+    const header = unit.querySelector('.unit-header');
+    header.addEventListener('click', () => {
+      const isExpanded = unit.classList.contains('expanded');
+      unit.classList.toggle('expanded');
+      header.setAttribute('aria-expanded', !isExpanded);
+    });
+
+    // Keyboard support
+    header.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        header.click();
+      }
+    });
+  });
+
+  // No results
+  const noResults = document.getElementById('no-results');
+  if (filter && visibleCount === 0) {
+    noResults.classList.add('show');
+  } else {
+    noResults.classList.remove('show');
+  }
+}
+
+function highlightMatch(text, filter) {
+  if (!filter) return text;
+  const regex = new RegExp(`(${filter.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
+  return text.replace(regex, '<span style="color:var(--green);font-weight:700;">$1</span>');
+}
+
+// === SEARCH ===
+const searchInput = document.getElementById('search-input');
+let searchTimeout;
+searchInput.addEventListener('input', () => {
+  clearTimeout(searchTimeout);
+  searchTimeout = setTimeout(() => {
+    renderUnits(searchInput.value.trim());
+  }, 150);
+});
+
+// === EXPAND / COLLAPSE ALL ===
+function expandAll() {
+  document.querySelectorAll('.unit').forEach(u => {
+    u.classList.add('expanded');
+    const h = u.querySelector('.unit-header');
+    if (h) h.setAttribute('aria-expanded', 'true');
+  });
+}
+
+function collapseAll() {
+  document.querySelectorAll('.unit').forEach(u => {
+    u.classList.remove('expanded');
+    const h = u.querySelector('.unit-header');
+    if (h) h.setAttribute('aria-expanded', 'false');
+  });
+}
+
+// === INIT ===
+document.addEventListener('DOMContentLoaded', runBootSequence);
+</script>
+
+</body>
+</html>
